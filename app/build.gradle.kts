@@ -84,13 +84,11 @@ dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
 
-
     // Room DB
     val roomVersion = "2.5.0"
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
-
 
     // Ktorfit HTTP client
     implementation("de.jensklingenberg.ktorfit:ktorfit-lib:$ktorfitVersion")
@@ -102,25 +100,22 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
-
     // Koin DI
     val koinVersion = "3.3.3"
     compileOnly("io.insert-koin:koin-core:$koinVersion")
     implementation("io.insert-koin:koin-android:$koinVersion")
-    implementation("io.insert-koin:koin-androidx-compose:3.4.2") // Version is not aligned to other koin modules
-
+    // Version is not aligned to other koin modules
+    implementation("io.insert-koin:koin-androidx-compose:3.4.2")
 
     // Coil async image loader and caching
     val coilVersion = "2.2.2"
     implementation("io.coil-kt:coil:$coilVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
 
-
     // Compose Destinations Navigation
     val composeDestinationsVersion = "1.8.36-beta"
     implementation("io.github.raamcosta.compose-destinations:core:$composeDestinationsVersion")
     ksp("io.github.raamcosta.compose-destinations:ksp:$composeDestinationsVersion")
-
 
     // Compose UI
     val composeBom = platform("androidx.compose:compose-bom:2023.01.00")
@@ -143,10 +138,8 @@ dependencies {
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
-
     // Test tooling
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
 }

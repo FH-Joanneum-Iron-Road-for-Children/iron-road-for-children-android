@@ -1,5 +1,4 @@
 @file:Suppress("UnstableApiUsage")
-
 pluginManagement {
     repositories {
         google()
@@ -14,5 +13,15 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+plugins {
+    id("org.danilopianini.gradle-pre-commit-git-hooks") version "1.1.5"
+}
 rootProject.name = "Iron Road For Children"
 include(":app")
+
+gitHooks {
+    preCommit {
+        tasks("ktlintFormat")
+    }
+    createHooks()
+}
