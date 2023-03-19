@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     kotlin("android")
@@ -8,6 +9,7 @@ plugins {
     id("com.google.devtools.ksp") version "1.8.10-1.0.9"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
     id("de.jensklingenberg.ktorfit") version "1.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
 }
 
 android {
@@ -68,6 +70,14 @@ configure<KtorfitGradleConfiguration> {
 ksp {
     arg("compose-destinations.codeGenPackageName", "at.irfc.app.generated.navigation")
     arg("room.schemaLocation", File(projectDir, "schemas").absolutePath)
+}
+
+ktlint {
+    android.set(true)
+    reporters {
+        reporter(ReporterType.SARIF)
+    }
+    disabledRules.add("no-wildcard-imports")
 }
 
 dependencies {
