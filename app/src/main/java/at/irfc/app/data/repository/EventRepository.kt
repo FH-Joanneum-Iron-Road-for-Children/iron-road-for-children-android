@@ -8,9 +8,9 @@ import at.irfc.app.data.remote.dto.toEventEntity
 import at.irfc.app.util.Resource
 import at.irfc.app.util.cachedRemoteResource
 import at.irfc.app.util.extensions.minus
-import kotlinx.coroutines.flow.Flow
 import java.util.*
 import kotlin.time.Duration.Companion.hours
+import kotlinx.coroutines.flow.Flow
 
 class EventRepository(
     private val eventDao: EventDao,
@@ -23,7 +23,7 @@ class EventRepository(
         shouldFetch = { events ->
             val updateWhenOlderThan = Date() - cacheDuration
             force || events.isEmpty() || events.any { it.updated.before(updateWhenOlderThan) }
-        },
+        }
     )
 
     companion object {

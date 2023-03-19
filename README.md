@@ -28,3 +28,5 @@ command to be sure that all the generated files are up to date.
     - [Compose Destinations](https://composedestinations.rafaelcosta.xyz/) Type safe navigation
     - [Coil](https://coil-kt.github.io/coil/) Async image loading and caching
     - [Material 3](https://developer.android.com/jetpack/compose/designsystems/material3)
+- [Ktlint](https://pinterest.github.io/ktlint/) Kotlin linter
+    - [ktlint-gradle](https://github.com/JLLeitschuh/ktlint-gradle) Ktlint gradle plugin

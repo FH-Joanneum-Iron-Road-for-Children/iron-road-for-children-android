@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class ProgramViewModel(
-    private val repository: EventRepository,
+    private val repository: EventRepository
 ) : ViewModel() {
 
     private val _eventListResource: MutableState<Resource<List<Event>>> =

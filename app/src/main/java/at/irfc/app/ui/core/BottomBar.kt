@@ -42,7 +42,7 @@ fun BottomBar(
                         contentDescription = stringResource(destination.label)
                     )
                 },
-                label = { Text(stringResource(destination.label)) },
+                label = { Text(stringResource(destination.label)) }
             )
         }
     }

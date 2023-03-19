@@ -8,5 +8,5 @@ import java.util.*
 data class Event(
     @PrimaryKey val id: String,
     val title: String,
-    val updated: Date,
+    val updated: Date
 )
