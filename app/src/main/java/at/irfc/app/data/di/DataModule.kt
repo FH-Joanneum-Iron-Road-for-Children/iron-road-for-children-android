@@ -26,4 +26,3 @@ val dataModule = module {
 
     singleOf(::EventRepository)
 }
-

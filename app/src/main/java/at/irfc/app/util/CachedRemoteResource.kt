@@ -23,7 +23,7 @@ inline fun <EntityType : Any, ApiType : Any> cachedRemoteResource(
     crossinline query: () -> Flow<EntityType>,
     crossinline fetch: suspend () -> ApiType,
     crossinline update: suspend (ApiType) -> Unit,
-    crossinline shouldFetch: (EntityType) -> Boolean = { true },
+    crossinline shouldFetch: (EntityType) -> Boolean = { true }
 ): Flow<Resource<EntityType>> = flow {
     val cachedData = query().first()
 
