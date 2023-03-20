@@ -75,6 +75,7 @@ ksp {
 detekt {
     config = files(rootProject.projectDir.resolve("detekt.yml"))
     buildUponDefaultConfig = true
+    basePath = rootProject.projectDir.path
 }
 
 tasks.withType<Detekt>().configureEach {
