@@ -19,6 +19,7 @@ ktlint {
     android.set(true)
     reporters {
         reporter(ReporterType.SARIF)
+        reporter(ReporterType.HTML)
     }
     disabledRules.add("no-wildcard-imports")
 }

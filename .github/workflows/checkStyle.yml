@@ -28,5 +28,17 @@ jobs:
       - name: Ktlint
         run: ./gradlew ktlintCheck
 
+      - name: Upload ktlint SARIF files
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'app/build/reports/ktlint'
+          category: ktlint
+
       - name: Detekt
         run: ./gradlew detekt
+
+      - name: Upload detekt SARIF files
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'app/build/reports/detekt'
+          category: detekt
