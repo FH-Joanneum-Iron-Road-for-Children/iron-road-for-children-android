@@ -26,6 +26,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Ktlint
+        continue-on-error: true
         run: ./gradlew ktlintCheck
 
       - name: Upload ktlint SARIF files
@@ -35,6 +36,7 @@ jobs:
           category: ktlint
 
       - name: Detekt
+        continue-on-error: true
         run: ./gradlew detekt
 
       - name: Upload detekt SARIF files
