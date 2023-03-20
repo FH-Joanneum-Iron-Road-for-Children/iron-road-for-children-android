@@ -1,3 +1,4 @@
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 buildscript {
@@ -15,7 +16,14 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
 }
 
-ktlint {
+subprojects {
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    ktlint.configure()
+}
+
+ktlint.configure()
+
+fun KtlintExtension.configure() {
     android.set(true)
     reporters {
         reporter(ReporterType.SARIF)

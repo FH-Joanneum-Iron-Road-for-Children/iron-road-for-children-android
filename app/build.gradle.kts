@@ -72,7 +72,6 @@ ksp {
     arg("room.schemaLocation", File(projectDir, "schemas").absolutePath)
 }
 
-
 detekt {
     config = files(rootProject.projectDir.resolve("detekt.yml"))
     buildUponDefaultConfig = true

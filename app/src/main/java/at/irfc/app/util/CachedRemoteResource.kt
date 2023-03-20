@@ -31,6 +31,7 @@ inline fun <EntityType : Any, ApiType : Any> cachedRemoteResource(
     val flow = if (shouldFetch(cachedData)) {
         emit(Resource.Loading(cachedData))
 
+        @Suppress("TooGenericExceptionCaught")
         try {
             update(fetch())
             query().map { Resource.Success(it) }
