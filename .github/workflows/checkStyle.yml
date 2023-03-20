@@ -26,20 +26,22 @@ jobs:
         run: chmod +x gradlew
 
       - name: Ktlint
-        continue-on-error: true
+        if: success() || failure()
         run: ./gradlew ktlintCheck
 
       - name: Upload ktlint SARIF files
+        if: success() || failure()
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: 'app/build/reports/ktlint'
           category: ktlint
 
       - name: Detekt
-        continue-on-error: true
+        if: success() || failure()
         run: ./gradlew detekt
 
       - name: Upload detekt SARIF files
+        if: success() || failure()
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: 'app/build/reports/detekt'
