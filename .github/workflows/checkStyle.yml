@@ -26,7 +26,6 @@ jobs:
         run: chmod +x gradlew
 
       - name: Ktlint
-        if: success() || failure()
         run: ./gradlew ktlintCheck
 
       - name: Upload ktlint SARIF files

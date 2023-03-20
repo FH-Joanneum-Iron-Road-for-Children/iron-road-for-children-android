@@ -16,7 +16,7 @@ class EventRepository(
     private val eventDao: EventDao,
     private val eventApi: EventApi
 ) {
-    fun LoadEvents(force: Boolean): Flow<Resource<List<Event>>> = cachedRemoteResource(
+    fun loadEvents(force: Boolean): Flow<Resource<List<Event>>> = cachedRemoteResource(
         query = eventDao::getEvents,
         fetch = eventApi::getEvents,
         update = { eventDao.replaceEvents(it.map(EventDto::toEventEntity)) },
