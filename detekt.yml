@@ -1,0 +1,18 @@
+naming:
+  FunctionNaming:
+    ignoreAnnotated:
+      - Composable
+
+style:
+  UnusedPrivateMember:
+    ignoreAnnotated:
+      - Preview
+  WildcardImport:
+    active: false
+  NewLineAtEndOfFile:
+    active: false
+  MagicNumber:
+    ignoreAnnotated:
+      - Test
+    excludes:
+      - '**/Color.kt'

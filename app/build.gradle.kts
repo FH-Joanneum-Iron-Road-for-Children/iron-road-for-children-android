@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
+import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     kotlin("android")
@@ -8,6 +9,7 @@ plugins {
     id("com.google.devtools.ksp") version "1.8.10-1.0.9"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
     id("de.jensklingenberg.ktorfit") version "1.0.0"
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
 }
 
 android {
@@ -68,6 +70,17 @@ configure<KtorfitGradleConfiguration> {
 ksp {
     arg("compose-destinations.codeGenPackageName", "at.irfc.app.generated.navigation")
     arg("room.schemaLocation", File(projectDir, "schemas").absolutePath)
+}
+
+
+detekt {
+    config = files(rootProject.projectDir.resolve("detekt.yml"))
+    buildUponDefaultConfig = true
+}
+
+tasks.withType<Detekt>().configureEach {
+    this.jvmTarget = "1.8"
+    jdkHome.set(file(System.getProperty("java.home")))
 }
 
 dependencies {
