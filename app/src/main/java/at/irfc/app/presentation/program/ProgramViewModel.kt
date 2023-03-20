@@ -29,7 +29,7 @@ class ProgramViewModel(
     fun loadEvents(force: Boolean = false) {
         loadEventsJob?.cancel()
         loadEventsJob = repository
-            .loadEvents(force)
+            .LoadEvents(force)
             .onEach { _eventListResource.value = it }
             .launchIn(viewModelScope)
     }

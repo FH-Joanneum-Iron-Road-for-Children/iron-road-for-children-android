@@ -86,6 +86,9 @@ dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
 
+
+
+
     // Room DB
     val roomVersion = "2.5.0"
     implementation("androidx.room:room-runtime:$roomVersion")
