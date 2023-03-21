@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 class EventDto(
     val id: String,
-    val title: String
+    val title: String,
+    val description: String
 )
 
 fun EventDto.toEventEntity(): Event = Event(
