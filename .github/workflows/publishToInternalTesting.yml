@@ -38,7 +38,7 @@ jobs:
           echo -n "${{ secrets.IRFC_RELEASE_CI_API_JSON }}" | base64 --decode > .keys/service-account.json
 
       - name: Create APK & Bundle
-        run: ./gradlew assembleRelease bundleRelease
+        run: ./gradlew assembleRelease bundleRelease -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
 
       - name: Upload APK & Bundle
         uses: actions/upload-artifact@v3
