@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import com.android.build.gradle.internal.dsl.NdkOptions.DebugSymbolLevel
+import com.github.triplet.gradle.androidpublisher.ReleaseStatus
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import io.gitlab.arturbosch.detekt.Detekt
 
@@ -11,6 +12,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
     id("de.jensklingenberg.ktorfit") version "1.0.0"
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    id("com.github.triplet.play") version "3.8.1"
 }
 
 android {
@@ -95,18 +97,26 @@ configure<KtorfitGradleConfiguration> {
 
 ksp {
     arg("compose-destinations.codeGenPackageName", "at.irfc.app.generated.navigation")
-    arg("room.schemaLocation", File(projectDir, "schemas").absolutePath)
+    arg("room.schemaLocation", projectDir.resolve("schemas").absolutePath)
 }
 
 detekt {
-    config = files(rootProject.projectDir.resolve("detekt.yml"))
+    config = files(rootDir.resolve("detekt.yml"))
     buildUponDefaultConfig = true
-    basePath = rootProject.projectDir.path
+    basePath = rootDir.path
 }
 
 tasks.withType<Detekt>().configureEach {
     this.jvmTarget = "1.8"
     jdkHome.set(file(System.getProperty("java.home")))
+}
+
+play {
+    defaultToAppBundles.set(true)
+    serviceAccountCredentials.set(rootDir.resolve(".keys/service-account.json"))
+    track.set("internal")
+    // TODO use COMPLETED when first internal test was published
+    releaseStatus.set(ReleaseStatus.DRAFT)
 }
 
 dependencies {
