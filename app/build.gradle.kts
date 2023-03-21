@@ -1,5 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.android.build.gradle.internal.dsl.NdkOptions.DebugSymbolLevel
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import io.gitlab.arturbosch.detekt.Detekt
 
@@ -28,17 +29,42 @@ android {
             useSupportLibrary = true
         }
     }
+    signingConfigs {
+        val keyPassword: String? = project.findProperty("keyPassword")?.toString()
+        val storePassword: String? = project.findProperty("storePassword")?.toString()
+        val keyAlias: String? = project.findProperty("keyAlias")?.toString()
+        val keyStoreFile: File = rootDir.resolve(".keys/app_sign.jks")
+
+        // Only create signingConfig, when all needed configs are available
+        if (
+            keyPassword != null &&
+            storePassword != null &&
+            keyAlias != null &&
+            keyStoreFile.exists()
+        ) {
+            create("release") {
+                this.storeFile = keyStoreFile
+                this.keyAlias = keyAlias
+                this.keyPassword = keyPassword
+                this.storePassword = storePassword
+            }
+        }
+    }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = false // TODO enable proguard
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.findByName("release")
+            ndk.debugSymbolLevel = DebugSymbolLevel.FULL.name
         }
         debug {
             isDebuggable = true
+            applicationIdSuffix = ".debug"
+            isMinifyEnabled = false
         }
     }
     compileOptions {
