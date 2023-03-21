@@ -23,7 +23,7 @@ fun MapScreen(vm: MapViewModel = getViewModel()) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Map",
+            text = vm.title,
             color = MaterialTheme.colorScheme.error
         )
     }
