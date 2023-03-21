@@ -4,6 +4,9 @@ on:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+-b[0-9]+'
 
+env:
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -34,9 +37,17 @@ jobs:
           echo -n "${{ secrets.SIGNING_KEY }}" | base64 --decode > .keys/app_sign.jks
           echo -n "${{ secrets.IRFC_RELEASE_CI_API_JSON }}" | base64 --decode > .keys/service-account.json
 
-      - name: Release Android
-        run: ./gradlew publishReleaseApps --no-daemon -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
-        env:
-          GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
+      - name: Create APK & Bundle
+        run: ./gradlew assembleRelease bundleRelease
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
+
+      - name: Create internal Testing Release
+        run: ./gradlew publishReleaseApps -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
 
       # TODO send notification (Teams/Slack/...)?
