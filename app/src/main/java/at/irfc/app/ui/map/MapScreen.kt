@@ -7,14 +7,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import at.irfc.app.presentation.map.MapViewModel
+import at.irfc.app.R
 import com.ramcosta.composedestinations.annotation.Destination
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 @Destination
-fun MapScreen(vm: MapViewModel = getViewModel()) {
+fun MapScreen() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -23,7 +23,7 @@ fun MapScreen(vm: MapViewModel = getViewModel()) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = vm.title,
+            text = stringResource(R.string.nav_bar_map),
             color = MaterialTheme.colorScheme.error
         )
     }
