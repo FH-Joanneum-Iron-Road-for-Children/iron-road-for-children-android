@@ -27,9 +27,10 @@ to auto format all files) and `./gradlew detekt`.
 
 1. Create a new release branch (can be skipped when already releasing from a non protected branch)
 2. Run the release gradle task and specify the new version `./gradlew release -Pversion=x.x.x-bx` (
-   e.g. ./gradlew release -Pversion=2.0.0-b10)
-    - Will increase the version specified in gradle.properties and commit this change
-    - Create and push a version tag
+   e.g. ./gradlew release -Pversion=2.0.0-b10). For current version have a look at the tags or
+   the `gralde.properties` file.
+    - Will increase the version specified in `gradle.properties` and commit this change
+    - Create and push a version tag (e.g. `2.0.0-b10`)
     - Trigger the publish to internal Testing CI/CD workflow
 3. Go and grab a coffee while waiting till the CI/CD pipeline builds and publishes the app
 4. Download the new version from Google Play (you have to be part of the internal testers group)
@@ -64,3 +65,4 @@ to auto format all files) and `./gradlew detekt`.
 - [Ktlint](https://pinterest.github.io/ktlint/) Kotlin linter
     - [ktlint-gradle](https://github.com/JLLeitschuh/ktlint-gradle) Ktlint gradle plugin
 - [Detekt](https://detekt.dev/) Kotlin static code analyzer
+- [GGP](https://github.com/Triple-T/gradle-play-publisher) Gradle Play Publisher Plugin
