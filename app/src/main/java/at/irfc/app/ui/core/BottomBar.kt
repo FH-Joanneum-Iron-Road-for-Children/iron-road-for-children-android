@@ -2,6 +2,7 @@ package at.irfc.app.ui.core
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -53,5 +54,6 @@ enum class BottomBarDestination(
     val icon: ImageVector,
     @StringRes val label: Int
 ) {
-    Program(ProgramScreenDestination, Icons.Default.List, R.string.nav_bar_program)
+    Program(ProgramScreenDestination, Icons.Default.List, R.string.nav_bar_program),
+    AboutUs(ProgramScreenDestination, Icons.Default.Group, R.string.nav_bar_aboutUs)
 }
