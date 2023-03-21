@@ -29,8 +29,8 @@ fun KtlintExtension.configure() {
         reporter(ReporterType.SARIF)
         reporter(ReporterType.HTML)
     }
-    disabledRules.add("no-wildcard-imports")
     relative.set(true)
+    version.set("0.48.2")
 }
 
 tasks.register("setupGitHooks") {
