@@ -23,6 +23,25 @@ validate the style again and merging will not be allowed if the checks do not pa
 The tasks can also be executed manually using `./gradlew ktlintCheck` (or `./gradlew ktlintFormat`
 to auto format all files) and `./gradlew detekt`.
 
+## Release
+
+1. Create a new release branch (can be skipped when already releasing from a non protected branch)
+2. Run the release gradle task and specify the new version `./gradlew release -Pversion=x.x.x-bx` (
+   e.g. ./gradlew release -Pversion=2.0.0-b10)
+    - Will increase the version specified in gradle.properties and commit this change
+    - Create and push a version tag
+    - Trigger the publish to internal Testing CI/CD workflow
+3. Go and grab a coffee while waiting till the CI/CD pipeline builds and publishes the app
+4. Download the new version from Google Play (you have to be part of the internal testers group)
+5. Test if the app works properly
+6. If the app should be released to the public then go to the Google Play console and promote the
+   just released version from `internalTesting` to `release` track
+    - Do not forget to add a Version note!
+7. Depending on the release type:
+    - **Production release**: Merge the branch where the release was made from into main and main
+      back into develop.
+    - **Otherwise**: Merge the branch where the release was made into develop.
+
 ## Further References: Language, Libraries & Tools
 
 - [Gradle](https://gradle.org/) Build tool

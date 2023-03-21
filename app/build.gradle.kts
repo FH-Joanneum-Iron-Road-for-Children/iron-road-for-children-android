@@ -15,6 +15,8 @@ plugins {
     id("com.github.triplet.play") version "3.8.1"
 }
 
+val versionStringRegex = Regex("""((\d+)\.(\d+)\.(\d+))-b(\d+)""")
+
 android {
     namespace = "at.irfc.app"
     compileSdk = 33
@@ -23,8 +25,17 @@ android {
         applicationId = "at.irfc.app"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "2.0.0"
+
+        (project.properties["versionString"] as? String)
+            ?.takeIf { it.matches(versionStringRegex) }
+            ?.let { version ->
+                versionCode = versionStringRegex.find(version)!!.groupValues[5].toInt()
+                versionName = versionStringRegex.find(version)!!.groupValues[1]
+            }
+            ?: throw IllegalArgumentException(
+                "versionString must be set in gradle.properties and have the format " +
+                    "x.x.x-bx (e.g. 2.0.0-b10)."
+            )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -181,4 +192,58 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+}
+
+tasks.register("release") {
+    doLast {
+        val versionString: String = project.findProperty("version")?.toString()
+            ?: throw IllegalArgumentException("'version' argument is required")
+
+        if (!versionString.matches(versionStringRegex)) {
+            throw IllegalArgumentException(
+                "'version' must be in the format x.x.x-bx (e.g. 2.0.0-b10)"
+            )
+        }
+
+        println("Checking if working tree is clean")
+        val workingTreeClean = runCommand(
+            "git",
+            "diff",
+            "--shortstat",
+            "--exit-code",
+            ignoreExitCode = true
+        ).exitValue == 0
+        if (!workingTreeClean) {
+            throw IllegalStateException(
+                "Git working tree is not clean. " +
+                    "Commit (or stash) all your local changes before making a release."
+            )
+        }
+
+        println("Working tree is clean, changing version.")
+        val file = rootDir.resolve("gradle.properties")
+        file.writeText(
+            file.readText().replace(
+                Regex("(versionString=)$versionStringRegex"),
+                "$1$versionString"
+            )
+        )
+
+        println("Adding version")
+        runCommand("git", "add", file.absolutePath)
+
+        println("Committing version")
+        runCommand("git", "commit", "-m", "Version $versionString")
+
+        println("Creating git tag $versionString")
+        runCommand("git", "tag", versionString)
+
+        println("Push git tag $version to origin")
+        runCommand("git", "push", "origin", versionString)
+    }
+}
+
+fun runCommand(vararg args: String, ignoreExitCode: Boolean = false): ExecResult = exec {
+    isIgnoreExitValue = ignoreExitCode
+    commandLine(*args)
 }

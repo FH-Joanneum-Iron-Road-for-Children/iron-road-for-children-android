@@ -1,0 +1,42 @@
+name: Publish App to Google Play Internal Testing
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+-b[0-9]+'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # TODO run tests
+
+      - name: Extract secrets
+        run: |
+          mkdir .keys
+          echo -n "${{ secrets.SIGNING_KEY }}" | base64 --decode -o .keys/app_sign.jks
+          echo -n "${{ secrets.IRFC_RELEASE_CI_API_JSON }}" | base64 --decode -o .keys/service-account.json
+
+      - name: Release Android
+        run: ./gradlew publishProdReleaseApps --no-daemon -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
+        env:
+          GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
+
+      # TODO send notification (Teams/Slack/...)?
