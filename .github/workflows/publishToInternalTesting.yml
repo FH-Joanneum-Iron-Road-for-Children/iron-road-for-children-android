@@ -35,7 +35,7 @@ jobs:
           echo -n "${{ secrets.IRFC_RELEASE_CI_API_JSON }}" > .keys/service-account.json
 
       - name: Release Android
-        run: ./gradlew publishProdReleaseApps --no-daemon -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
+        run: ./gradlew publishReleaseApps --no-daemon -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
         env:
           GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
 
