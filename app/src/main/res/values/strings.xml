@@ -2,4 +2,5 @@
     <string name="app_name">Iron Road For Children</string>
     <string name="could_not_refresh_data_error">Could not refresh data. Try again later.</string>
     <string name="nav_bar_program">Program</string>
+    <string name="nav_bar_counter">Counter</string>
 </resources>
