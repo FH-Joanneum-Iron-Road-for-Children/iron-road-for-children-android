@@ -32,7 +32,7 @@ jobs:
         run: |
           mkdir .keys
           echo -n "${{ secrets.SIGNING_KEY }}" | base64 --decode > .keys/app_sign.jks
-          echo -n "${{ secrets.IRFC_RELEASE_CI_API_JSON }}" > .keys/service-account.json
+          echo -n "${{ secrets.IRFC_RELEASE_CI_API_JSON }}" | base64 --decode > .keys/service-account.json
 
       - name: Release Android
         run: ./gradlew publishReleaseApps --no-daemon -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
