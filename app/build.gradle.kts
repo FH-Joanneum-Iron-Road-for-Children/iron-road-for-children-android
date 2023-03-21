@@ -126,8 +126,7 @@ play {
     defaultToAppBundles.set(true)
     serviceAccountCredentials.set(rootDir.resolve(".keys/service-account.json"))
     track.set("internal")
-    // TODO use COMPLETED when first internal test was published
-    releaseStatus.set(ReleaseStatus.DRAFT)
+    releaseStatus.set(ReleaseStatus.COMPLETED)
 }
 
 dependencies {
