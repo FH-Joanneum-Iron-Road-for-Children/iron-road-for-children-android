@@ -40,14 +40,14 @@ jobs:
       - name: Create APK & Bundle
         run: ./gradlew assembleRelease bundleRelease
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+      - name: Upload APK & Bundle
+        uses: actions/upload-artifact@v3
         with:
-          files: |
+          path: |
             app/build/outputs/apk/release/*.apk
             app/build/outputs/bundle/release/*.aab
 
-      - name: Create internal Testing Release
+      - name: Upload to PlayStore internal Testing
         run: ./gradlew publishReleaseApps -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
 
       # TODO send notification (Teams/Slack/...)?
