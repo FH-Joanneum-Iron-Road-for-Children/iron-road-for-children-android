@@ -118,7 +118,8 @@ play {
     defaultToAppBundles.set(true)
     serviceAccountCredentials.set(rootDir.resolve(".keys/service-account.json"))
     track.set("internal")
-    releaseStatus.set(ReleaseStatus.COMPLETED)
+    // TODO change to COMPLETED once we can make releases again
+    releaseStatus.set(ReleaseStatus.DRAFT)
 }
 
 dependencies {
