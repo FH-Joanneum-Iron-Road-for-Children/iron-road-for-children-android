@@ -231,8 +231,14 @@ tasks.register("release") {
         val file = rootDir.resolve("gradle.properties")
         file.writeText(
             file.readText()
-                .replace(Regex("^(version_name=)$versionRegex$"), "$1$newVersion")
-                .replace(Regex("^(version_build=)\\d+$"), "$1$newBuild")
+                .replace(
+                    Regex("^(version_name=)$versionRegex$", RegexOption.MULTILINE),
+                    "$1$newVersion"
+                )
+                .replace(
+                    Regex("^(version_build=)\\d+$", RegexOption.MULTILINE),
+                    "$1$newBuild"
+                )
         )
 
         println("Updating version")
