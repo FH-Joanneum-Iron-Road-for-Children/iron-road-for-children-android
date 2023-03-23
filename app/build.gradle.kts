@@ -225,8 +225,9 @@ tasks.register("release") {
 
         val newVersion = versionParameter ?: oldVersion
         val newBuild = buildParameter ?: (oldBuild + 1)
+        val versionTag = "v$newVersion-b$newBuild"
 
-        println("Working tree is clean, changing version.")
+        println("Working tree is clean, changing version to $versionTag.")
         val file = rootDir.resolve("gradle.properties")
         file.writeText(
             file.readText()
@@ -237,7 +238,6 @@ tasks.register("release") {
         println("Updating version")
         runCommand("git", "add", file.absolutePath)
 
-        val versionTag = "v$newVersion-b$newBuild"
         println("Committing version")
         runCommand("git", "commit", "-m", "Update version to $versionTag")
 
