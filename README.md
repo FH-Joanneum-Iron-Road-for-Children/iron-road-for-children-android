@@ -23,14 +23,35 @@ validate the style again and merging will not be allowed if the checks do not pa
 The tasks can also be executed manually using `./gradlew ktlintCheck` (or `./gradlew ktlintFormat`
 to auto format all files) and `./gradlew detekt`.
 
-## Release
+## Create build for internal Testing (Google PlayStore)
+
+The gradle `release` task does all the magic for you. If no parameters provided it will keep the
+version and increases the build number by one.
+
+```shell
+./gradlew release
+```
+
+If you only want to update the version and automatically increase the build number use following
+command:
+
+```shell
+./gradlew release -Pv=2.0.0
+```
+
+If you want to override both use
+
+```shell
+./gradlew release -Pv=2.0.0 -Pb=123
+```
+
+### Steps
 
 1. Create a new release branch (can be skipped when already releasing from a non protected branch)
-2. Run the release gradle task and specify the new version `./gradlew release -Pversion=x.x.x-bx` (
-   e.g. ./gradlew release -Pversion=2.0.0-b10). For current version have a look at the tags or
-   the `gralde.properties` file.
+2. Run the release gradle task (optionally specify the version and/or build number). For current
+   version have a look at the tags or the `gralde.properties` file.
     - Will increase the version specified in `gradle.properties` and commit this change
-    - Create and push a version tag (e.g. `2.0.0-b10`)
+    - Create and push a version tag (e.g. `v2.0.0-b10`)
     - Trigger the publish to internal Testing CI/CD workflow
 3. Go and grab a coffee while waiting till the CI/CD pipeline builds and publishes the app
 4. Download the new version from Google Play (you have to be part of the internal testers group)

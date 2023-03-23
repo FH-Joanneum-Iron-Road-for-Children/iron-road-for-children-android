@@ -15,7 +15,7 @@ plugins {
     id("com.github.triplet.play") version "3.8.1"
 }
 
-val versionStringRegex = Regex("""((\d+)\.(\d+)\.(\d+))-b(\d+)""")
+val versionRegex = Regex("""^\d+\.\d{1,2}\.\d{1,2}$""")
 
 android {
     namespace = "at.irfc.app"
@@ -26,16 +26,8 @@ android {
         minSdk = 24
         targetSdk = 33
 
-        (project.properties["versionString"] as? String)
-            ?.takeIf { it.matches(versionStringRegex) }
-            ?.let { version ->
-                versionCode = versionStringRegex.find(version)!!.groupValues[5].toInt()
-                versionName = versionStringRegex.find(version)!!.groupValues[1]
-            }
-            ?: throw IllegalArgumentException(
-                "versionString must be set in gradle.properties and have the format " +
-                    "x.x.x-bx (e.g. 2.0.0-b10)."
-            )
+        versionName = project.getVersionName()
+        versionCode = project.getVersionBuild()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -195,12 +187,19 @@ dependencies {
 
 tasks.register("release") {
     doLast {
-        val versionString: String = project.findProperty("version")?.toString()
-            ?: throw IllegalArgumentException("'version' argument is required")
+        val versionParameter: String? = project.findProperty("v")?.toString()?.also { version ->
+            if (!version.matches(versionRegex)) {
+                throw IllegalArgumentException(
+                    "Version argument 'v' must match $versionRegex (e.g. 2.10.2). " +
+                        "For usage see README.md"
+                )
+            }
+        }
 
-        if (!versionString.matches(versionStringRegex)) {
-            throw IllegalArgumentException(
-                "'version' must be in the format x.x.x-bx (e.g. 2.0.0-b10)"
+        val buildParameter: Int? = project.findProperty("b")?.toString()?.let { build ->
+            build.toIntOrNull() ?: throw IllegalArgumentException(
+                "Build number argument 'b' must be an integer." +
+                    "For usage see README.md"
             )
         }
 
@@ -211,34 +210,41 @@ tasks.register("release") {
             "--shortstat",
             "--exit-code",
             ignoreExitCode = true
-        ).exitValue == 0
-        if (!workingTreeClean) {
+        )
+        if (workingTreeClean.exitValue != 0) {
             throw IllegalStateException(
                 "Git working tree is not clean. " +
                     "Commit (or stash) all your local changes before making a release."
             )
         }
 
+        // Always load it to ensure that the needed properties are defined and have the correct format
+        val oldVersion = project.getVersionName()
+        val oldBuild = project.getVersionBuild()
+
+        val newVersion = versionParameter ?: oldVersion
+        val newBuild = buildParameter ?: (oldBuild + 1)
+
         println("Working tree is clean, changing version.")
         val file = rootDir.resolve("gradle.properties")
         file.writeText(
-            file.readText().replace(
-                Regex("(versionString=)$versionStringRegex"),
-                "$1$versionString"
-            )
+            file.readText()
+                .replace(Regex("^(version_name=)$versionRegex$"), "$1$newVersion")
+                .replace(Regex("^(version_build=)\\d+$"), "$1$newBuild")
         )
 
-        println("Adding version")
+        println("Updating version")
         runCommand("git", "add", file.absolutePath)
 
+        val versionTag = "v$newVersion-b$newBuild"
         println("Committing version")
-        runCommand("git", "commit", "-m", "Version $versionString")
+        runCommand("git", "commit", "-m", "Update version to $versionTag")
 
-        println("Creating git tag $versionString")
-        runCommand("git", "tag", versionString)
+        println("Creating git tag $versionTag")
+        runCommand("git", "tag", versionTag)
 
-        println("Push git tag $version to origin")
-        runCommand("git", "push", "origin", versionString)
+        println("Push git tag $versionTag to origin")
+        runCommand("git", "push", "origin", versionTag)
     }
 }
 
@@ -246,3 +252,15 @@ fun runCommand(vararg args: String, ignoreExitCode: Boolean = false): ExecResult
     isIgnoreExitValue = ignoreExitCode
     commandLine(*args)
 }
+
+fun Project.getVersionName() = this.properties["version_name"]?.toString()
+    ?.takeIf { it.matches(versionRegex) }
+    ?: throw IllegalArgumentException(
+        "version_name must be set in gradle.properties and match $versionRegex (e.g. 2.10.1)."
+    )
+
+fun Project.getVersionBuild() = this.properties["version_build"]?.toString()
+    ?.toIntOrNull()
+    ?: throw IllegalArgumentException(
+        "version_build must be set in gradle.properties and must be an integer."
+    )
