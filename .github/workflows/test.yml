@@ -1,6 +1,7 @@
 name: Run unit tests
 on:
   push:
+  workflow_call:
 
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"

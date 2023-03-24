@@ -8,7 +8,11 @@ env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   publish:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -28,8 +32,6 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-
-      # TODO run tests
 
       - name: Extract secrets
         run: |
