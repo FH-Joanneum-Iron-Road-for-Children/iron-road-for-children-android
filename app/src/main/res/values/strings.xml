@@ -1,9 +1,21 @@
 <resources>
+
+    <!-- App Name -->
+
     <string name="app_name">Iron Road For Children</string>
+
+    <!-- Error Messages -->
+
     <string name="could_not_refresh_data_error">Daten konnten nicht aktualisiert werden. Bitte versuche es später erneut.</string>
+
+    <!-- Bottom Bar -->
+
     <string name="nav_bar_program">Programm</string>
     <string name="nav_back">Zurück</string>
     <string name="nav_bar_map">Map</string>
     <string name="nav_bar_aboutUs">Mehr</string>
+
+    <!-- About Us Page -->
+
     <string name="header_aboutUs">Über uns</string>
 </resources>
