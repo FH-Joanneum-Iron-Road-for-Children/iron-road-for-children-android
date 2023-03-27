@@ -1,8 +1,9 @@
 name: Run unit tests
 on:
   push:
-    tags-ignore:
-      - 'v[0-9]+.[0-9]+.[0-9]+-b[0-9]+' # Tests are already run as part of the release workflow
+    # Do not run on tag creation (only for pushes to any branch)
+    branches:
+      - '**'
   workflow_call:
 
 env:
