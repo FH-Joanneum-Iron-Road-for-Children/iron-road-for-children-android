@@ -1,6 +1,9 @@
 name: Run unit tests
 on:
   push:
+    tags-ignore:
+      - 'v[0-9]+.[0-9]+.[0-9]+-b[0-9]+' # Tests are already run as part of the release workflow
+  workflow_call:
 
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"

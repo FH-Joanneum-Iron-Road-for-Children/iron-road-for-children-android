@@ -3,6 +3,9 @@ name: Check Style
 on:
   pull_request:
 
+env:
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
+
 jobs:
   checkStyle:
     runs-on: ubuntu-latest
