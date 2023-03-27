@@ -22,6 +22,7 @@ import at.irfc.app.generated.navigation.destinations.MapScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramScreenDestination
 import at.irfc.app.generated.navigation.startAppDestination
 import com.ramcosta.composedestinations.navigation.navigate
+import com.ramcosta.composedestinations.navigation.popUpTo
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 
 @Composable
@@ -37,6 +38,7 @@ fun BottomBar(
                 selected = currentDestination == destination.direction,
                 onClick = {
                     navController.navigate(destination.direction) {
+                        popUpTo(NavGraphs.root)
                         launchSingleTop = true
                     }
                 },
