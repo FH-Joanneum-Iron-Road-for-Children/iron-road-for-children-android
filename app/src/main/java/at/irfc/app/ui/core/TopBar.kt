@@ -8,15 +8,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import at.irfc.app.R
+import at.irfc.app.generated.navigation.NavGraphs
+import at.irfc.app.generated.navigation.appCurrentDestinationAsState
+import at.irfc.app.generated.navigation.destinations.AboutUsScreenDestination
+import at.irfc.app.generated.navigation.destinations.MapScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramScreenDestination
 import at.irfc.app.generated.navigation.destinations.TypedDestination
-import com.ramcosta.composedestinations.spec.DestinationSpec
-import com.ramcosta.composedestinations.utils.currentDestinationAsState
+import at.irfc.app.generated.navigation.startAppDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(navController: NavController) {
-    val destination = navController.currentDestinationAsState().value
+    val destination = navController.appCurrentDestinationAsState().value
+        ?: NavGraphs.root.startAppDestination
     val backStack = navController.currentBackStack.collectAsState().value
 
     TopAppBar(
@@ -38,7 +42,9 @@ fun TopBar(navController: NavController) {
 }
 
 @Composable
-private fun DestinationSpec<*>?.screenTitle(): String = when (this as? TypedDestination) {
+private fun TypedDestination<*>?.screenTitle(): String = when (this) {
     null -> "" // Empty when starting
     ProgramScreenDestination -> stringResource(id = R.string.nav_bar_program)
+    MapScreenDestination -> stringResource(id = R.string.nav_bar_map)
+    AboutUsScreenDestination -> stringResource(id = R.string.header_aboutUs)
 }
