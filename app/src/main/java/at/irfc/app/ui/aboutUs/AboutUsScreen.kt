@@ -23,7 +23,7 @@ fun AboutUsScreen() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(R.string.nav_bar_aboutUs),
+            text = stringResource(R.string.header_aboutUs),
             color = MaterialTheme.colorScheme.error
         )
     }
