@@ -3,4 +3,6 @@
     <string name="could_not_refresh_data_error">Could not refresh data. Try again later.</string>
     <string name="nav_bar_program">Program</string>
     <string name="nav_bar_map">Map</string>
+    <string name="nav_bar_aboutUs">Mehr</string>
+    <string name="header_aboutUs">Über uns</string>
 </resources>

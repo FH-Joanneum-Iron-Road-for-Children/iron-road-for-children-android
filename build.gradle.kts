@@ -37,7 +37,7 @@ tasks.register("setupGitHooks") {
     dependsOn(tasks.getByPath(":addKtlintFormatGitPreCommitHook"))
 
     doLast {
-        val prePushHookVersionMarker = "### KTLINT CHECK AND DETEKT GRADLE PRE PUSH HOOK v1.0 ###"
+        val prePushHookVersionMarker = "### KTLINT CHECK AND DETEKT GRADLE PRE PUSH HOOK v1.1 ###"
         val prePushHookFile = file(rootProject.projectDir.resolve(".git/hooks/pre-push"))
 
         if (!prePushHookFile.exists() || !prePushHookFile.endsWith(prePushHookVersionMarker)) {
@@ -54,7 +54,8 @@ tasks.register("setupGitHooks") {
                 # Pop the stash once the scripts finishes, fails or gets cancelled
                 function pop_stash() {
                     echo "Checks completed, popping stash"
-                    git stash pop -q
+                    # Ignore the result of pop as this may fail when there are is nothing to stash
+                    success='git stash pop -q' 
                 }
     
                 trap "exit" INT TERM ERR
