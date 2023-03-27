@@ -3,6 +3,7 @@ package at.irfc.app.ui.core
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -14,6 +15,7 @@ import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.generated.navigation.appCurrentDestinationAsState
+import at.irfc.app.generated.navigation.destinations.AboutUsScreenDestination
 import at.irfc.app.generated.navigation.destinations.Destination
 import at.irfc.app.generated.navigation.destinations.ProgramScreenDestination
 import at.irfc.app.generated.navigation.startAppDestination
@@ -53,5 +55,6 @@ enum class BottomBarDestination(
     val icon: ImageVector,
     @StringRes val label: Int
 ) {
-    Program(ProgramScreenDestination, Icons.Default.List, R.string.nav_bar_program)
+    Program(ProgramScreenDestination, Icons.Default.List, R.string.nav_bar_program),
+    AboutUs(AboutUsScreenDestination, Icons.Default.MoreVert, R.string.nav_bar_aboutUs)
 }
