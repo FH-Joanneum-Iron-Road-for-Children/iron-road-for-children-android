@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.ui.core.BottomBar
+import at.irfc.app.ui.core.TopBar
 import at.irfc.app.ui.theme.IronRoadForChildrenTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 
@@ -22,6 +23,9 @@ class MainActivity : ComponentActivity() {
 
             IronRoadForChildrenTheme {
                 Scaffold(
+                    topBar = {
+                        TopBar(navController)
+                    },
                     bottomBar = {
                         BottomBar(navController)
                     }
