@@ -3,6 +3,7 @@ package at.irfc.app.ui.core
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -17,6 +18,7 @@ import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.generated.navigation.appCurrentDestinationAsState
 import at.irfc.app.generated.navigation.destinations.AboutUsScreenDestination
 import at.irfc.app.generated.navigation.destinations.Destination
+import at.irfc.app.generated.navigation.destinations.MapScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramScreenDestination
 import at.irfc.app.generated.navigation.startAppDestination
 import com.ramcosta.composedestinations.navigation.navigate
@@ -56,5 +58,6 @@ enum class BottomBarDestination(
     @StringRes val label: Int
 ) {
     Program(ProgramScreenDestination, Icons.Default.List, R.string.nav_bar_program),
+    Map(MapScreenDestination, Icons.Default.Map, R.string.nav_bar_map),
     AboutUs(AboutUsScreenDestination, Icons.Default.MoreVert, R.string.nav_bar_aboutUs)
 }
