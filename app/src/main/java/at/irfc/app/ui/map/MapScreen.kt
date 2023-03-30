@@ -16,6 +16,10 @@ import androidx.compose.ui.unit.IntSize
 import at.irfc.app.R
 import com.ramcosta.composedestinations.annotation.Destination
 
+const val MIN_SCALE = 1f
+const val MAX_SCALE = 3f
+const val ASPECT_RATIO = 4 / 3f
+
 @Composable
 @Destination
 fun MapScreen() {
@@ -32,10 +36,6 @@ fun ZoomableImage() {
     var zoom by remember { mutableStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     var size by remember { mutableStateOf(IntSize.Zero) }
-
-    val MIN_SCALE = 1f
-    val MAX_SCALE = 3f
-    val ASPECT_RATIO = 4 / 3f
 
     Image(
         painter = painterResource(id = R.drawable.map),
