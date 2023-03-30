@@ -33,8 +33,9 @@ fun ZoomableImage() {
     var offset by remember { mutableStateOf(Offset.Zero) }
     var size by remember { mutableStateOf(IntSize.Zero) }
 
-    val minScale = 1f
-    val maxScale = 3f
+    val MIN_SCALE = 1f
+    val MAX_SCALE = 3f
+    val ASPECT_RATIO = 4 / 3f
 
     Image(
         painter = painterResource(id = R.drawable.map),
@@ -42,13 +43,13 @@ fun ZoomableImage() {
         contentScale = ContentScale.Fit,
         modifier = Modifier
             .fillMaxSize()
-            .aspectRatio(4 / 3f)
+            .aspectRatio(ASPECT_RATIO)
             .clipToBounds()
             .pointerInput(Unit) {
                 detectTransformGestures(
                     onGesture = { _, gesturePan, gestureZoom, _ ->
 
-                        val newScale = (zoom * gestureZoom).coerceIn(minScale, maxScale)
+                        val newScale = (zoom * gestureZoom).coerceIn(MIN_SCALE, MAX_SCALE)
                         val newOffset = offset + gesturePan
                         zoom = newScale
 
