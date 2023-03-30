@@ -1,14 +1,18 @@
 package at.irfc.app.ui.map
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.IntSize
 import at.irfc.app.R
 import com.ramcosta.composedestinations.annotation.Destination
 
@@ -17,14 +21,55 @@ import com.ramcosta.composedestinations.annotation.Destination
 fun MapScreen() {
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.errorContainer)
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
+            .fillMaxSize()
     ) {
-        Text(
-            text = stringResource(R.string.nav_bar_map),
-            color = MaterialTheme.colorScheme.error
-        )
+        ZoomableImage()
     }
+}
+
+@Composable
+fun ZoomableImage() {
+    var zoom by remember { mutableStateOf(1f) }
+    var offset by remember { mutableStateOf(Offset.Zero) }
+    var size by remember { mutableStateOf(IntSize.Zero) }
+
+    val minScale = 1f
+    val maxScale = 3f
+
+    Image(
+        painter = painterResource(id = R.drawable.map),
+        contentDescription = R.string.nav_bar_map.toString(),
+        contentScale = ContentScale.Fit,
+        modifier = Modifier
+            .fillMaxSize()
+            .aspectRatio(4 / 3f)
+            .clipToBounds()
+            .pointerInput(Unit) {
+                detectTransformGestures(
+                    onGesture = { _, gesturePan, gestureZoom, _ ->
+
+                        val newScale = (zoom * gestureZoom).coerceIn(minScale, maxScale)
+                        val newOffset = offset + gesturePan
+                        zoom = newScale
+
+                        val maxX = (size.width * (zoom - 1) / 2f)
+                        val maxY = (size.height * (zoom - 1) / 2f)
+
+                        offset = Offset(
+                            newOffset.x.coerceIn(-maxX, maxX),
+                            newOffset.y.coerceIn(-maxY, maxY)
+                        )
+                    }
+                )
+            }
+            .onSizeChanged {
+                size = it
+            }
+            .graphicsLayer {
+                translationX = offset.x
+                translationY = offset.y
+                scaleX = zoom
+                scaleY = zoom
+            }
+    )
 }
