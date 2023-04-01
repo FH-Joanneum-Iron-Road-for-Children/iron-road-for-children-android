@@ -17,13 +17,13 @@ import androidx.compose.ui.unit.IntSize
 import at.irfc.app.R
 
 @Composable
-fun zoomableImage(minScale: Float, maxScale: Float) {
+fun zoomableImage(minScale: Float, maxScale: Float, imageId: Int) {
     var zoom by remember { mutableStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     var size by remember { mutableStateOf(IntSize.Zero) }
 
     Image(
-        painter = painterResource(id = R.drawable.map),
+        painter = painterResource(id = imageId),
         contentDescription = stringResource(R.string.nav_bar_map),
         contentScale = ContentScale.Fit,
         modifier = Modifier
