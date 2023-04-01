@@ -8,23 +8,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
-import at.irfc.app.R
 
 @Composable
-fun zoomableImage(minScale: Float, maxScale: Float, imageId: Int) {
+fun ZoomableImage(minScale: Float, maxScale: Float, painter: Painter, contentDescription: String?) {
     var zoom by remember { mutableStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     var size by remember { mutableStateOf(IntSize.Zero) }
 
     Image(
-        painter = painterResource(id = imageId),
-        contentDescription = stringResource(R.string.nav_bar_map),
+        painter = painter,
+        contentDescription = contentDescription,
         contentScale = ContentScale.Fit,
         modifier = Modifier
             .fillMaxSize()
@@ -33,9 +31,8 @@ fun zoomableImage(minScale: Float, maxScale: Float, imageId: Int) {
                 detectTransformGestures(
                     onGesture = { _, gesturePan, gestureZoom, _ ->
 
-                        val newScale = (zoom * gestureZoom).coerceIn(minScale, maxScale)
+                        zoom = (zoom * gestureZoom).coerceIn(minScale, maxScale)
                         val newOffset = offset + gesturePan
-                        zoom = newScale
 
                         val maxX = (size.width * (zoom - 1) / 2f)
                         val maxY = (size.height * (zoom - 1) / 2f)
