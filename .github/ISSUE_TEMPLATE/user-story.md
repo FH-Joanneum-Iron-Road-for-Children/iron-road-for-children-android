@@ -2,7 +2,7 @@
 name: User Story
 about: Suggest an idea for this project
 title: "[US]"
-labels: ''
+labels: Android
 assignees: ''
 
 ---
