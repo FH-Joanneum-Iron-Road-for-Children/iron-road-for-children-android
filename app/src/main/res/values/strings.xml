@@ -18,4 +18,8 @@
     <!-- About Us Page -->
 
     <string name="header_aboutUs">Über uns</string>
+
+    <!-- Program Detail Screen -->
+
+    <string name="header_programDetailScreen">Progamm Details</string>
 </resources>
