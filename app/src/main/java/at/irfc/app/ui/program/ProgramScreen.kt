@@ -2,6 +2,7 @@ package at.irfc.app.ui.program
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import at.irfc.app.data.local.entity.Event
+import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
 import at.irfc.app.presentation.program.ProgramViewModel
 import at.irfc.app.util.Resource
 import coil.compose.AsyncImage
@@ -55,7 +57,13 @@ fun ProgramScreen(viewModel: ProgramViewModel = getViewModel()) {
                 }
                 eventListResource.data?.let { eventList ->
                     items(eventList, Event::id) { event ->
-                        Text(text = event.title)
+                        Text(
+                            text = event.title,
+                            modifier = Modifier.clickable {
+                                println("works")
+                                ProgramDetailScreenDestination
+                            }
+                        )
                     }
                 }
             }
