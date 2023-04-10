@@ -16,3 +16,4 @@ style:
       - Test
     excludes:
       - '**/Color.kt'
+      - '**/at/irfc/app/ui/core/icons/**'
