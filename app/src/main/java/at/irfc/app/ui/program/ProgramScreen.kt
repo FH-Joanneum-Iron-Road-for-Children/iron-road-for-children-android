@@ -30,7 +30,10 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 @Destination
 @RootNavGraph(start = true)
-fun ProgramScreen(navController: NavController, viewModel: ProgramViewModel = getViewModel()) {
+fun ProgramScreen(
+    navController: NavController,
+    viewModel: ProgramViewModel = getViewModel()
+) {
     val eventListResource = viewModel.eventListResource.value
 
     // Material 3 does not include a PullToRefresh right now // TODO replace when added
@@ -61,10 +64,11 @@ fun ProgramScreen(navController: NavController, viewModel: ProgramViewModel = ge
                     items(eventList, Event::id) { event ->
                         Text(
                             text = event.title,
-                            modifier = Modifier.clickable {
-                                println("works")
-                                navController.navigate(ProgramDetailScreenDestination(event.id))
-                            }
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .clickable {
+                                    navController.navigate(ProgramDetailScreenDestination(event.id))
+                                }
                         )
                     }
                 }
