@@ -18,7 +18,12 @@
     <!-- About Us Page -->
 
     <string name="header_aboutUs">Über uns</string>
-
+    <string name="aboutUs_text">Übser Uns .... <!-- TODO about us text --> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
+    <string name="aboutUs_donate">Spenden</string>
+    <string name="aboutUs_providedBy">Zur Verfügung gestellt vom Studiengang Mobile Software Development der FH JOANNEUM.</string>
+    <string name="aboutUs_privacy">Datenschutz</string>
+    <string name="aboutUs_imprint">Impressum</string>
+    
     <!-- Program Detail Screen -->
 
     <string name="header_programDetailScreen">Progamm Details</string>

@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Map
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -56,5 +56,5 @@ enum class BottomBarDestination(
 ) {
     Program(ProgramScreenDestination, Icons.Default.List, R.string.nav_bar_program),
     Map(MapScreenDestination, Icons.Default.Map, R.string.nav_bar_map),
-    AboutUs(AboutUsScreenDestination, Icons.Default.MoreVert, R.string.nav_bar_aboutUs)
+    AboutUs(AboutUsScreenDestination, Icons.Default.MoreHoriz, R.string.nav_bar_aboutUs)
 }
