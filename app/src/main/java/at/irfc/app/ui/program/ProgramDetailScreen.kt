@@ -16,7 +16,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
 @Destination
-fun ProgramDetailScreen() {
+fun ProgramDetailScreen(id: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -25,7 +25,7 @@ fun ProgramDetailScreen() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(R.string.header_programDetailScreen),
+            text = stringResource(R.string.header_programDetailScreen) + id,
             color = MaterialTheme.colorScheme.error
         )
     }
