@@ -2,6 +2,7 @@ package at.irfc.app.ui.program
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,7 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import at.irfc.app.data.local.entity.Event
+import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
 import at.irfc.app.presentation.program.ProgramViewModel
 import at.irfc.app.util.Resource
 import coil.compose.AsyncImage
@@ -20,13 +23,17 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.navigate
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Destination
 @RootNavGraph(start = true)
-fun ProgramScreen(viewModel: ProgramViewModel = getViewModel()) {
+fun ProgramScreen(
+    navController: NavController,
+    viewModel: ProgramViewModel = getViewModel()
+) {
     val eventListResource = viewModel.eventListResource.value
 
     // Material 3 does not include a PullToRefresh right now // TODO replace when added
@@ -55,7 +62,14 @@ fun ProgramScreen(viewModel: ProgramViewModel = getViewModel()) {
                 }
                 eventListResource.data?.let { eventList ->
                     items(eventList, Event::id) { event ->
-                        Text(text = event.title)
+                        Text(
+                            text = event.title,
+                            modifier = Modifier
+                                .padding(5.dp)
+                                .clickable {
+                                    navController.navigate(ProgramDetailScreenDestination(event.id))
+                                }
+                        )
                     }
                 }
             }

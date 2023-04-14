@@ -15,27 +15,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.generated.navigation.NavGraphs
-import at.irfc.app.generated.navigation.appCurrentDestinationAsState
 import at.irfc.app.generated.navigation.destinations.AboutUsScreenDestination
-import at.irfc.app.generated.navigation.destinations.Destination
 import at.irfc.app.generated.navigation.destinations.MapScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramScreenDestination
-import at.irfc.app.generated.navigation.startAppDestination
 import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.navigation.popUpTo
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
+import com.ramcosta.composedestinations.utils.isRouteOnBackStackAsState
 
 @Composable
 fun BottomBar(
     navController: NavController
 ) {
-    val currentDestination: Destination = navController.appCurrentDestinationAsState().value
-        ?: NavGraphs.root.startAppDestination
-
     NavigationBar {
         BottomBarDestination.values().forEach { destination ->
             NavigationBarItem(
-                selected = currentDestination == destination.direction,
+                selected = navController.isRouteOnBackStackAsState(destination.direction).value,
                 onClick = {
                     navController.navigate(destination.direction) {
                         popUpTo(NavGraphs.root)
