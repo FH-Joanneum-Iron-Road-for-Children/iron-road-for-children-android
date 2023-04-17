@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import at.irfc.app.data.local.entity.Event
+import at.irfc.app.data.local.entity.EventWithDetails
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
 import at.irfc.app.presentation.program.ProgramViewModel
 import at.irfc.app.util.Resource
@@ -61,7 +61,7 @@ fun ProgramScreen(
                     }
                 }
                 eventListResource.data?.let { eventList ->
-                    items(eventList, Event::id) { event ->
+                    items(eventList, EventWithDetails::id) { event ->
                         Text(
                             text = event.title,
                             modifier = Modifier

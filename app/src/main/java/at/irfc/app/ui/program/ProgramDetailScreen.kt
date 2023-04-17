@@ -16,7 +16,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
 @Destination
-fun ProgramDetailScreen(id: String) {
+fun ProgramDetailScreen(id: Long) {
     Box(
         modifier = Modifier
             .fillMaxWidth()

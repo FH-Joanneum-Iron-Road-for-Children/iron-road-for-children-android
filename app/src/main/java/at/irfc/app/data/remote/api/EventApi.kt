@@ -9,5 +9,5 @@ interface EventApi {
     suspend fun getEvents(): List<EventDto>
 
     @GET("events/{eventId}")
-    suspend fun getEvent(@Path("eventId") id: String): EventDto?
+    suspend fun getEvent(@Path("eventId") id: Long): EventDto?
 }
