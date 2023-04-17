@@ -13,11 +13,14 @@ import org.koin.dsl.module
 val dataModule = module {
     single { ktorfitFactory(networkLogs = BuildConfig.DEBUG) }
     single {
-        Room.databaseBuilder(
-            context = get(),
-            IrfcDatabase::class.java,
-            IrfcDatabase.DATABASE_NAME
-        ).build()
+        Room
+            .databaseBuilder(
+                context = get(),
+                klass = IrfcDatabase::class.java,
+                name = IrfcDatabase.DATABASE_NAME
+            )
+            .fallbackToDestructiveMigrationFrom(1)
+            .build()
     }
 
     singleOf(IrfcDatabase::eventDao)
