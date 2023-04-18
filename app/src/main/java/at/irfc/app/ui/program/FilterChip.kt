@@ -8,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,7 +23,7 @@ fun FilterChip(
     onClick: () -> Unit
 ) {
     val backgroundColor by animateColorAsState(
-        if (selected) IrfcYellow else MaterialTheme.colorScheme.background
+        if (selected) IrfcYellow else MaterialTheme.colorScheme.surface
     )
     val contentPadding = if (selected) {
         ButtonDefaults.ButtonWithIconContentPadding
@@ -37,7 +36,7 @@ fun FilterChip(
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor,
-            contentColor = Color.Black
+            contentColor = MaterialTheme.colorScheme.onBackground
         ),
         contentPadding = contentPadding,
         onClick = onClick
