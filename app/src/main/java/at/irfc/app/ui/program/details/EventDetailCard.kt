@@ -1,18 +1,22 @@
 package at.irfc.app.ui.program.details
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import at.irfc.app.R
+import at.irfc.app.data.local.entity.EventPicture
 import at.irfc.app.data.local.entity.EventWithDetails
 import coil.compose.AsyncImage
 import java.text.SimpleDateFormat
@@ -70,19 +74,23 @@ fun EventDetailsCard(
             }
 
             if (event.additionalImages.isNotEmpty()) {
-                Row(
+                LazyRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
+                        .padding(contentPadding)
                         .requiredHeight(100.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.spacedBy(
+                        space = 20.dp,
+                        alignment = Alignment.CenterHorizontally
+                    )
                 ) {
-                    event.additionalImages.forEach { image ->
-                        // TODO define a image ration
+                    items(event.additionalImages, EventPicture::id) { image ->
+                        // Image ratio should be 4:3
                         AsyncImage(
                             model = image.path,
                             contentDescription = image.title,
-                            contentScale = ContentScale.Fit
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier.aspectRatio(4 / 3f)
                         )
                     }
                 }
