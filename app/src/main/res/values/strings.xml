@@ -27,4 +27,6 @@
     <!-- Program Detail Screen -->
 
     <string name="header_programDetailScreen">Progamm Details</string>
+    <string name="programmScreen_clearFilter">Filter entfernen</string>
+
 </resources>
