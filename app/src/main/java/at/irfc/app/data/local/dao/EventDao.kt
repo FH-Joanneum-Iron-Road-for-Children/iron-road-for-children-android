@@ -4,6 +4,7 @@ import androidx.room.*
 import at.irfc.app.data.local.IrfcDatabase
 import at.irfc.app.data.local.entity.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 @Dao
 abstract class EventDao(private val database: IrfcDatabase) {
@@ -36,6 +37,11 @@ abstract class EventDao(private val database: IrfcDatabase) {
         upsert(events.map(EventWithDetails::event))
         pictureDaoDao.upsert(events.flatMap(EventWithDetails::additionalImages))
     }
+
+    fun getEventsByCategory(categoryName: String): Flow<List<EventWithDetails>> =
+        getAll().map { allEvents ->
+            allEvents.filter { event -> event.category.name == categoryName }
+        }
 
     suspend fun deleteNotInList(events: List<EventWithDetails>) {
         pictureDaoDao.deleteNotInList(
