@@ -86,7 +86,7 @@ private fun ProgramListHeader(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "ERROR", // stringResource(id = eventListResource.errorMessage),
+                text = stringResource(id = eventListResource.errorMessage),
                 color = MaterialTheme.colorScheme.error
             )
         }
