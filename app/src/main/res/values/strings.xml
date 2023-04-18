@@ -27,4 +27,5 @@
     <!-- Program Detail Screen -->
 
     <string name="header_programDetailScreen">Progamm Details</string>
+    <string name="programDetailScreen_TimeHeading">Uhrzeit</string>
 </resources>
