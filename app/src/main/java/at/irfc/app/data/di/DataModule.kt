@@ -24,6 +24,9 @@ val dataModule = module {
     }
 
     singleOf(IrfcDatabase::eventDao)
+    singleOf(IrfcDatabase::categoryDao)
+    singleOf(IrfcDatabase::locationDao)
+    singleOf(IrfcDatabase::pictureDao)
 
     // singleOf(Ktorfit::createEventApi)
     singleOf<EventApi>(::EventApiMock)
