@@ -54,8 +54,8 @@ fun EventDto.toEventEntity(): EventWithDetails {
         event = Event(
             id = this.eventId,
             title = this.title,
-            startDate = Date(this.startDateTimeInUTC),
-            endDate = Date(this.endDateTimeInUTC),
+            startDate = Date(this.startDateTimeInUTC * 1000L),
+            endDate = Date(this.endDateTimeInUTC * 1000L),
             description = this.eventInfo.infoText,
             image = Event.Image(this.image.title, this.image.path),
             categoryId = category.id,
