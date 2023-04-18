@@ -39,6 +39,10 @@ class EventDto(
         val id: Long,
         val name: String
     )
+
+    companion object {
+        const val timeFactor = 1000L
+    }
 }
 
 fun EventDto.toEventEntity(): EventWithDetails {
@@ -50,12 +54,13 @@ fun EventDto.toEventEntity(): EventWithDetails {
         id = this.eventLocation.eventLocationId,
         name = this.eventLocation.name
     )
+
     return EventWithDetails(
         event = Event(
             id = this.eventId,
             title = this.title,
-            startDate = Date(this.startDateTimeInUTC * 1000L),
-            endDate = Date(this.endDateTimeInUTC * 1000L),
+            startDate = Date(this.startDateTimeInUTC * EventDto.timeFactor),
+            endDate = Date(this.endDateTimeInUTC * EventDto.timeFactor),
             description = this.eventInfo.infoText,
             image = Event.Image(this.image.title, this.image.path),
             categoryId = category.id,
