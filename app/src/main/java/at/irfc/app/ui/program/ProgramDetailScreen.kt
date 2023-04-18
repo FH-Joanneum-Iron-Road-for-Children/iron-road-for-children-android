@@ -1,6 +1,5 @@
 package at.irfc.app.ui.program
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -66,54 +65,52 @@ fun ProgramDetailScreen(id: Long) {
 
 @Composable
 fun TextBetweenPictures() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column() {
-            Text(
-                text = "Uhrzeit",
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(
-                    start = paddingText,
-                    end = paddingText,
-                    top = 8.dp,
-                    bottom = 0.dp
-                )
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = "Uhrzeit",
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(
+                start = paddingText,
+                end = paddingText,
+                top = 8.dp,
+                bottom = 0.dp
+            )
+        )
+
+        Text(
+            text = "Get time from backend",
+            modifier = Modifier.padding(
+                start = paddingText,
+                end = paddingText,
+                top = 0.dp,
+                bottom = 8.dp
+            )
+        )
+
+        Text(
+            text = "Get Stage from backend",
+            modifier = Modifier.padding(
+                start = paddingText,
+                end = paddingText,
+                top = 8.dp,
+                bottom = 0.dp
+            )
+        )
+
+        Text(
+            text = "Get Music Type from backend",
+            modifier = Modifier.padding(
+                start = paddingText,
+                end = paddingText,
+                top = 0.dp,
+                bottom = 8.dp
             )
 
-            Text(
-                text = "Get time from backend",
-                modifier = Modifier.padding(
-                    start = paddingText,
-                    end = paddingText,
-                    top = 0.dp,
-                    bottom = 8.dp
-                )
-            )
+        )
 
-            Text(
-                text = "Get Stage from backend",
-                modifier = Modifier.padding(
-                    start = paddingText,
-                    end = paddingText,
-                    top = 8.dp,
-                    bottom = 0.dp
-                )
-            )
-
-            Text(
-                text = "Get Music Type from backend",
-                modifier = Modifier.padding(
-                    start = paddingText,
-                    end = paddingText,
-                    top = 0.dp,
-                    bottom = 8.dp
-                )
-
-            )
-
-            Text(
-                text = "Get description from backend",
-                modifier = Modifier.padding(paddingText)
-            )
-        }
+        Text(
+            text = "Get description from backend",
+            modifier = Modifier.padding(paddingText)
+        )
     }
 }
