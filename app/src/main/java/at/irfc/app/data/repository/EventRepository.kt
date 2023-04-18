@@ -1,7 +1,7 @@
 package at.irfc.app.data.repository
 
 import at.irfc.app.data.local.dao.EventDao
-import at.irfc.app.data.local.entity.Event
+import at.irfc.app.data.local.entity.EventWithDetails
 import at.irfc.app.data.remote.api.EventApi
 import at.irfc.app.data.remote.dto.EventDto
 import at.irfc.app.data.remote.dto.toEventEntity
@@ -16,8 +16,8 @@ class EventRepository(
     private val eventDao: EventDao,
     private val eventApi: EventApi
 ) {
-    fun loadEvents(force: Boolean): Flow<Resource<List<Event>>> = cachedRemoteResource(
-        query = eventDao::getEvents,
+    fun loadEvents(force: Boolean): Flow<Resource<List<EventWithDetails>>> = cachedRemoteResource(
+        query = eventDao::getAll,
         fetch = eventApi::getEvents,
         update = { eventDao.replaceEvents(it.map(EventDto::toEventEntity)) },
         shouldFetch = { events ->

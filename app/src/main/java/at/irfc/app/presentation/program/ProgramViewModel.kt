@@ -5,7 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import at.irfc.app.data.local.entity.Event
+import at.irfc.app.data.local.entity.EventWithDetails
 import at.irfc.app.data.repository.EventRepository
 import at.irfc.app.util.Resource
 import kotlinx.coroutines.Job
@@ -16,9 +16,9 @@ class ProgramViewModel(
     private val repository: EventRepository
 ) : ViewModel() {
 
-    private val _eventListResource: MutableState<Resource<List<Event>>> =
+    private val _eventListResource: MutableState<Resource<List<EventWithDetails>>> =
         mutableStateOf(Resource.Loading())
-    val eventListResource: State<Resource<List<Event>>> = _eventListResource
+    val eventListResource: State<Resource<List<EventWithDetails>>> = _eventListResource
 
     private var loadEventsJob: Job? = null
 
