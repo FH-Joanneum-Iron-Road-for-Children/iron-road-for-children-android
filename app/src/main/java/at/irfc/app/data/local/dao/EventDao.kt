@@ -38,11 +38,6 @@ abstract class EventDao(private val database: IrfcDatabase) {
         pictureDaoDao.upsert(events.flatMap(EventWithDetails::additionalImages))
     }
 
-    fun getEventsByCategory(categoryName: String): Flow<List<EventWithDetails>> =
-        getAll().map { allEvents ->
-            allEvents.filter { event -> event.category.name == categoryName }
-        }
-
     suspend fun deleteNotInList(events: List<EventWithDetails>) {
         pictureDaoDao.deleteNotInList(
             events.flatMapTo(mutableSetOf()) {
