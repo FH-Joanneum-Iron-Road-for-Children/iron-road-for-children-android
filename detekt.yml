@@ -7,6 +7,9 @@ complexity:
   LongParameterList:
     excludes:
       - '**/at/irfc/app/data/remote/dto/**'
+  LongMethod:
+    ignoreAnnotated:
+      - Composable
 
 style:
   UnusedPrivateMember:
@@ -19,6 +22,7 @@ style:
   MagicNumber:
     ignoreAnnotated:
       - Test
+      - Composable
     excludes:
       - '**/Color.kt'
       - '**/at/irfc/app/ui/core/icons/**'
