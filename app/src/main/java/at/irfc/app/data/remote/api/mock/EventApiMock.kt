@@ -5,7 +5,7 @@ import at.irfc.app.data.remote.dto.EventDto
 import kotlinx.coroutines.delay
 
 class EventApiMock : EventApi {
-    private val events = listOf(
+    val events = listOf(
         EventDto(
             eventId = 1,
             title = "HÖRST",
@@ -15,19 +15,19 @@ class EventApiMock : EventApi {
                     EventDto.PictureDto(
                         pictureId = 2,
                         title = "HÖRST Album 1",
-                        path = "https://picsum.photos/200?random=2"
+                        path = "https://picsum.photos/400/300?random=2"
                     ),
                     EventDto.PictureDto(
                         pictureId = 3,
                         title = "HÖRST Album 2",
-                        path = "https://picsum.photos/200?random=3"
+                        path = "https://picsum.photos/400/300?random=3"
                     )
                 )
             ),
             image = EventDto.PictureDto(
                 pictureId = 1,
                 title = "HÖRST Cover",
-                path = "https://picsum.photos/200?random=1"
+                path = "https://picsum.photos/250/100?random=1"
             ),
             startDateTimeInUTC = 1689580800,
             endDateTimeInUTC = 1689584400,
@@ -44,19 +44,24 @@ class EventApiMock : EventApi {
                     EventDto.PictureDto(
                         pictureId = 4,
                         title = "THE AWEZOMBIES Album 1",
-                        path = "https://picsum.photos/200?random=4"
+                        path = "https://picsum.photos/400/300?random=4"
                     ),
                     EventDto.PictureDto(
                         pictureId = 5,
                         title = "THE AWEZOMBIES Album 2",
-                        path = "https://picsum.photos/200?random=5"
+                        path = "https://picsum.photos/400/300?random=5"
+                    ),
+                    EventDto.PictureDto(
+                        pictureId = 20,
+                        title = "THE AWEZOMBIES Album 3",
+                        path = "https://picsum.photos/400/300?random=20"
                     )
                 )
             ),
             image = EventDto.PictureDto(
                 6,
                 "THE AWEZOMBIES Cover",
-                "https://picsum.photos/200?random=6"
+                "https://picsum.photos/250/100?random=6"
             ),
             startDateTimeInUTC = 1689580800,
             endDateTimeInUTC = 1689584400,
@@ -74,7 +79,7 @@ class EventApiMock : EventApi {
             image = EventDto.PictureDto(
                 pictureId = 7,
                 title = "BURNSWELL Cover",
-                path = "https://picsum.photos/200?random=7"
+                path = "https://picsum.photos/250/100?random=7"
             ),
             startDateTimeInUTC = 1689584400,
             endDateTimeInUTC = 1689588000,
@@ -91,7 +96,7 @@ class EventApiMock : EventApi {
             image = EventDto.PictureDto(
                 pictureId = 8,
                 title = "BURNSWELL Cover",
-                path = "https://picsum.photos/200?random=8"
+                path = "https://picsum.photos/250/100?random=8"
             ),
             startDateTimeInUTC = 1689584400,
             endDateTimeInUTC = 1689588000,
