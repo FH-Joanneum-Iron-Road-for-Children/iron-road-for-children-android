@@ -29,6 +29,24 @@ class EventRepository(
         }
     )
 
+    fun loadEvent(force: Boolean, id: Long): Flow<Resource<EventWithDetails?>> {
+        return cachedRemoteResource(
+            query = { eventDao.getById(id) },
+            fetch = { eventApi.getEvent(id) },
+            update = { event ->
+                if (event == null) {
+                    eventDao.deleteById(id)
+                } else {
+                    eventDao.replaceEvent(event.toEventEntity())
+                }
+            },
+            shouldFetch = { event ->
+                val updateWhenOlderThan = Date() - cacheDuration
+                force || event == null || event.updated.before(updateWhenOlderThan)
+            }
+        )
+    }
+
     fun getCategories(): Flow<List<EventCategory>> = categoryDao.getAll()
 
     companion object {
