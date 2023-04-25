@@ -43,7 +43,7 @@ fun EventDetailsCard(
             AsyncImage(
                 model = event.image.path,
                 contentDescription = event.image.title,
-                contentScale = ContentScale.Fit,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(2.5f)
@@ -89,7 +89,7 @@ fun EventDetailsCard(
                         AsyncImage(
                             model = image.path,
                             contentDescription = image.title,
-                            contentScale = ContentScale.Fit,
+                            contentScale = ContentScale.Crop,
                             modifier = Modifier.aspectRatio(4 / 3f)
                         )
                     }

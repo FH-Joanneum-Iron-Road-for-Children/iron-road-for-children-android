@@ -15,19 +15,19 @@ class EventApiMock : EventApi {
                     EventDto.PictureDto(
                         pictureId = 2,
                         title = "HÖRST Album 1",
-                        path = "https://picsum.photos/400/300?random=2"
+                        path = "https://picsum.photos/500/300?random=2" // Wrong ratio for testing
                     ),
                     EventDto.PictureDto(
                         pictureId = 3,
                         title = "HÖRST Album 2",
-                        path = "https://picsum.photos/400/300?random=3"
+                        path = "https://picsum.photos/500/300?random=3" // Wrong ratio for testing
                     )
                 )
             ),
             image = EventDto.PictureDto(
                 pictureId = 1,
                 title = "HÖRST Cover",
-                path = "https://picsum.photos/250/100?random=1"
+                path = "https://picsum.photos/350/100?random=1" // Wrong ratio for testing
             ),
             startDateTimeInUTC = 1689580800,
             endDateTimeInUTC = 1689584400,

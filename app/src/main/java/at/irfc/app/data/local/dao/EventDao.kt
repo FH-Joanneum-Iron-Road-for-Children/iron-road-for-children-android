@@ -19,13 +19,16 @@ abstract class EventDao(private val database: IrfcDatabase) {
 
     @Transaction
     @Query("SELECT * FROM events WHERE id = :eventId")
-    abstract fun getById(eventId: Long): Flow<EventWithDetails>
+    abstract fun getById(eventId: Long): Flow<EventWithDetails?>
 
     @Upsert
     protected abstract suspend fun upsert(events: List<Event>)
 
     @Query("DELETE FROM events WHERE id NOT IN (:idsToKeep)")
     protected abstract suspend fun deleteNotInList(idsToKeep: Set<Long>)
+
+    @Query("DELETE FROM events WHERE id = :id")
+    abstract suspend fun deleteById(id: Long)
 
     suspend fun upsertEvents(events: List<EventWithDetails>) {
         categoryDao.upsertCategories(
@@ -54,4 +57,6 @@ abstract class EventDao(private val database: IrfcDatabase) {
         upsertEvents(events)
         deleteNotInList(events)
     }
+
+    suspend fun replaceEvent(event: EventWithDetails) = replaceEvents(listOf(event))
 }

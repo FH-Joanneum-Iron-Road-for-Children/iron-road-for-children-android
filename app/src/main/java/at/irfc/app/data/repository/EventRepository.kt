@@ -1,6 +1,5 @@
 package at.irfc.app.data.repository
 
-import android.content.res.Resources.NotFoundException
 import at.irfc.app.data.local.dao.CategoryDao
 import at.irfc.app.data.local.dao.EventDao
 import at.irfc.app.data.local.entity.EventCategory
@@ -30,11 +29,17 @@ class EventRepository(
         }
     )
 
-    fun loadEvent(force: Boolean, id: Long): Flow<Resource<EventWithDetails>> {
+    fun loadEvent(force: Boolean, id: Long): Flow<Resource<EventWithDetails?>> {
         return cachedRemoteResource(
             query = { eventDao.getById(id) },
-            fetch = { eventApi.getEvent(id) ?: throw NotFoundException("Not found") },
-            update = { eventDao.replaceEvents(listOf(it.toEventEntity())) },
+            fetch = { eventApi.getEvent(id) },
+            update = { event ->
+                if (event == null) {
+                    eventDao.deleteById(id)
+                } else {
+                    eventDao.replaceEvent(event.toEventEntity())
+                }
+            },
             shouldFetch = { event ->
                 val updateWhenOlderThan = Date() - cacheDuration
                 force || event == null || event.updated.before(updateWhenOlderThan)

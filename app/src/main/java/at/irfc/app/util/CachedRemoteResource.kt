@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.*
  * @param update responsible for inserting the returned data from [fetch] into the database
  * @param shouldFetch decides if the data from the database are stale
  */
-inline fun <EntityType : Any, ApiType : Any> cachedRemoteResource(
+inline fun <EntityType, ApiType> cachedRemoteResource(
     crossinline query: () -> Flow<EntityType>,
     crossinline fetch: suspend () -> ApiType,
     crossinline update: suspend (ApiType) -> Unit,
