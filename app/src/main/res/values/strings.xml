@@ -24,7 +24,11 @@
     <string name="aboutUs_privacy">Datenschutz</string>
     <string name="aboutUs_imprint">Impressum</string>
     
+    <!-- Program Screen -->
+    <string name="programmScreen_clearFilter">Filter entfernen</string>
+    
     <!-- Program Detail Screen -->
 
     <string name="header_programDetailScreen">Progamm Details</string>
+    <string name="programDetailScreen_TimeHeading">Uhrzeit</string>
 </resources>
