@@ -17,11 +17,8 @@ class ProgramViewModel(
         MutableStateFlow(Resource.Loading())
     val eventListResource: StateFlow<Resource<List<EventWithDetails>>> = _eventListResource
 
-    val categoryList: StateFlow<List<EventCategory>> = repository.getCategories().stateIn(
-        viewModelScope,
-        SharingStarted.Eagerly,
-        emptyList()
-    )
+    val categoryList: StateFlow<List<EventCategory>> = repository.getCategories()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     private val _selectedCategory: MutableStateFlow<EventCategory?> = MutableStateFlow(null)
     val selectedCategory: StateFlow<EventCategory?> = _selectedCategory
@@ -34,24 +31,10 @@ class ProgramViewModel(
 
     fun loadEvents(force: Boolean = false) {
         loadEventsJob?.cancel()
-        loadEventsJob = combine(
-            repository.loadEvents(force),
-            selectedCategory
-        ) { events, selectedCategory ->
-            when (events) {
-                is Resource.Error -> events
-                is Resource.Loading -> events
-                is Resource.Success -> if (selectedCategory == null) {
-                    events
-                } else {
-                    Resource.Success(
-                        events.data.filter {
-                            it.category == selectedCategory
-                        }
-                    )
-                }
+        loadEventsJob = repository.loadEvents(force)
+            .combine(selectedCategory) { events, categoryFilter ->
+                events.applyCategoryFilter(categoryFilter)
             }
-        }
             .onEach { _eventListResource.value = it }
             .launchIn(viewModelScope)
     }
@@ -59,6 +42,18 @@ class ProgramViewModel(
     fun toggleCategory(category: EventCategory) {
         _selectedCategory.update { current ->
             if (current != category) category else null
+        }
+    }
+
+    private fun Resource<List<EventWithDetails>>.applyCategoryFilter(category: EventCategory?):
+        Resource<List<EventWithDetails>> {
+        fun List<EventWithDetails>.filterCategory() = this.filter { it.category == category }
+
+        if (category == null) return this
+        return when (this) {
+            is Resource.Error -> this.copy(data = this.data?.filterCategory())
+            is Resource.Loading -> this.copy(data = this.data?.filterCategory())
+            is Resource.Success -> this.copy(data = this.data.filterCategory())
         }
     }
 }
