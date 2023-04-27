@@ -6,9 +6,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -20,6 +22,7 @@ import at.irfc.app.data.local.entity.EventPicture
 import at.irfc.app.data.local.entity.EventWithDetails
 import coil.compose.AsyncImage
 import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun EventDetailsCard(
@@ -29,8 +32,8 @@ fun EventDetailsCard(
     val contentPadding = 16.dp
     val scrollState = rememberScrollState()
     Card(
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
     ) {
         Column(modifier = Modifier.verticalScroll(scrollState)) {
             Text(
@@ -54,13 +57,16 @@ fun EventDetailsCard(
                     .fillMaxWidth()
                     .padding(contentPadding)
             ) {
+                val timeString = remember(event.startDate, event.endDate) {
+                    val format = SimpleDateFormat("HH:mm", Locale.GERMAN)
+                    "${format.format(event.startDate)} - ${format.format(event.endDate)}"
+                }
                 Text(
                     text = stringResource(id = R.string.programDetailScreen_TimeHeading),
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "${SimpleDateFormat("HH:mm").format(event.startDate)} - " +
-                        SimpleDateFormat("HH:mm").format(event.endDate)
+                    text = timeString
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
