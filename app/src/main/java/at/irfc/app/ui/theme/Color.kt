@@ -2,12 +2,7 @@ package at.irfc.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
-val IrfcYellow = Color(0xFFFDD216)
+val IrfcBlue = Color(0xFF174066)
+val IrfcYellow = Color(0xFFFED513)
+val IrfcTurquoise = Color(0xFF4BAFB4)
+val IrfcRed = Color(0xFFE83B45)

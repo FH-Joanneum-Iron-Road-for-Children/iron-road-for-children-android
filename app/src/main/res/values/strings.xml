@@ -18,15 +18,26 @@
     <!-- About Us Page -->
 
     <string name="header_aboutUs">Über uns</string>
-    <string name="aboutUs_text">Übser Uns .... <!-- TODO about us text --> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</string>
+    <string name="aboutUs_text">
+        Die Iron Road for Children, kurz IRFC, ist Österreichs größtes marke
+        noffenes Festival-Weekend für Bikes, Vespas und US-Cars. Der Eintritt für das komplette
+        Event-Weekend ist für Besucher kostenlos, stattdessen werden unter dem Motto
+        „Ein Herz für Kinder – Benzin im Blut“, Spendengelder für erkrankte Kinder aus ganz
+        Österreich gesammelt.
+        \n\nNeben Ausfahrten mit den Fahrzeugen, zahlreichen Live Konzerten, einem Kinderbereich und
+        einer Tattoo-Area wird den Besuchern auch eine große Austeller- und Streetfood-Area geboten.
+        In diesem Jahr wird das Programm auch um eine Custom Bike Area erweitert und die IRFC ist
+        Host der „Internationalen Österreichischen Custom Bike Staatsmeisterschaft“.
+        Die IRFC ist ein Event für die ganze Familie und zählt mittlerweile über 40.000 Besucher.
+    </string>
     <string name="aboutUs_donate">Spenden</string>
-    <string name="aboutUs_providedBy">Zur Verfügung gestellt vom Studiengang Mobile Software Development der FH JOANNEUM.</string>
+    <string name="aboutUs_providedBy">Zur Verfügung gestellt vom FH JOANNEUM\nStudiengang Mobile Software Development.</string>
     <string name="aboutUs_privacy">Datenschutz</string>
     <string name="aboutUs_imprint">Impressum</string>
-    
+
     <!-- Program Screen -->
     <string name="programmScreen_clearFilter">Filter entfernen</string>
-    
+
     <!-- Program Detail Screen -->
 
     <string name="header_programDetailScreen">Progamm Details</string>

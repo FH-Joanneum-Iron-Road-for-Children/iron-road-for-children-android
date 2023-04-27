@@ -1,6 +1,8 @@
 package at.irfc.app.ui.aboutUs
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Shield
@@ -22,62 +24,80 @@ import com.ramcosta.composedestinations.annotation.Destination
 @Composable
 @Destination
 fun AboutUsScreen() {
-    Surface {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Card(
+            modifier = Modifier.weight(1f, fill = false)
+        ) {
+            Box(Modifier.verticalScroll(rememberScrollState())) {
+                Text(
+                    modifier = Modifier.padding(15.dp),
+                    text = stringResource(R.string.aboutUs_text),
+                    textAlign = TextAlign.Justify
+                )
+            }
+        }
+
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
+            modifier = Modifier.weight(0.9f),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(
-                modifier = Modifier.weight(1f),
-                contentAlignment = Alignment.Center
-            ) {
+            val uriHandler = LocalUriHandler.current
+
+            Button(onClick = { uriHandler.openUri("https://irfc.at/#spenden") }) {
+                Icon(IrfcIcons.Donate, contentDescription = null)
                 Text(
-                    text = stringResource(R.string.aboutUs_text)
+                    modifier = Modifier.padding(start = 10.dp),
+                    text = stringResource(R.string.aboutUs_donate)
                 )
             }
 
             Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.SpaceBetween,
+                verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val uriHandler = LocalUriHandler.current
-
-                Button(onClick = { uriHandler.openUri("https://irfc.at/#spenden") }) {
-                    Icon(IrfcIcons.Donate, contentDescription = null)
+                OutlinedButton(
+                    onClick = { uriHandler.openUri("https://irfc.at/kontakt/impressum") }
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Info,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
                     Text(
                         modifier = Modifier.padding(start = 10.dp),
-                        text = stringResource(R.string.aboutUs_donate)
+                        text = stringResource(R.string.aboutUs_imprint),
+                        color = MaterialTheme.colorScheme.secondary
                     )
                 }
-
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    OutlinedButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Outlined.Info, contentDescription = null)
-                        Text(
-                            modifier = Modifier.padding(start = 10.dp),
-                            text = stringResource(R.string.aboutUs_imprint)
-                        )
-                    }
-                    OutlinedButton(onClick = { /*TODO*/ }) {
-                        Icon(Icons.Outlined.Shield, contentDescription = null)
-                        Text(
-                            modifier = Modifier.padding(start = 10.dp),
-                            text = stringResource(R.string.aboutUs_privacy)
-                        )
-                    }
+                OutlinedButton(
+                    onClick = { uriHandler.openUri("https://irfc.at/kontakt/datenschutz") }
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Shield,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 10.dp),
+                        text = stringResource(R.string.aboutUs_privacy),
+                        color = MaterialTheme.colorScheme.secondary
+                    )
                 }
-
-                Text(
-                    text = stringResource(R.string.aboutUs_providedBy),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodySmall
-                )
             }
         }
+
+        Text(
+            text = stringResource(R.string.aboutUs_providedBy),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodySmall
+        )
     }
 }
 
@@ -85,6 +105,8 @@ fun AboutUsScreen() {
 @Composable
 private fun AboutUsScreenPreview() {
     IronRoadForChildrenTheme {
-        AboutUsScreen()
+        Surface {
+            AboutUsScreen()
+        }
     }
 }
