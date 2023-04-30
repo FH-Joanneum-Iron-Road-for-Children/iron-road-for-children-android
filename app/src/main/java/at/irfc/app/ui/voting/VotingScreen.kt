@@ -147,7 +147,8 @@ fun VotingScreen(
                                         Button(
                                             onClick = {
                                                 isSelected = !isSelected
-                                                // TODO Send the data to the db if already voted counter-1 and add the vote to the new band
+                                                // TODO Send the data to the db if already voted
+                                                //  counter-1 and add the vote to the new band
                                             }, // update the value on button click
                                             modifier = Modifier
                                                 .padding(vertical = 8.dp)
