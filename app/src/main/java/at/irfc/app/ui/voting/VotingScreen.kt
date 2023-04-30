@@ -1,5 +1,7 @@
 package at.irfc.app.ui.voting
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -18,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import at.irfc.app.R
@@ -29,8 +32,13 @@ import coil.compose.rememberImagePainter
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
+import java.time.Duration
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
 import org.koin.androidx.compose.getViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Destination
@@ -38,7 +46,9 @@ fun VotingScreen(
     viewModel: ProgramViewModel = getViewModel()
 ) {
     val eventListResource = viewModel.eventListResource.collectAsState().value
-
+    // TODO replace the hardcoded dates
+    val startDate = LocalDate.now().plusDays(-1).atStartOfDay()
+    val endDate = LocalDate.now().plusDays(+1).atStartOfDay()
     // Material 3 does not include a PullToRefresh right now
     // TODO replace when added
     SwipeRefresh(
@@ -71,6 +81,14 @@ fun VotingScreen(
                 ProgramListHeader(
                     eventListResource = eventListResource
                 )
+                // Voting not started yet
+                if (isVotingStarted(startDate, endDate) == 0) {
+                    countdown(startDate)
+                }
+                // Voting endet already
+                if (isVotingStarted(startDate, endDate) == 2) {
+                    // TODO give a filter to the voting list
+                }
             }
             eventListResource.data?.let { eventList ->
                 item {
@@ -81,6 +99,10 @@ fun VotingScreen(
                     ) {
                         items(eventList, EventWithDetails::id) { event ->
                             // TODO here is the db logic missing
+                            if (isVotingStarted(startDate, endDate) == 2) {
+                                // TODO give a filter to the voting list and
+                                // set is selected to true
+                            }
                             var isSelected by remember {
                                 mutableStateOf(false)
                             } // declare inside of items
@@ -94,7 +116,7 @@ fun VotingScreen(
                                         color = if (isSelected) Color.Yellow else Color.Black,
                                         shape = RoundedCornerShape(8.dp)
                                     )
-                                    .background(Color(0xFFFFF9C4)) // TODO Check
+                                    .background(Color(0xFFFFF9C4)) // TODO Check the color
                             ) {
                                 Card(
                                     modifier = Modifier
@@ -143,18 +165,21 @@ fun VotingScreen(
                                                 )
                                             )
                                         }
-
-                                        Button(
-                                            onClick = {
-                                                isSelected = !isSelected
-                                                // TODO Send the data to the db if already voted
-                                                //  counter-1 and add the vote to the new band
-                                            }, // update the value on button click
-                                            modifier = Modifier
-                                                .padding(vertical = 8.dp)
-                                                .align(Alignment.CenterHorizontally)
-                                        ) {
-                                            Text(text = "stimme abgeben")
+                                        if (isVotingStarted(startDate, endDate) == 1) {
+                                            Button(
+                                                onClick = {
+                                                    isSelected = !isSelected
+                                                    // TODO Send the data to the db if already voted
+                                                    //  counter-1 and add the vote to the new band
+                                                }, // update the value on button click
+                                                modifier = Modifier
+                                                    .padding(vertical = 8.dp)
+                                                    .align(Alignment.CenterHorizontally)
+                                            ) {
+                                                Text(
+                                                    text = stringResource(id = R.string.button_vote)
+                                                )
+                                            }
                                         }
                                     }
                                 }
@@ -185,5 +210,83 @@ private fun ProgramListHeader(
                 color = MaterialTheme.colorScheme.error
             )
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun isVotingStarted(startOfVoting: LocalDateTime, endOfVoting: LocalDateTime): Int {
+    val currentDateTime = LocalDateTime.now()
+    val remainingToStart = Duration.between(currentDateTime, startOfVoting).toMillis()
+    val remainingToEnd = Duration.between(currentDateTime, endOfVoting).toMillis()
+
+    // Voting did not start yet start countdown to start
+    if (remainingToStart > 0) {
+        return 0
+    }
+    // Voting is ongoing
+    if (remainingToEnd > 0) {
+        return 1
+    } else { // Voting ended show winner
+        return 2
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun countdown(targetDate: LocalDateTime) {
+    val currentDateTime = LocalDateTime.now()
+    val remaining = Duration.between(currentDateTime, targetDate).toMillis()
+    val days = TimeUnit.MILLISECONDS.toDays(remaining)
+    val hours = TimeUnit.MILLISECONDS.toHours(remaining) % 24
+    val minutes = TimeUnit.MILLISECONDS.toMinutes(remaining) % 60
+    val seconds = TimeUnit.MILLISECONDS.toSeconds(remaining) % 60
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(vertical = 8.dp),
+            text = stringResource(id = R.string.text_start),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold
+
+        )
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(vertical = 8.dp),
+            text = "$days " + stringResource(id = R.string.header_days),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold
+
+        )
+        Text(
+            modifier = Modifier
+                .padding(vertical = 8.dp),
+            text = "  $hours " + stringResource(id = R.string.header_hours),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold
+
+        )
+        Text(
+            modifier = Modifier
+                .padding(vertical = 8.dp),
+            text = "  %02d ".format(minutes) + stringResource(id = R.string.header_minutes),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold
+
+        )
     }
 }

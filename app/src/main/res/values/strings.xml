@@ -47,5 +47,11 @@
     <!-- Voting Screen -->
     <string name="header_VotingScreen">Stimme für deine Lieblingsband ab!</string>
     <string name="subHeader_VotingScreen">Die Band mit den meisten Stimmen darf bei NovaRock auftreten.</string>
+    <string name="header_days">Tage</string>
+    <string name="header_hours">Stunden</string>
+    <string name="header_minutes">Minuten</string>
+    <string name="button_vote">Stimme abgeben</string>
+    <string name="text_start">Das Voting startet in: </string>
+
 
 </resources>
