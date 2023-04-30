@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -112,21 +113,27 @@ fun ProgramScreen(
                             ) {
                                 Text(
                                     text = event.title,
-                                    style = MaterialTheme.typography.bodyLarge,
+                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                        fontWeight = FontWeight.Bold
+                                    ),
                                     maxLines = 2,
                                     overflow = TextOverflow.Ellipsis
+                                )
+
+                                Spacer(modifier = Modifier.height(5.dp))
+
+                                Text(
+                                    text = "${SimpleDateFormat("HH:mm").format(event.startDate)}" +
+                                        " - " + SimpleDateFormat("HH:mm").format(event.endDate),
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        fontWeight = FontWeight.Bold
+                                    )
                                 )
 
                                 Spacer(modifier = Modifier.height(10.dp))
 
                                 Text(
-                                    text = "${SimpleDateFormat("HH:mm").format(event.startDate)}" +
-                                        " - " + SimpleDateFormat("HH:mm").format(event.endDate),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-
-                                Text(
-                                    text = "Stage: ${event.location.name}",
+                                    text = "${event.location.name}",
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                             }
