@@ -121,9 +121,7 @@ fun ProgramScreen(
 
                                 Text(
                                     text = "${SimpleDateFormat("HH:mm").format(event.startDate)}" +
-                                        " - " + SimpleDateFormat(
-                                            "HH:mm"
-                                        ).format(event.endDate),
+                                        " - " + SimpleDateFormat("HH:mm").format(event.endDate),
                                     style = MaterialTheme.typography.bodyMedium
                                 )
 
