@@ -71,7 +71,7 @@ fun ProgramScreen(
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
-private fun ProgramListHeader(
+internal fun ProgramListHeader(
     eventListResource: Resource<List<EventWithDetails>>,
     selectedCategory: EventCategory?,
     categories: List<EventCategory>,

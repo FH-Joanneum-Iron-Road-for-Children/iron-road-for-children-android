@@ -11,6 +11,7 @@
     <!-- Bottom Bar -->
 
     <string name="nav_bar_program">Programm</string>
+    <string name="nav_bar_voting">Voting</string>
     <string name="nav_back">Zurück</string>
     <string name="nav_bar_map">Karte</string>
     <string name="nav_bar_aboutUs">Mehr</string>
@@ -39,8 +40,12 @@
     <string name="programmScreen_clearFilter">Filter entfernen</string>
 
     <!-- Program Detail Screen -->
-
     <string name="header_programDetailScreen">Progamm Details</string>
     <string name="programDetailScreen_TimeHeading">Uhrzeit</string>
     <string name="programDetailScreen_EventNotFound">Event konnte nicht gefunden werden.</string>
+
+    <!-- Voting Screen -->
+    <string name="header_VotingScreen">Stimme für deine Lieblingsband ab!</string>
+    <string name="subHeader_VotingScreen">Die Band mit den meisten Stimmen darf bei NovaRock auftreten.</string>
+
 </resources>
