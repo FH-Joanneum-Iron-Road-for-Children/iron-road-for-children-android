@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.data.local.entity.EventWithDetails
 import at.irfc.app.presentation.program.ProgramViewModel
@@ -36,12 +35,9 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 @Destination
 fun VotingScreen(
-    navController: NavController,
     viewModel: ProgramViewModel = getViewModel()
 ) {
     val eventListResource = viewModel.eventListResource.collectAsState().value
-    val selectedCategory = viewModel.selectedCategory.collectAsState().value
-    val categories = viewModel.categoryList.collectAsState().value.filter { it != selectedCategory }
 
     // Material 3 does not include a PullToRefresh right now
     // TODO replace when added
