@@ -220,15 +220,10 @@ fun isVotingStarted(startOfVoting: LocalDateTime, endOfVoting: LocalDateTime): I
     val remainingToStart = Duration.between(currentDateTime, startOfVoting).toMillis()
     val remainingToEnd = Duration.between(currentDateTime, endOfVoting).toMillis()
 
-    // Voting did not start yet start countdown to start
-    if (remainingToStart > 0) {
-        return 0
-    }
-    // Voting is ongoing
-    if (remainingToEnd > 0) {
-        return 1
-    } else { // Voting ended show winner
-        return 2
+    return when {
+        remainingToStart > 0 -> 0 // Voting did not start yet start countdown to start
+        remainingToEnd > 0 -> 1 // Voting is ongoing
+        else -> 2 // Voting ended show winner
     }
 }
 
@@ -240,7 +235,6 @@ fun countdown(targetDate: LocalDateTime) {
     val days = TimeUnit.MILLISECONDS.toDays(remaining)
     val hours = TimeUnit.MILLISECONDS.toHours(remaining) % 24
     val minutes = TimeUnit.MILLISECONDS.toMinutes(remaining) % 60
-    val seconds = TimeUnit.MILLISECONDS.toSeconds(remaining) % 60
 
     Row(
         modifier = Modifier
