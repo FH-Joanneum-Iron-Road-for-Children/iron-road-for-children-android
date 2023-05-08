@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/irfcBlue" />
+    <item
+        android:width="400dp"
+        android:height="400dp"
+        android:gravity="center"
+        android:top="-150dp"
+        android:drawable="@drawable/splash_logo" />
+    <item
+        android:top="150dp"
+        android:width="300dp"
+        android:height="17dp"
+        android:drawable="@drawable/splash_logo_text"
+        android:gravity="center" />
+    <item
+        android:bottom="80dp"
+        android:width="300dp"
+        android:height="33dp"
+        android:drawable="@drawable/splash_footer"
+        android:gravity="center_horizontal|bottom" />
+</layer-list>

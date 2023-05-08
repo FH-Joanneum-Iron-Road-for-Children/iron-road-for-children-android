@@ -2,4 +2,11 @@
 <resources>
 
     <style name="Theme.IronRoadForChildren" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="SplashTheme" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:statusBarColor">@color/irfcBlue</item>
+    </style>
+
 </resources>
+
