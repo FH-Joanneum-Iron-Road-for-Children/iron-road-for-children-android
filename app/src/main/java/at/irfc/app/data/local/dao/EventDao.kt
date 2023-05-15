@@ -4,7 +4,6 @@ import androidx.room.*
 import at.irfc.app.data.local.IrfcDatabase
 import at.irfc.app.data.local.entity.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 @Dao
 abstract class EventDao(private val database: IrfcDatabase) {

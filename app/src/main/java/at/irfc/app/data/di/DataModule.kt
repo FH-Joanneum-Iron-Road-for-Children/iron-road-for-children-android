@@ -19,7 +19,7 @@ val dataModule = module {
                 klass = IrfcDatabase::class.java,
                 name = IrfcDatabase.DATABASE_NAME
             )
-            .fallbackToDestructiveMigrationFrom(1)
+            .fallbackToDestructiveMigrationFrom(1, 2)
             .build()
     }
 
