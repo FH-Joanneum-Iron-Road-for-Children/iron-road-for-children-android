@@ -61,8 +61,10 @@ class ProgramViewModel(
 
         fun List<EventWithDetails>.associateByDate() =
             this.groupBy { it.startDateTime.toLocalDate() }
-                .map { (date, events) -> EventsOnDate(date, events) }
-                .sortedBy { it.date }
+                .map { (date, events) ->
+                    EventsOnDate(date, events.sortedBy(EventWithDetails::startDateTime))
+                }
+                .sortedBy(EventsOnDate::date)
 
         return when (this) {
             is Resource.Error -> Resource.Error(
