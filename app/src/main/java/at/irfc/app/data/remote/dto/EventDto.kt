@@ -5,8 +5,9 @@ import at.irfc.app.data.local.entity.EventCategory
 import at.irfc.app.data.local.entity.EventLocation
 import at.irfc.app.data.local.entity.EventPicture
 import at.irfc.app.data.local.entity.EventWithDetails
+import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.ZoneId
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -60,8 +61,14 @@ fun EventDto.toEventEntity(): EventWithDetails {
         event = Event(
             id = this.eventId,
             title = this.title,
-            startDateTime = LocalDateTime.ofEpochSecond(this.startDateTimeInUTC, 0, ZoneOffset.UTC),
-            endDateTime = LocalDateTime.ofEpochSecond(this.endDateTimeInUTC, 0, ZoneOffset.UTC),
+            startDateTime = LocalDateTime.ofInstant(
+                Instant.ofEpochSecond(this.startDateTimeInUTC),
+                ZoneId.of("Europe/Berlin")
+            ),
+            endDateTime = LocalDateTime.ofInstant(
+                Instant.ofEpochSecond(this.endDateTimeInUTC),
+                ZoneId.of("Europe/Berlin")
+            ),
             description = this.eventInfo.infoText,
             image = Event.Image(this.image.title, this.image.path),
             categoryId = category.id,
