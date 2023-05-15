@@ -2,6 +2,7 @@ package at.irfc.app.ui.core
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.outlined.PermContactCalendar
 import androidx.compose.material3.*
@@ -17,6 +18,7 @@ import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.generated.navigation.destinations.AboutUsScreenDestination
+import at.irfc.app.generated.navigation.destinations.MapScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramScreenDestination
 import at.irfc.app.ui.theme.IrfcBlue
 import at.irfc.app.ui.theme.IrfcYellow
@@ -66,7 +68,6 @@ enum class BottomBarDestination(
     @StringRes val label: Int
 ) {
     Program(ProgramScreenDestination, Icons.Outlined.PermContactCalendar, R.string.nav_bar_program),
-
-    // Map(MapScreenDestination, Icons.Default.Map, R.string.nav_bar_map),
+    Map(MapScreenDestination, Icons.Default.Map, R.string.nav_bar_map),
     AboutUs(AboutUsScreenDestination, Icons.Default.MoreHoriz, R.string.nav_bar_aboutUs)
 }
