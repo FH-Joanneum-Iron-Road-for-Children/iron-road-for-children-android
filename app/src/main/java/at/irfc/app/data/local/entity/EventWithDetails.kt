@@ -18,8 +18,8 @@ data class EventWithDetails(
     // Shorthand accessors
     inline val id get() = event.id
     inline val title get() = event.title
-    inline val startDate get() = event.startDate
-    inline val endDate get() = event.endDate
+    inline val startDateTime get() = event.startDateTime
+    inline val endDateTime get() = event.endDateTime
     inline val description get() = event.description
     inline val image get() = event.image
     inline val updated get() = event.updated

@@ -3,9 +3,13 @@ package at.irfc.app.ui.program
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -14,6 +18,7 @@ import androidx.navigation.NavController
 import at.irfc.app.data.local.entity.EventCategory
 import at.irfc.app.data.local.entity.EventWithDetails
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
+import at.irfc.app.presentation.program.EventsOnDate
 import at.irfc.app.presentation.program.ProgramViewModel
 import at.irfc.app.util.Resource
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -21,6 +26,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.navigate
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -35,33 +41,58 @@ fun ProgramScreen(
     val selectedCategory = viewModel.selectedCategory.collectAsState().value
     val categories = viewModel.categoryList.collectAsState().value.filter { it != selectedCategory }
 
-    // Material 3 does not include a PullToRefresh right now // TODO replace when added
-    SwipeRefresh(
-        modifier = Modifier.fillMaxSize(),
-        state = rememberSwipeRefreshState(eventListResource is Resource.Loading),
-        onRefresh = { viewModel.loadEvents(force = true) }
-    ) {
-        LazyColumn(
-            contentPadding = PaddingValues(10.dp)
+    Column {
+        val pager = rememberPagerState()
+        EventListTabRow(pagerState = pager, eventOnDayList = eventListResource.data)
+        ProgramListHeader(
+            eventListResource = eventListResource,
+            selectedCategory = selectedCategory,
+            categories = categories,
+            onToggleCategory = viewModel::toggleCategory
+        )
+        // Material 3 does not include a PullToRefresh right now // TODO replace when added
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(eventListResource is Resource.Loading),
+            onRefresh = { viewModel.loadEvents(force = true) }
         ) {
-            stickyHeader {
-                ProgramListHeader(
-                    eventListResource = eventListResource,
-                    selectedCategory = selectedCategory,
-                    categories = categories,
-                    onToggleCategory = viewModel::toggleCategory
-                )
-            }
+            EventListPager(
+                pagerState = pager,
+                eventOnDayList = eventListResource.data,
+                onEventClick = { event ->
+                    navController.navigate(
+                        ProgramDetailScreenDestination(event.id)
+                    )
+                }
+            )
+        }
+    }
+}
 
-            eventListResource.data?.let { eventList ->
-                items(eventList, EventWithDetails::id) { event ->
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun EventListPager(
+    pagerState: PagerState,
+    eventOnDayList: List<EventsOnDate>?,
+    onEventClick: (EventWithDetails) -> Unit
+) {
+    HorizontalPager(
+        pageCount = eventOnDayList?.size ?: 1,
+        state = pagerState
+    ) { page ->
+        val eventsForPage = eventOnDayList?.getOrNull(page)?.events
+        if (eventsForPage.isNullOrEmpty()) {
+            // TODO
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(10.dp)
+            ) {
+                items(eventsForPage, EventWithDetails::id) { event ->
                     Text(
                         text = event.title,
                         modifier = Modifier
                             .padding(5.dp)
-                            .clickable {
-                                navController.navigate(ProgramDetailScreenDestination(event.id))
-                            }
+                            .clickable { onEventClick(event) }
                     )
                 }
             }
@@ -69,10 +100,30 @@ fun ProgramScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun EventListTabRow(pagerState: PagerState, eventOnDayList: List<EventsOnDate>?) {
+    TabRow(
+        selectedTabIndex = pagerState.currentPage,
+        contentColor = MaterialTheme.colorScheme.onSurface
+    ) {
+        val coroutineScope = rememberCoroutineScope()
+        eventOnDayList?.forEachIndexed { index, events ->
+            Tab(
+                selected = pagerState.currentPage == index,
+                onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
+                text = {
+                    Text(events.dayString)
+                }
+            )
+        }
+    }
+}
+
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 private fun ProgramListHeader(
-    eventListResource: Resource<List<EventWithDetails>>,
+    eventListResource: Resource<*>,
     selectedCategory: EventCategory?,
     categories: List<EventCategory>,
     onToggleCategory: (EventCategory) -> Unit
@@ -93,7 +144,7 @@ private fun ProgramListHeader(
     }
 
     LazyRow(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.padding(8.dp).fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 10.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
