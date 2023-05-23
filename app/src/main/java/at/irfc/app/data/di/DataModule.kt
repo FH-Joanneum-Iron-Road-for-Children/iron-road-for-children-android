@@ -9,6 +9,7 @@ import at.irfc.app.data.remote.api.mock.EventApiMock
 import at.irfc.app.data.remote.api.mock.VotingApiMock
 import at.irfc.app.data.remote.ktorfitFactory
 import at.irfc.app.data.repository.EventRepository
+import at.irfc.app.data.repository.VotingRepository
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -37,4 +38,5 @@ val dataModule = module {
     singleOf<VotingApi, EventApiMock>(::VotingApiMock)
 
     singleOf(::EventRepository)
+    singleOf(::VotingRepository)
 }

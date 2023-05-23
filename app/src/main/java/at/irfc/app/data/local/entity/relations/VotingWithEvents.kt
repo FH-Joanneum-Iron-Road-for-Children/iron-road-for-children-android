@@ -15,4 +15,10 @@ data class VotingWithEvents(
         associateBy = Junction(VotingEventCrossRef::class)
     )
     val events: List<Event>
-)
+) {
+    inline val id get() = voting.id
+    inline val title get() = voting.title
+    inline val isActive get() = voting.isActive
+    inline val voted get() = voting.voted
+    inline val updated get() = voting.updated
+}
