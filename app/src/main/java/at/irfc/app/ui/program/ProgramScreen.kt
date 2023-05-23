@@ -97,15 +97,11 @@ private fun EventListPager(
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(10.dp)
+                contentPadding = PaddingValues(10.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 items(eventsForPage, EventWithDetails::id) { event ->
-                    Text(
-                        text = event.title,
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .clickable { onEventClick(event) }
-                    )
+                    EventCard(event = event, onEventClick = onEventClick)
                 }
             }
         }
