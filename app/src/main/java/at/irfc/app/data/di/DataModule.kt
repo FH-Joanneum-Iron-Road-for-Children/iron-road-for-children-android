@@ -4,7 +4,9 @@ import androidx.room.Room
 import at.irfc.app.BuildConfig
 import at.irfc.app.data.local.IrfcDatabase
 import at.irfc.app.data.remote.api.EventApi
+import at.irfc.app.data.remote.api.VotingApi
 import at.irfc.app.data.remote.api.mock.EventApiMock
+import at.irfc.app.data.remote.api.mock.VotingApiMock
 import at.irfc.app.data.remote.ktorfitFactory
 import at.irfc.app.data.repository.EventRepository
 import org.koin.core.module.dsl.singleOf
@@ -31,6 +33,8 @@ val dataModule = module {
 
     // singleOf(Ktorfit::createEventApi)
     singleOf<EventApi>(::EventApiMock)
+    // singleOf(Ktorfit::createVotingApi)
+    singleOf<VotingApi, EventApiMock>(::VotingApiMock)
 
     singleOf(::EventRepository)
 }
