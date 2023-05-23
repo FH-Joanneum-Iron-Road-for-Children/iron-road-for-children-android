@@ -57,5 +57,7 @@ abstract class EventDao(private val database: IrfcDatabase) {
         deleteNotInList(events)
     }
 
-    suspend fun replaceEvent(event: EventWithDetails) = replaceEvents(listOf(event))
+    suspend fun replaceEvent(event: EventWithDetails) {
+        upsertEvents(listOf(event))
+    }
 }
