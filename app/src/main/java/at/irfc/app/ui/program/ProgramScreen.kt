@@ -6,20 +6,14 @@ import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import at.irfc.app.R
@@ -29,13 +23,11 @@ import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestinat
 import at.irfc.app.presentation.program.EventsOnDate
 import at.irfc.app.presentation.program.ProgramViewModel
 import at.irfc.app.util.Resource
-import coil.compose.AsyncImage
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.navigate
-import java.text.SimpleDateFormat
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -105,7 +97,8 @@ private fun EventListPager(
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(10.dp)
+                contentPadding = PaddingValues(10.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 items(eventsForPage, EventWithDetails::id) { event ->
                     EventCard(event = event, onEventClick = onEventClick)
@@ -183,81 +176,6 @@ private fun ProgramListHeader(
                 selected = false,
                 onClick = { onToggleCategory(it) }
             )
-        }
-    }
-}
-
-@Composable
-private fun EventCard(event: EventWithDetails, onEventClick: (EventWithDetails) -> Unit) {
-    Card(
-        shape = RoundedCornerShape(20.dp),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 10.dp
-        ),
-        modifier = Modifier
-            .clickable { onEventClick(event) }
-            .padding(bottom = 16.dp)
-            .fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-// Box for the image
-            Box(
-                modifier = Modifier
-                    .width(150.dp)
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(Color.White)
-            ) {
-                AsyncImage(
-                    model = event.image.path,
-                    contentDescription = event.image.title,
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(20.dp))
-
-                )
-            }
-
-// Text on the right side of the image
-            Column(
-                modifier = Modifier
-                    .padding(
-                        start = 16.dp,
-                        top = 30.dp,
-                        end = 30.dp,
-                        bottom = 30.dp
-                    )
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = event.title,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Spacer(modifier = Modifier.height(5.dp))
-
-                Text(
-                    text = "${SimpleDateFormat("HH:mm").format(event.startDate)}" +
-                        " - " + SimpleDateFormat("HH:mm").format(event.endDate),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = "${event.location.name}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
         }
     }
 }
