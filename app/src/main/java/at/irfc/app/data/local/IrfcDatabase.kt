@@ -14,7 +14,7 @@ import at.irfc.app.data.local.entity.EventPicture
 
 @Database(
     entities = [Event::class, EventCategory::class, EventPicture::class, EventLocation::class],
-    version = 2
+    version = 3
 )
 @TypeConverters(Converters::class)
 abstract class IrfcDatabase : RoomDatabase() {

@@ -1,7 +1,13 @@
 package at.irfc.app.data.remote.dto
 
-import at.irfc.app.data.local.entity.*
-import java.util.*
+import at.irfc.app.data.local.entity.Event
+import at.irfc.app.data.local.entity.EventCategory
+import at.irfc.app.data.local.entity.EventLocation
+import at.irfc.app.data.local.entity.EventPicture
+import at.irfc.app.data.local.entity.EventWithDetails
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -39,10 +45,6 @@ class EventDto(
         val id: Long,
         val name: String
     )
-
-    companion object {
-        const val timeFactor = 1000L
-    }
 }
 
 fun EventDto.toEventEntity(): EventWithDetails {
@@ -59,13 +61,19 @@ fun EventDto.toEventEntity(): EventWithDetails {
         event = Event(
             id = this.eventId,
             title = this.title,
-            startDate = Date(this.startDateTimeInUTC * EventDto.timeFactor),
-            endDate = Date(this.endDateTimeInUTC * EventDto.timeFactor),
+            startDateTime = LocalDateTime.ofInstant(
+                Instant.ofEpochSecond(this.startDateTimeInUTC),
+                ZoneId.of("Europe/Berlin")
+            ),
+            endDateTime = LocalDateTime.ofInstant(
+                Instant.ofEpochSecond(this.endDateTimeInUTC),
+                ZoneId.of("Europe/Berlin")
+            ),
             description = this.eventInfo.infoText,
             image = Event.Image(this.image.title, this.image.path),
             categoryId = category.id,
             locationId = location.id,
-            updated = Date()
+            updated = LocalDateTime.now()
         ),
         category = category,
         location = location,
