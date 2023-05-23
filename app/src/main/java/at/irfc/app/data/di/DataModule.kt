@@ -19,7 +19,7 @@ val dataModule = module {
                 klass = IrfcDatabase::class.java,
                 name = IrfcDatabase.DATABASE_NAME
             )
-            .fallbackToDestructiveMigrationFrom(1, 2)
+            .fallbackToDestructiveMigrationFrom(1, 2, 3)
             .build()
     }
 
@@ -27,6 +27,7 @@ val dataModule = module {
     singleOf(IrfcDatabase::categoryDao)
     singleOf(IrfcDatabase::locationDao)
     singleOf(IrfcDatabase::pictureDao)
+    singleOf(IrfcDatabase::votingDao)
 
     // singleOf(Ktorfit::createEventApi)
     singleOf<EventApi>(::EventApiMock)

@@ -3,6 +3,7 @@ package at.irfc.app.data.local.dao
 import androidx.room.*
 import at.irfc.app.data.local.IrfcDatabase
 import at.irfc.app.data.local.entity.*
+import at.irfc.app.data.local.entity.relations.EventWithDetails
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,16 +18,16 @@ abstract class EventDao(private val database: IrfcDatabase) {
     abstract fun getAll(): Flow<List<EventWithDetails>>
 
     @Transaction
-    @Query("SELECT * FROM events WHERE id = :eventId")
+    @Query("SELECT * FROM events WHERE eventId = :eventId")
     abstract fun getById(eventId: Long): Flow<EventWithDetails?>
 
     @Upsert
     protected abstract suspend fun upsert(events: List<Event>)
 
-    @Query("DELETE FROM events WHERE id NOT IN (:idsToKeep)")
+    @Query("DELETE FROM events WHERE eventId NOT IN (:idsToKeep)")
     protected abstract suspend fun deleteNotInList(idsToKeep: Set<Long>)
 
-    @Query("DELETE FROM events WHERE id = :id")
+    @Query("DELETE FROM events WHERE eventId = :id")
     abstract suspend fun deleteById(id: Long)
 
     suspend fun upsertEvents(events: List<EventWithDetails>) {

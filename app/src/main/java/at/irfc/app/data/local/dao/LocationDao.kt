@@ -10,12 +10,12 @@ interface LocationDao {
     @Query("SELECT * FROM eventLocations")
     fun getAll(): Flow<List<EventLocation>>
 
-    @Query("SELECT * FROM eventLocations WHERE id = :locationId")
+    @Query("SELECT * FROM eventLocations WHERE eventLocationId = :locationId")
     fun getById(locationId: Long): Flow<EventLocation>
 
     @Upsert
     suspend fun upsert(categories: List<EventLocation>)
 
-    @Query("DELETE FROM eventLocations WHERE id NOT IN (:idsToKeep)")
+    @Query("DELETE FROM eventLocations WHERE eventLocationId NOT IN (:idsToKeep)")
     suspend fun deleteNotInList(idsToKeep: Set<Long>)
 }

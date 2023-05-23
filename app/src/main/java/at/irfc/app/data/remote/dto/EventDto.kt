@@ -4,7 +4,7 @@ import at.irfc.app.data.local.entity.Event
 import at.irfc.app.data.local.entity.EventCategory
 import at.irfc.app.data.local.entity.EventLocation
 import at.irfc.app.data.local.entity.EventPicture
-import at.irfc.app.data.local.entity.EventWithDetails
+import at.irfc.app.data.local.entity.relations.EventWithDetails
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId

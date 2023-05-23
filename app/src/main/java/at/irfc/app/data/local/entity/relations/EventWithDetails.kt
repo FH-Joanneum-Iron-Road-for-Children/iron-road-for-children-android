@@ -1,18 +1,22 @@
-package at.irfc.app.data.local.entity
+package at.irfc.app.data.local.entity.relations
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import at.irfc.app.data.local.entity.Event
+import at.irfc.app.data.local.entity.EventCategory
+import at.irfc.app.data.local.entity.EventLocation
+import at.irfc.app.data.local.entity.EventPicture
 
 data class EventWithDetails(
     @Embedded val event: Event,
 
-    @Relation(parentColumn = "categoryId", entityColumn = "id")
+    @Relation(parentColumn = "categoryId", entityColumn = "eventCategoryId")
     val category: EventCategory,
 
-    @Relation(parentColumn = "locationId", entityColumn = "id")
+    @Relation(parentColumn = "locationId", entityColumn = "eventLocationId")
     val location: EventLocation,
 
-    @Relation(parentColumn = "id", entityColumn = "eventId")
+    @Relation(parentColumn = "eventId", entityColumn = "eventPictureId")
     val additionalImages: List<EventPicture>
 ) {
     // Shorthand accessors

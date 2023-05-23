@@ -1,0 +1,250 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 4,
+    "identityHash": "080e09abee37dc62d7f3590e2f21f34a",
+    "entities": [
+      {
+        "tableName": "events",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventId` INTEGER NOT NULL, `title` TEXT NOT NULL, `startDateTime` INTEGER NOT NULL, `endDateTime` INTEGER NOT NULL, `description` TEXT NOT NULL, `categoryId` INTEGER NOT NULL, `locationId` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `imageTitle` TEXT NOT NULL, `imagePath` TEXT NOT NULL, PRIMARY KEY(`eventId`))",
+        "fields": [
+          {
+            "fieldPath": "eventId",
+            "columnName": "eventId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startDateTime",
+            "columnName": "startDateTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endDateTime",
+            "columnName": "endDateTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "categoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "locationId",
+            "columnName": "locationId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image.title",
+            "columnName": "imageTitle",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image.path",
+            "columnName": "imagePath",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "eventId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "eventCategories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventCategoryId` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`eventCategoryId`))",
+        "fields": [
+          {
+            "fieldPath": "eventCategoryId",
+            "columnName": "eventCategoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "eventCategoryId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "eventPictures",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventPictureId` INTEGER NOT NULL, `title` TEXT NOT NULL, `path` TEXT NOT NULL, `eventId` INTEGER NOT NULL, PRIMARY KEY(`eventPictureId`))",
+        "fields": [
+          {
+            "fieldPath": "eventPictureId",
+            "columnName": "eventPictureId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "path",
+            "columnName": "path",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "eventId",
+            "columnName": "eventId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "eventPictureId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "eventLocations",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventLocationId` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`eventLocationId`))",
+        "fields": [
+          {
+            "fieldPath": "eventLocationId",
+            "columnName": "eventLocationId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "eventLocationId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "votings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`votingId` INTEGER NOT NULL, `title` TEXT NOT NULL, `isActive` INTEGER NOT NULL, `voted` INTEGER NOT NULL DEFAULT FALSE, `updated` INTEGER NOT NULL, PRIMARY KEY(`votingId`))",
+        "fields": [
+          {
+            "fieldPath": "votingId",
+            "columnName": "votingId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isActive",
+            "columnName": "isActive",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "voted",
+            "columnName": "voted",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "FALSE"
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "votingId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "votingEvent",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`votingId` INTEGER NOT NULL, `eventId` INTEGER NOT NULL, PRIMARY KEY(`votingId`, `eventId`))",
+        "fields": [
+          {
+            "fieldPath": "votingId",
+            "columnName": "votingId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "eventId",
+            "columnName": "eventId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "votingId",
+            "eventId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '080e09abee37dc62d7f3590e2f21f34a')"
+    ]
+  }
+}

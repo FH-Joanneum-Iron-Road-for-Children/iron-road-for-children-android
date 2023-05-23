@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import at.irfc.app.data.local.entity.EventCategory
-import at.irfc.app.data.local.entity.EventWithDetails
+import at.irfc.app.data.local.entity.relations.EventWithDetails
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
 import at.irfc.app.presentation.program.EventsOnDate
 import at.irfc.app.presentation.program.ProgramViewModel
