@@ -95,11 +95,28 @@ class EventApiMock : EventApi {
             ),
             image = EventDto.PictureDto(
                 pictureId = 8,
-                title = "BURNSWELL Cover",
+                title = "GLEN AMPLE Artist",
                 path = "https://picsum.photos/250/100?random=8"
             ),
             startDateTimeInUTC = 1690549200,
             endDateTimeInUTC = 1690552800,
+            eventLocation = EventDto.LocationDto(eventLocationId = 3, name = "Tattoo area"),
+            eventCategory = EventDto.CategoryDto(id = 2, name = "Tattoo")
+        ),
+        EventDto(
+            eventId = 5,
+            title = "Tattoo artist 1",
+            eventInfo = EventDto.InfoDto(
+                infoText = "+43 664 123456",
+                pictures = emptyList()
+            ),
+            image = EventDto.PictureDto(
+                pictureId = 8,
+                title = "Artist",
+                path = "https://picsum.photos/250/100?random=9"
+            ),
+            startDateTimeInUTC = 1690531200,
+            endDateTimeInUTC = 1690653600,
             eventLocation = EventDto.LocationDto(eventLocationId = 3, name = "Tattoo area"),
             eventCategory = EventDto.CategoryDto(id = 2, name = "Tattoo")
         )

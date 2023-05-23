@@ -1,22 +1,18 @@
 <resources>
 
     <!-- App Name -->
-
     <string name="app_name">Iron Road For Children</string>
 
     <!-- Error Messages -->
-
     <string name="could_not_refresh_data_error">Daten konnten nicht aktualisiert werden. Bitte versuche es später erneut.</string>
 
     <!-- Bottom Bar -->
-
     <string name="nav_bar_program">Programm</string>
     <string name="nav_back">Zurück</string>
     <string name="nav_bar_map">Karte</string>
     <string name="nav_bar_aboutUs">Mehr</string>
 
     <!-- About Us Page -->
-
     <string name="header_aboutUs">Über uns</string>
     <string name="aboutUs_text">
         Die Iron Road for Children, kurz IRFC, ist Österreichs größtes markenoffenes Festival-Weekend
@@ -35,7 +31,8 @@
     <string name="aboutUs_imprint">Impressum</string>
 
     <!-- Program Screen -->
-    <string name="programmScreen_clearFilter">Filter entfernen</string>
+    <string name="programScreen_clearFilter">Filter entfernen</string>
+    <string name="programScreen_noEventsFound">Für diesen Tag und den gewählten Filter konnte kein Programm gefunden werden.</string>
 
     <!-- Program Detail Screen -->
 
