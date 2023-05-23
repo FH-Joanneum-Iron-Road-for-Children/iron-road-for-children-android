@@ -150,7 +150,8 @@ private fun ProgramListHeader(
         ) {
             Text(
                 text = stringResource(id = eventListResource.errorMessage),
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center
             )
         }
     }
