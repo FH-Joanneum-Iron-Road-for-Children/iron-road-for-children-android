@@ -13,8 +13,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import at.irfc.app.R
 import at.irfc.app.data.local.entity.EventCategory
 import at.irfc.app.data.local.entity.EventWithDetails
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
@@ -81,7 +83,17 @@ private fun EventListPager(
     ) { page ->
         val eventsForPage = eventOnDayList?.getOrNull(page)?.events
         if (eventsForPage.isNullOrEmpty()) {
-            // TODO
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.programScreen_noEventsFound),
+                    textAlign = TextAlign.Center
+                )
+            }
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -144,7 +156,9 @@ private fun ProgramListHeader(
     }
 
     LazyRow(
-        modifier = Modifier.padding(8.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 10.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
