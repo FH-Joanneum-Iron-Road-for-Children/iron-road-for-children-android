@@ -8,7 +8,13 @@
         android:top="-150dp"
         android:drawable="@drawable/splash_logo" />
     <item
-        android:top="150dp"
+        android:top="120dp"
+        android:width="200dp"
+        android:height="40dp"
+        android:drawable="@drawable/splash_fhj_logo"
+        android:gravity="center" />
+    <item
+        android:top="250dp"
         android:width="300dp"
         android:height="17dp"
         android:drawable="@drawable/splash_logo_text"
