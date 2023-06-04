@@ -92,7 +92,7 @@ android {
     }
 }
 
-val ktorfitVersion = "1.0.0"
+val ktorfitVersion = "1.4.1"
 
 configure<KtorfitGradleConfiguration> {
     version = ktorfitVersion
@@ -122,11 +122,11 @@ play {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
+    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
 
     // Room DB
-    val roomVersion = "2.5.0"
+    val roomVersion = "2.5.1"
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
@@ -135,26 +135,26 @@ dependencies {
     implementation("de.jensklingenberg.ktorfit:ktorfit-lib:$ktorfitVersion")
     ksp("de.jensklingenberg.ktorfit:ktorfit-ksp:$ktorfitVersion")
 
-    val ktorVersion = "2.2.4"
+    val ktorVersion = "2.3.1"
     implementation("io.ktor:ktor-client-serialization:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
     // Koin DI
-    val koinVersion = "3.3.3"
+    val koinVersion = "3.4.1"
     compileOnly("io.insert-koin:koin-core:$koinVersion")
     implementation("io.insert-koin:koin-android:$koinVersion")
     // Version is not aligned to other koin modules
-    implementation("io.insert-koin:koin-androidx-compose:3.4.2")
+    implementation("io.insert-koin:koin-androidx-compose:3.4.5")
 
     // Coil async image loader and caching
-    val coilVersion = "2.2.2"
+    val coilVersion = "2.4.0"
     implementation("io.coil-kt:coil:$coilVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
 
     // Compose Destinations Navigation
-    val composeDestinationsVersion = "1.8.36-beta"
+    val composeDestinationsVersion = "1.9.42-beta"
     implementation("io.github.raamcosta.compose-destinations:core:$composeDestinationsVersion")
     ksp("io.github.raamcosta.compose-destinations:ksp:$composeDestinationsVersion")
 
@@ -164,7 +164,7 @@ dependencies {
     debugImplementation(composeBom)
     androidTestImplementation(composeBom)
 
-    implementation("androidx.activity:activity-compose:1.7.1")
+    implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -172,7 +172,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
 
     // Material 3 does not have swipe to refresh yet TODO remove once added to material 3
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.28.0")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.30.1")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
