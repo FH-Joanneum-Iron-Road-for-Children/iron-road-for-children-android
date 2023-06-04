@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import at.irfc.app.data.local.entity.EventWithDetails
+import at.irfc.app.data.local.entity.relations.EventWithDetails
 import coil.compose.AsyncImage
 import java.time.format.DateTimeFormatter
 
