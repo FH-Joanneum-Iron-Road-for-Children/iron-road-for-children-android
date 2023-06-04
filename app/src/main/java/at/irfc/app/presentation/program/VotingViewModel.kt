@@ -40,6 +40,7 @@ class VotingViewModel(
             .launchIn(viewModelScope)
     }
 
+    @Suppress("ReturnCount")
     fun submitVoting(votingId: Long, eventId: Long) {
         val voting = votingListResource.value.data?.find { it.id == votingId } ?: return
         val event = voting.events.find { it.id == eventId } ?: return
@@ -61,6 +62,7 @@ class VotingViewModel(
         }
 
         viewModelScope.launch {
+            @Suppress("TooGenericExceptionCaught", "SwallowedException")
             try {
                 repository.submitVoting(votingId = votingId, eventId = eventId)
                 viewModelScope.launch {

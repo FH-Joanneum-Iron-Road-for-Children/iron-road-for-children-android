@@ -16,6 +16,7 @@ import org.koin.dsl.module
 val dataModule = module {
     single { ktorfitFactory(networkLogs = BuildConfig.DEBUG) }
     single {
+        @Suppress("MagicNumber")
         Room
             .databaseBuilder(
                 context = get(),

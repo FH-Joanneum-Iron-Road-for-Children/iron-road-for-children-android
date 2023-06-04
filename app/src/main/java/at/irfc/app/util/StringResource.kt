@@ -13,9 +13,11 @@ class StringResource(@StringRes private val resId: Int, vararg arguments: Any) {
     }
 
     fun getMessage(context: Context): String {
+        @Suppress("SpreadOperator")
         return context.resources.getString(resId, *arguments)
     }
 
     @Composable
+    @Suppress("SpreadOperator")
     fun getMessage(): String = stringResource(resId, *arguments)
 }
