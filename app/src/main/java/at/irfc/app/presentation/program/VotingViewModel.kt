@@ -2,10 +2,14 @@ package at.irfc.app.presentation.program
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import at.irfc.app.R
 import at.irfc.app.data.local.entity.relations.VotingWithEvents
 import at.irfc.app.data.repository.VotingRepository
 import at.irfc.app.util.Resource
+import at.irfc.app.util.StringResource
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -19,6 +23,9 @@ class VotingViewModel(
     private val _votingListResource: MutableStateFlow<Resource<List<VotingWithEvents>>> =
         MutableStateFlow(Resource.Loading())
     val votingListResource: StateFlow<Resource<List<VotingWithEvents>>> = _votingListResource
+
+    private val _toastFlow: MutableSharedFlow<StringResource> = MutableSharedFlow()
+    val toastFlow: Flow<StringResource> = _toastFlow
 
     private var loadJob: Job? = null
 
@@ -34,17 +41,36 @@ class VotingViewModel(
     }
 
     fun submitVoting(votingId: Long, eventId: Long) {
+        val voting = votingListResource.value.data?.find { it.id == votingId } ?: return
+        val event = voting.events.find { it.id == eventId } ?: return
         // It is only allowed to vote once for one specific voting
-        if (votingListResource.value.data?.find { it.id == votingId }?.voted == true) {
-            // TODO toast already voted?
+        if (voting.voted) {
+            viewModelScope.launch {
+                _toastFlow.emit(StringResource(R.string.voting_alreadyVoted))
+            }
             return
         }
         viewModelScope.launch {
             try {
                 repository.submitVoting(votingId = votingId, eventId = eventId)
+                viewModelScope.launch {
+                    _toastFlow.emit(StringResource(R.string.voting_successfullyVoted, event.title))
+                }
             } catch (e: Exception) {
-                // TODO toast that voting failed?
+                viewModelScope.launch {
+                    _toastFlow.emit(StringResource(R.string.voting_submitVoteFailed))
+                }
             }
+        }
+    }
+
+    /**
+     * Can only be used in DEBUG builds, will do nothing in production releases.
+     * @see [VotingRepository.clearUserVotings]
+     */
+    fun clearVotings() {
+        viewModelScope.launch {
+            repository.clearUserVotings()
         }
     }
 }

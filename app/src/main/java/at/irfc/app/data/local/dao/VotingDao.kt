@@ -38,6 +38,9 @@ abstract class VotingDao(private val database: IrfcDatabase) {
     @Update(entity = Voting::class)
     abstract suspend fun insertUserVoting(voting: UserVoting)
 
+    @Query("UPDATE votings SET voted = 0")
+    abstract suspend fun clearUserVotings()
+
     @Transaction
     open suspend fun replaceVotings(votingsWithEvents: List<ServerVotingWithEvents>) {
         upsertVotings(votingsWithEvents.map(ServerVotingWithEvents::voting))

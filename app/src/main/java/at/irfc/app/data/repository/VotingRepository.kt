@@ -1,5 +1,7 @@
 package at.irfc.app.data.repository
 
+import android.util.Log
+import at.irfc.app.BuildConfig
 import at.irfc.app.data.local.dao.VotingDao
 import at.irfc.app.data.local.entity.UserVoting
 import at.irfc.app.data.local.entity.relations.VotingWithEvents
@@ -41,6 +43,25 @@ class VotingRepository(
             )
         )
         votingDao.insertUserVoting(UserVoting(votingId = votingId, voted = true))
+    }
+
+    /**
+     * Can only be used in DEBUG builds, will do nothing in production releases.
+     */
+    suspend fun clearUserVotings() {
+        // Clearing the votings is only allowed in DEBUG mode (for dev purpose, not for prod releases)
+        if (BuildConfig.DEBUG) {
+            votingDao.clearUserVotings()
+            Log.d(
+                /* tag = */ VotingRepository::class.simpleName,
+                /* msg = */ "Cleared user votings. Will not be executed for production builds."
+            )
+        } else {
+            Log.w(
+                /* tag = */ VotingRepository::class.simpleName,
+                /* msg = */ "Tried to clear user votings in production app"
+            )
+        }
     }
 
     companion object {

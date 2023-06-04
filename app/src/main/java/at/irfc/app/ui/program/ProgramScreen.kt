@@ -12,7 +12,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import at.irfc.app.data.local.entity.EventCategory
@@ -137,14 +136,16 @@ private fun ProgramListHeader(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = stringResource(id = eventListResource.errorMessage),
+                text = eventListResource.errorMessage.getMessage(),
                 color = MaterialTheme.colorScheme.error
             )
         }
     }
 
     LazyRow(
-        modifier = Modifier.padding(8.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 10.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
