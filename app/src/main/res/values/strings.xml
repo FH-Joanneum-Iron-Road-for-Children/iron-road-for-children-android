@@ -42,4 +42,5 @@
     <string name="voting_alreadyVoted">Du hast bereits abgestimmt</string>
     <string name="voting_submitVoteFailed">Voting konnte nicht gesendet werden</string>
     <string name="voting_successfullyVoted">Deine Stimme für "%1$s" wurde gespeichert</string>
+    <string name="voting_failedNotActive">Zurzeit kann nicht abgestimmt werden</string>
 </resources>

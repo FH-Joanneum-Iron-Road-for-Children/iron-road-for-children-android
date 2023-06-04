@@ -43,6 +43,15 @@ class VotingViewModel(
     fun submitVoting(votingId: Long, eventId: Long) {
         val voting = votingListResource.value.data?.find { it.id == votingId } ?: return
         val event = voting.events.find { it.id == eventId } ?: return
+
+        // Ensure that the voting is active
+        if (!voting.isActive) {
+            viewModelScope.launch {
+                _toastFlow.emit(StringResource(R.string.voting_failedNotActive))
+            }
+            return
+        }
+
         // It is only allowed to vote once for one specific voting
         if (voting.voted) {
             viewModelScope.launch {
@@ -50,6 +59,7 @@ class VotingViewModel(
             }
             return
         }
+
         viewModelScope.launch {
             try {
                 repository.submitVoting(votingId = votingId, eventId = eventId)
