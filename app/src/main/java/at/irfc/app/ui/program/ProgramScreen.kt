@@ -12,8 +12,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import at.irfc.app.R
 import at.irfc.app.data.local.entity.EventCategory
 import at.irfc.app.data.local.entity.relations.EventWithDetails
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
@@ -80,19 +82,25 @@ private fun EventListPager(
     ) { page ->
         val eventsForPage = eventOnDayList?.getOrNull(page)?.events
         if (eventsForPage.isNullOrEmpty()) {
-            // TODO
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.programScreen_noEventsFound),
+                    textAlign = TextAlign.Center
+                )
+            }
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(10.dp)
+                contentPadding = PaddingValues(10.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 items(eventsForPage, EventWithDetails::id) { event ->
-                    Text(
-                        text = event.title,
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .clickable { onEventClick(event) }
-                    )
+                    EventCard(event = event, onEventClick = onEventClick)
                 }
             }
         }
@@ -137,7 +145,8 @@ private fun ProgramListHeader(
         ) {
             Text(
                 text = eventListResource.errorMessage.getMessage(),
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center
             )
         }
     }

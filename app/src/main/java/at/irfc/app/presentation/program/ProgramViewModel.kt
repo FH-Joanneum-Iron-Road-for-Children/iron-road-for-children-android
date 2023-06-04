@@ -8,6 +8,7 @@ import at.irfc.app.data.repository.EventRepository
 import at.irfc.app.util.Resource
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -59,21 +60,33 @@ class ProgramViewModel(
         fun List<EventWithDetails>.filterCategory() =
             if (category == null) this else this.filter { it.category == category }
 
-        fun List<EventWithDetails>.associateByDate() =
-            this.groupBy { it.startDateTime.toLocalDate() }
-                .map { (date, events) ->
-                    EventsOnDate(date, events.sortedBy(EventWithDetails::startDateTime))
+        fun List<EventWithDetails>.associateByDate(): List<EventsOnDate> {
+            val days: Set<LocalDate> = this.mapTo(mutableSetOf()) { it.startDateTime.toLocalDate() }
+
+            return days.fold(emptyList<EventsOnDate>()) { acc, date ->
+                val dateEvents = this.filter {
+                    date in it.startDateTime.toLocalDate()..it.endDateTime.toLocalDate()
                 }
-                .sortedBy(EventsOnDate::date)
+
+                acc.plus(
+                    EventsOnDate(
+                        date = date,
+                        events = dateEvents.filterCategory().sortedBy(
+                            EventWithDetails::startDateTime
+                        )
+                    )
+                )
+            }.sortedBy(EventsOnDate::date)
+        }
 
         return when (this) {
             is Resource.Error -> Resource.Error(
                 this.errorMessage,
-                this.data?.filterCategory()?.associateByDate()
+                this.data?.associateByDate()
             )
 
-            is Resource.Loading -> Resource.Loading(this.data?.filterCategory()?.associateByDate())
-            is Resource.Success -> Resource.Success(this.data.filterCategory().associateByDate())
+            is Resource.Loading -> Resource.Loading(this.data?.associateByDate())
+            is Resource.Success -> Resource.Success(this.data.associateByDate())
         }
     }
 }
@@ -82,6 +95,6 @@ class EventsOnDate(val date: LocalDate, val events: List<EventWithDetails>) {
     val dayString: String = formatter.format(date)
 
     companion object {
-        private val formatter = DateTimeFormatter.ofPattern("EEEE")
+        private val formatter = DateTimeFormatter.ofPattern("EEEE", Locale.GERMAN)
     }
 }

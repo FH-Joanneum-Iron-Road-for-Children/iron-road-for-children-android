@@ -31,7 +31,8 @@
     <string name="aboutUs_imprint">Impressum</string>
 
     <!-- Program Screen -->
-    <string name="programmScreen_clearFilter">Filter entfernen</string>
+    <string name="programScreen_clearFilter">Filter entfernen</string>
+    <string name="programScreen_noEventsFound">Für diesen Tag und den gewählten Filter konnte kein Programm gefunden werden.</string>
 
     <!-- Program Detail Screen -->
     <string name="header_programDetailScreen">Progamm Details</string>
