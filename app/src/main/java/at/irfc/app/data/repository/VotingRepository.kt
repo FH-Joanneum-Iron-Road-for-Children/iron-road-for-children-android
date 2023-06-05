@@ -42,7 +42,7 @@ class VotingRepository(
                 deviceId = "" // TODO
             )
         )
-        votingDao.insertUserVoting(UserVoting(votingId = votingId, voted = true))
+        votingDao.insertUserVoting(UserVoting(votingId = votingId, votedEventId = eventId))
     }
 
     /**

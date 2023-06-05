@@ -14,15 +14,17 @@ data class Voting(
 
     val title: String,
     val isActive: Boolean,
-    @ColumnInfo(defaultValue = "FALSE")
-    val voted: Boolean = false,
+    @ColumnInfo(defaultValue = "NULL")
+    val votedEventId: Long? = null,
 
     val updated: LocalDateTime
-)
+) {
+    inline val voted get() = votedEventId != null
+}
 
 data class UserVoting(
     val votingId: Long,
-    val voted: Boolean
+    val votedEventId: Long
 )
 
 data class ServerVoting(

@@ -23,7 +23,7 @@ import coil.compose.AsyncImage
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun EventCard(event: EventWithDetails, onEventClick: (EventWithDetails) -> Unit) {
+fun EventListItem(event: EventWithDetails, onEventClick: (EventWithDetails) -> Unit) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         modifier = Modifier

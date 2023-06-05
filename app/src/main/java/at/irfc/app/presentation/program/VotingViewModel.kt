@@ -3,6 +3,8 @@ package at.irfc.app.presentation.program
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import at.irfc.app.R
+import at.irfc.app.data.local.entity.Event
+import at.irfc.app.data.local.entity.Voting
 import at.irfc.app.data.local.entity.relations.VotingWithEvents
 import at.irfc.app.data.repository.VotingRepository
 import at.irfc.app.util.Resource
@@ -36,15 +38,12 @@ class VotingViewModel(
     fun loadVotings(force: Boolean = false) {
         loadJob?.cancel()
         loadJob = repository.loadActiveVotings(force)
-            .onEach { _votingListResource.value = it }
+            .onEach { _votingListResource.value = it.filterActive() }
             .launchIn(viewModelScope)
     }
 
     @Suppress("ReturnCount")
-    fun submitVoting(votingId: Long, eventId: Long) {
-        val voting = votingListResource.value.data?.find { it.id == votingId } ?: return
-        val event = voting.events.find { it.id == eventId } ?: return
-
+    fun submitVoting(voting: Voting, event: Event) {
         // Ensure that the voting is active
         if (!voting.isActive) {
             viewModelScope.launch {
@@ -64,15 +63,26 @@ class VotingViewModel(
         viewModelScope.launch {
             @Suppress("TooGenericExceptionCaught", "SwallowedException")
             try {
-                repository.submitVoting(votingId = votingId, eventId = eventId)
-                viewModelScope.launch {
-                    _toastFlow.emit(StringResource(R.string.voting_successfullyVoted, event.title))
-                }
+                repository.submitVoting(votingId = voting.id, eventId = event.id)
+                _toastFlow.emit(StringResource(R.string.voting_successfullyVoted, event.title))
             } catch (e: Exception) {
-                viewModelScope.launch {
-                    _toastFlow.emit(StringResource(R.string.voting_submitVoteFailed))
-                }
+                _toastFlow.emit(StringResource(R.string.voting_submitVoteFailed))
             }
+        }
+    }
+
+    private fun Resource<List<VotingWithEvents>>.filterActive(): Resource<List<VotingWithEvents>> {
+        fun List<VotingWithEvents>.applyFilter() = this.filter {
+            it.isActive && it.events.isNotEmpty()
+        }
+
+        return when (this) {
+            is Resource.Loading -> Resource.Loading(this.data?.applyFilter())
+            is Resource.Success -> Resource.Success(this.data.applyFilter())
+            is Resource.Error -> Resource.Error(
+                this.errorMessage,
+                this.data?.applyFilter()
+            )
         }
     }
 

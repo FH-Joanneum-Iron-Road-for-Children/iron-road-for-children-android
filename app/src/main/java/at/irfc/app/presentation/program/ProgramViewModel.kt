@@ -80,13 +80,12 @@ class ProgramViewModel(
         }
 
         return when (this) {
+            is Resource.Loading -> Resource.Loading(this.data?.associateByDate())
+            is Resource.Success -> Resource.Success(this.data.associateByDate())
             is Resource.Error -> Resource.Error(
                 this.errorMessage,
                 this.data?.associateByDate()
             )
-
-            is Resource.Loading -> Resource.Loading(this.data?.associateByDate())
-            is Resource.Success -> Resource.Success(this.data.associateByDate())
         }
     }
 }

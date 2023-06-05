@@ -14,7 +14,13 @@ data class VotingWithEvents(
         entityColumn = "eventId",
         associateBy = Junction(VotingEventCrossRef::class)
     )
-    val events: List<Event>
+    val events: List<Event>,
+
+    @Relation(
+        parentColumn = "votedEventId",
+        entityColumn = "eventId"
+    )
+    val votedEvent: Event?
 ) {
     inline val id get() = voting.id
     inline val title get() = voting.title

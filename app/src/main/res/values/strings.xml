@@ -45,13 +45,10 @@
     <string name="voting_submitVoteFailed">Voting konnte nicht gesendet werden</string>
     <string name="voting_successfullyVoted">Deine Stimme für "%1$s" wurde gespeichert</string>
     <string name="voting_failedNotActive">Zurzeit kann nicht abgestimmt werden</string>
-    <string name="header_VotingScreen">Stimme für deine Lieblingsband ab!</string>
-    <string name="subHeader_VotingScreen">Die Band mit den meisten Stimmen darf bei NovaRock auftreten.</string>
-    <string name="header_days">Tage</string>
-    <string name="header_hours">Stunden</string>
-    <string name="header_minutes">Minuten</string>
-    <string name="button_vote">Stimme abgeben</string>
-    <string name="text_start">Das Voting startet in: </string>
-
-
+    <string name="voting_screenHeader">Stimme für deine Lieblingsband ab!</string>
+    <string name="voting_screenSubHeader">Die Band mit den meisten Stimmen darf bei NovaRock auftreten.</string>
+    <string name="voting_sendVote">Stimme abgeben</string>
+    <string name="voting_noEventsToVote">Für die gewählte Abstimmung gibt es keine Optionen für welche getstimmt werden können.</string>
+    <string name="voting_noActiveVotings">Derzeit gibt es keine aktiven Abstimmungen.</string>
+    <string name="voting_refresh">Aktualisieren</string>
 </resources>
