@@ -85,6 +85,7 @@ private fun EventListPager(
         if (eventsForPage.isNullOrEmpty()) {
             Box(
                 modifier = Modifier
+                    .padding(10.dp)
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
                 contentAlignment = Alignment.Center
