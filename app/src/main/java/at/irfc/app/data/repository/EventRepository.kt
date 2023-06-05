@@ -3,7 +3,7 @@ package at.irfc.app.data.repository
 import at.irfc.app.data.local.dao.CategoryDao
 import at.irfc.app.data.local.dao.EventDao
 import at.irfc.app.data.local.entity.EventCategory
-import at.irfc.app.data.local.entity.EventWithDetails
+import at.irfc.app.data.local.entity.relations.EventWithDetails
 import at.irfc.app.data.remote.api.EventApi
 import at.irfc.app.data.remote.dto.EventDto
 import at.irfc.app.data.remote.dto.toEventEntity

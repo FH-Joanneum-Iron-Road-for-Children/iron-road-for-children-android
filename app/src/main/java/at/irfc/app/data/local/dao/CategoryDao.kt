@@ -10,12 +10,12 @@ interface CategoryDao {
     @Query("SELECT * FROM eventCategories")
     fun getAll(): Flow<List<EventCategory>>
 
-    @Query("SELECT * FROM eventCategories WHERE id = :categoryId")
+    @Query("SELECT * FROM eventCategories WHERE eventCategoryId = :categoryId")
     fun getById(categoryId: Long): Flow<EventCategory>
 
     @Upsert
     suspend fun upsertCategories(categories: List<EventCategory>)
 
-    @Query("DELETE FROM eventCategories WHERE id NOT IN (:idsToKeep)")
+    @Query("DELETE FROM eventCategories WHERE eventCategoryId NOT IN (:idsToKeep)")
     suspend fun deleteNotInList(idsToKeep: Set<Long>)
 }

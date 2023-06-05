@@ -6,7 +6,9 @@ import java.util.*
 
 @Entity(tableName = "events")
 data class Event(
-    @PrimaryKey(autoGenerate = false) val id: Long,
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "eventId")
+    val id: Long,
     val title: String,
     val startDateTime: LocalDateTime,
     val endDateTime: LocalDateTime,

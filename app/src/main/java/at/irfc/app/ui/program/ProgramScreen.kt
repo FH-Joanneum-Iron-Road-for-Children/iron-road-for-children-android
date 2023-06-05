@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.data.local.entity.EventCategory
-import at.irfc.app.data.local.entity.EventWithDetails
+import at.irfc.app.data.local.entity.relations.EventWithDetails
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
 import at.irfc.app.presentation.program.EventsOnDate
 import at.irfc.app.presentation.program.ProgramViewModel
@@ -145,7 +145,7 @@ private fun ProgramListHeader(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = stringResource(id = eventListResource.errorMessage),
+                text = eventListResource.errorMessage.getMessage(),
                 color = MaterialTheme.colorScheme.error,
                 textAlign = TextAlign.Center
             )

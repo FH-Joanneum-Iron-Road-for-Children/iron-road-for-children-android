@@ -39,7 +39,9 @@ inline fun <EntityType, ApiType> cachedRemoteResource(
             // TODO provide a better way to handle different errors
             //  also probably the string resource should not be specified here?
             Log.w("CachedRemoteResource", "Could not fetch data", tr)
-            query().map { Resource.Error(R.string.could_not_refresh_data_error, it) }
+            query().map {
+                Resource.Error(StringResource(R.string.could_not_refresh_data_error), it)
+            }
         }
     } else {
         query().map { Resource.Success(it) }

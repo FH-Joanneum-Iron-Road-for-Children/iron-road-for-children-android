@@ -35,8 +35,13 @@
     <string name="programScreen_noEventsFound">Für diesen Tag und den gewählten Filter konnte kein Programm gefunden werden.</string>
 
     <!-- Program Detail Screen -->
-
     <string name="header_programDetailScreen">Progamm Details</string>
     <string name="programDetailScreen_TimeHeading">Uhrzeit</string>
     <string name="programDetailScreen_EventNotFound">Event konnte nicht gefunden werden.</string>
+
+    <!-- Voting Screen -->
+    <string name="voting_alreadyVoted">Du hast bereits abgestimmt</string>
+    <string name="voting_submitVoteFailed">Voting konnte nicht gesendet werden</string>
+    <string name="voting_successfullyVoted">Deine Stimme für "%1$s" wurde gespeichert</string>
+    <string name="voting_failedNotActive">Zurzeit kann nicht abgestimmt werden</string>
 </resources>
