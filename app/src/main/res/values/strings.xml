@@ -8,6 +8,7 @@
 
     <!-- Bottom Bar -->
     <string name="nav_bar_program">Programm</string>
+    <string name="nav_bar_voting">Voting</string>
     <string name="nav_back">Zurück</string>
     <string name="nav_bar_map">Karte</string>
     <string name="nav_bar_aboutUs">Mehr</string>
@@ -44,4 +45,10 @@
     <string name="voting_submitVoteFailed">Voting konnte nicht gesendet werden</string>
     <string name="voting_successfullyVoted">Deine Stimme für "%1$s" wurde gespeichert</string>
     <string name="voting_failedNotActive">Zurzeit kann nicht abgestimmt werden</string>
+    <string name="voting_screenHeader">Stimme für deine Lieblingsband ab!</string>
+    <string name="voting_screenSubHeader">Die Band mit den meisten Stimmen darf bei NovaRock auftreten.</string>
+    <string name="voting_sendVote">Stimme abgeben</string>
+    <string name="voting_noEventsToVote">Für die gewählte Abstimmung gibt es keine Optionen für welche getstimmt werden können.</string>
+    <string name="voting_noActiveVotings">Derzeit gibt es keine aktiven Abstimmungen.</string>
+    <string name="voting_refresh">Aktualisieren</string>
 </resources>

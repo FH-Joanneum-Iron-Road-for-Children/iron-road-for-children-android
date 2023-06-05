@@ -15,6 +15,7 @@ import at.irfc.app.generated.navigation.destinations.MapScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramScreenDestination
 import at.irfc.app.generated.navigation.destinations.TypedDestination
+import at.irfc.app.generated.navigation.destinations.VotingScreenDestination
 import at.irfc.app.generated.navigation.startAppDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,6 +47,7 @@ fun TopBar(navController: NavController) {
 private fun TypedDestination<*>?.screenTitle(): String = when (this) {
     null -> "" // Empty when starting
     ProgramScreenDestination -> stringResource(id = R.string.nav_bar_program)
+    VotingScreenDestination -> stringResource(id = R.string.nav_bar_voting)
     MapScreenDestination -> stringResource(id = R.string.nav_bar_map)
     AboutUsScreenDestination -> stringResource(id = R.string.header_aboutUs)
     ProgramDetailScreenDestination -> stringResource(id = R.string.header_programDetailScreen)

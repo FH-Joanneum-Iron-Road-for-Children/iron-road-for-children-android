@@ -101,7 +101,7 @@ private fun EventListPager(
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 items(eventsForPage, EventWithDetails::id) { event ->
-                    EventCard(event = event, onEventClick = onEventClick)
+                    EventListItem(event = event, onEventClick = onEventClick)
                 }
             }
         }
