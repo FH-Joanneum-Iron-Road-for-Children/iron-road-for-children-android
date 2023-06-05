@@ -12,7 +12,7 @@ class VotingApiMock : VotingApi {
             votingId = 1,
             title = "NovaRock Band",
             isActive = true,
-            events = EventApiMock.events.filter { it.eventCategory.id == 1L }
+            events = EventApiMock.events.filter { it.eventCategory.eventCategoryId == 1L }
         )
         /*VotingDto(
             votingId = 2,

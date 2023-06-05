@@ -15,7 +15,7 @@ class EventDto(
     val eventId: Long,
     val title: String,
     val eventInfo: InfoDto,
-    val image: PictureDto,
+    val picture: PictureDto,
     val startDateTimeInUTC: Long,
     val endDateTimeInUTC: Long,
     val eventLocation: LocationDto,
@@ -30,7 +30,7 @@ class EventDto(
     @Serializable
     class PictureDto(
         val pictureId: Long,
-        val title: String,
+        val altText: String,
         val path: String
     )
 
@@ -42,15 +42,18 @@ class EventDto(
 
     @Serializable
     class CategoryDto(
-        val id: Long,
+        val eventCategoryId: Long,
         val name: String
     )
 }
 
 fun EventDto.toEventEntity(): EventWithDetails {
-    val category = EventCategory(id = this.eventCategory.id, name = this.eventCategory.name)
+    val category = EventCategory(
+        id = this.eventCategory.eventCategoryId,
+        name = this.eventCategory.name
+    )
     val pictures = this.eventInfo.pictures.map {
-        EventPicture(id = it.pictureId, title = it.title, path = it.path, eventId = this.eventId)
+        EventPicture(id = it.pictureId, title = it.altText, path = it.path, eventId = this.eventId)
     }
     val location = EventLocation(
         id = this.eventLocation.eventLocationId,
@@ -70,7 +73,7 @@ fun EventDto.toEventEntity(): EventWithDetails {
                 ZoneId.of("Europe/Berlin")
             ),
             description = this.eventInfo.infoText,
-            image = Event.Image(this.image.title, this.image.path),
+            image = Event.Image(this.picture.altText, this.picture.path),
             categoryId = category.id,
             locationId = location.id,
             updated = LocalDateTime.now()

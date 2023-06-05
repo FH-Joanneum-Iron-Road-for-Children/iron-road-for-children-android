@@ -65,11 +65,21 @@ android {
             )
             signingConfig = signingConfigs.findByName("release")
             ndk.debugSymbolLevel = DebugSymbolLevel.FULL.name
+            buildConfigField(
+                type = "String",
+                name = "apiBaseUrl",
+                value = "\"https://backend.irfc-test.st-ki.at/api/\"" // TODO use correct prod value
+            )
         }
         debug {
             isDebuggable = true
             applicationIdSuffix = ".debug"
             isMinifyEnabled = false
+            buildConfigField(
+                type = "String",
+                name = "apiBaseUrl",
+                value = "\"https://backend.irfc-test.st-ki.at/api/\"" // TODO use correct test value
+            )
         }
     }
     compileOptions {

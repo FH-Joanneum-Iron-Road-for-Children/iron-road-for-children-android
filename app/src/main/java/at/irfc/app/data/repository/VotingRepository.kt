@@ -1,5 +1,7 @@
 package at.irfc.app.data.repository
 
+import android.content.Context
+import android.provider.Settings
 import android.util.Log
 import at.irfc.app.BuildConfig
 import at.irfc.app.data.local.dao.VotingDao
@@ -11,16 +13,19 @@ import at.irfc.app.data.remote.dto.VotingDto
 import at.irfc.app.data.remote.dto.toVotingEntity
 import at.irfc.app.util.Resource
 import at.irfc.app.util.cachedRemoteResource
+import at.irfc.app.util.extensions.sha256
 import java.time.LocalDateTime
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.toJavaDuration
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
 class VotingRepository(
     private val votingDao: VotingDao,
     private val votingApi: VotingApi
-) {
+) : KoinComponent {
 
     fun loadActiveVotings(force: Boolean): Flow<Resource<List<VotingWithEvents>>> {
         return cachedRemoteResource(
@@ -35,11 +40,18 @@ class VotingRepository(
     }
 
     suspend fun submitVoting(votingId: Long, eventId: Long) {
+        val context = get<Context>()
+        val deviceId = Settings.Secure.getString(
+            context.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
+        // It should not be possible to associate multiple votes for different votings to one user
+        val uniqueId = "android-${deviceId}___unique-device-id___$votingId".sha256()
         votingApi.submitUserVoting(
             UserVotingDto(
                 votingId = votingId,
                 eventId = eventId,
-                deviceId = "" // TODO
+                deviceId = uniqueId
             )
         )
         votingDao.insertUserVoting(UserVoting(votingId = votingId, votedEventId = eventId))

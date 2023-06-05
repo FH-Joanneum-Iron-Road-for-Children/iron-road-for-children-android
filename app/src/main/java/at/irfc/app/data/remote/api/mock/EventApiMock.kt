@@ -22,20 +22,20 @@ class EventApiMock : EventApi {
                     pictures = listOf(
                         EventDto.PictureDto(
                             pictureId = 2,
-                            title = "HÖRST Album 1",
+                            altText = "HÖRST Album 1",
                             // Wrong ratio for testing
                             path = "https://picsum.photos/500/300?random=2"
                         ),
                         EventDto.PictureDto(
                             pictureId = 3,
-                            title = "HÖRST Album 2",
+                            altText = "HÖRST Album 2",
                             path = "https://picsum.photos/400/300?random=3"
                         )
                     )
                 ),
-                image = EventDto.PictureDto(
+                picture = EventDto.PictureDto(
                     pictureId = 1,
-                    title = "HÖRST Cover",
+                    altText = "HÖRST Cover",
                     path = "https://picsum.photos/350/100?random=1" // Wrong ratio for testing
                 ),
                 startDateTimeInUTC = 1690542000,
@@ -44,7 +44,7 @@ class EventApiMock : EventApi {
                     eventLocationId = 1,
                     name = "Family Rock Stage"
                 ),
-                eventCategory = EventDto.CategoryDto(id = 1, name = "Band")
+                eventCategory = EventDto.CategoryDto(eventCategoryId = 1, name = "Band")
             ),
             EventDto(
                 eventId = 2,
@@ -55,22 +55,22 @@ class EventApiMock : EventApi {
                     pictures = listOf(
                         EventDto.PictureDto(
                             pictureId = 4,
-                            title = "THE AWEZOMBIES Album 1",
+                            altText = "THE AWEZOMBIES Album 1",
                             path = "https://picsum.photos/400/300?random=4"
                         ),
                         EventDto.PictureDto(
                             pictureId = 5,
-                            title = "THE AWEZOMBIES Album 2",
+                            altText = "THE AWEZOMBIES Album 2",
                             path = "https://picsum.photos/400/300?random=5"
                         ),
                         EventDto.PictureDto(
                             pictureId = 20,
-                            title = "THE AWEZOMBIES Album 3",
+                            altText = "THE AWEZOMBIES Album 3",
                             path = "https://picsum.photos/400/300?random=20"
                         )
                     )
                 ),
-                image = EventDto.PictureDto(
+                picture = EventDto.PictureDto(
                     6,
                     "THE AWEZOMBIES Cover",
                     "https://picsum.photos/250/100?random=6"
@@ -78,7 +78,7 @@ class EventApiMock : EventApi {
                 startDateTimeInUTC = 1690725600,
                 endDateTimeInUTC = 1690729200,
                 eventLocation = EventDto.LocationDto(eventLocationId = 2, name = "Rock Stage"),
-                eventCategory = EventDto.CategoryDto(id = 1, name = "Band")
+                eventCategory = EventDto.CategoryDto(eventCategoryId = 1, name = "Band")
             ),
             EventDto(
                 eventId = 3,
@@ -89,15 +89,15 @@ class EventApiMock : EventApi {
                         "aliquyam erat",
                     pictures = emptyList()
                 ),
-                image = EventDto.PictureDto(
+                picture = EventDto.PictureDto(
                     pictureId = 7,
-                    title = "BURNSWELL Cover",
+                    altText = "BURNSWELL Cover",
                     path = "https://picsum.photos/250/100?random=7"
                 ),
                 startDateTimeInUTC = 1690635600,
                 endDateTimeInUTC = 1690639200,
                 eventLocation = EventDto.LocationDto(eventLocationId = 2, name = "Rock Stage"),
-                eventCategory = EventDto.CategoryDto(id = 1, name = "Band")
+                eventCategory = EventDto.CategoryDto(eventCategoryId = 1, name = "Band")
             ),
             EventDto(
                 eventId = 4,
@@ -106,15 +106,15 @@ class EventApiMock : EventApi {
                     infoText = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr",
                     pictures = emptyList()
                 ),
-                image = EventDto.PictureDto(
+                picture = EventDto.PictureDto(
                     pictureId = 8,
-                    title = "GLEN AMPLE Artist",
+                    altText = "GLEN AMPLE Artist",
                     path = "https://picsum.photos/250/100?random=8"
                 ),
                 startDateTimeInUTC = 1690549200,
                 endDateTimeInUTC = 1690552800,
                 eventLocation = EventDto.LocationDto(eventLocationId = 3, name = "Tattoo area"),
-                eventCategory = EventDto.CategoryDto(id = 2, name = "Tattoo")
+                eventCategory = EventDto.CategoryDto(eventCategoryId = 2, name = "Tattoo")
             ),
             EventDto(
                 eventId = 5,
@@ -123,15 +123,15 @@ class EventApiMock : EventApi {
                     infoText = "+43 664 123456",
                     pictures = emptyList()
                 ),
-                image = EventDto.PictureDto(
+                picture = EventDto.PictureDto(
                     pictureId = 8,
-                    title = "Artist",
+                    altText = "Artist",
                     path = "https://picsum.photos/250/100?random=9"
                 ),
                 startDateTimeInUTC = 1690531200,
                 endDateTimeInUTC = 1690653600,
                 eventLocation = EventDto.LocationDto(eventLocationId = 3, name = "Tattoo area"),
-                eventCategory = EventDto.CategoryDto(id = 2, name = "Tattoo")
+                eventCategory = EventDto.CategoryDto(eventCategoryId = 2, name = "Tattoo")
             )
         )
     }
