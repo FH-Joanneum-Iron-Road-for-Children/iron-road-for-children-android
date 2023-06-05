@@ -2,7 +2,7 @@ package at.irfc.app.presentation.program
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import at.irfc.app.data.local.entity.EventWithDetails
+import at.irfc.app.data.local.entity.relations.EventWithDetails
 import at.irfc.app.data.repository.EventRepository
 import at.irfc.app.util.Resource
 import kotlinx.coroutines.Job

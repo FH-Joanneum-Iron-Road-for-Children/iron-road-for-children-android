@@ -29,8 +29,8 @@ class EventApiMock : EventApi {
                 title = "HÖRST Cover",
                 path = "https://picsum.photos/350/100?random=1" // Wrong ratio for testing
             ),
-            startDateTimeInUTC = 1689580800,
-            endDateTimeInUTC = 1689584400,
+            startDateTimeInUTC = 1690542000,
+            endDateTimeInUTC = 1690549200,
             eventLocation = EventDto.LocationDto(eventLocationId = 1, name = "Family Rock Stage"),
             eventCategory = EventDto.CategoryDto(id = 1, name = "Band")
         ),
@@ -63,8 +63,8 @@ class EventApiMock : EventApi {
                 "THE AWEZOMBIES Cover",
                 "https://picsum.photos/250/100?random=6"
             ),
-            startDateTimeInUTC = 1689580800,
-            endDateTimeInUTC = 1689584400,
+            startDateTimeInUTC = 1690725600,
+            endDateTimeInUTC = 1690729200,
             eventLocation = EventDto.LocationDto(eventLocationId = 2, name = "Rock Stage"),
             eventCategory = EventDto.CategoryDto(id = 1, name = "Band")
         ),
@@ -81,8 +81,8 @@ class EventApiMock : EventApi {
                 title = "BURNSWELL Cover",
                 path = "https://picsum.photos/250/100?random=7"
             ),
-            startDateTimeInUTC = 1689584400,
-            endDateTimeInUTC = 1689588000,
+            startDateTimeInUTC = 1690635600,
+            endDateTimeInUTC = 1690639200,
             eventLocation = EventDto.LocationDto(eventLocationId = 2, name = "Rock Stage"),
             eventCategory = EventDto.CategoryDto(id = 1, name = "Band")
         ),
@@ -95,11 +95,28 @@ class EventApiMock : EventApi {
             ),
             image = EventDto.PictureDto(
                 pictureId = 8,
-                title = "BURNSWELL Cover",
+                title = "GLEN AMPLE Artist",
                 path = "https://picsum.photos/250/100?random=8"
             ),
-            startDateTimeInUTC = 1689584400,
-            endDateTimeInUTC = 1689588000,
+            startDateTimeInUTC = 1690549200,
+            endDateTimeInUTC = 1690552800,
+            eventLocation = EventDto.LocationDto(eventLocationId = 3, name = "Tattoo area"),
+            eventCategory = EventDto.CategoryDto(id = 2, name = "Tattoo")
+        ),
+        EventDto(
+            eventId = 5,
+            title = "Tattoo artist 1",
+            eventInfo = EventDto.InfoDto(
+                infoText = "+43 664 123456",
+                pictures = emptyList()
+            ),
+            image = EventDto.PictureDto(
+                pictureId = 8,
+                title = "Artist",
+                path = "https://picsum.photos/250/100?random=9"
+            ),
+            startDateTimeInUTC = 1690531200,
+            endDateTimeInUTC = 1690653600,
             eventLocation = EventDto.LocationDto(eventLocationId = 3, name = "Tattoo area"),
             eventCategory = EventDto.CategoryDto(id = 2, name = "Tattoo")
         )

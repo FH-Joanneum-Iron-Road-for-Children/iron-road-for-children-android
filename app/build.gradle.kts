@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId = "at.irfc.app"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
 
         versionName = project.getVersionName()
@@ -159,12 +159,12 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:$composeDestinationsVersion")
 
     // Compose UI
-    val composeBom = platform("androidx.compose:compose-bom:2023.01.00")
+    val composeBom = platform("androidx.compose:compose-bom:2023.05.01")
     implementation(composeBom)
     debugImplementation(composeBom)
     androidTestImplementation(composeBom)
 
-    implementation("androidx.activity:activity-compose:1.6.1")
+    implementation("androidx.activity:activity-compose:1.7.1")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")

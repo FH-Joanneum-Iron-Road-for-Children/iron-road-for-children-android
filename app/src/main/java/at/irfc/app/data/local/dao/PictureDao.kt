@@ -13,12 +13,12 @@ interface PictureDao {
     @Query("SELECT * FROM eventPictures WHERE eventId = :eventId")
     fun getForEvent(eventId: Long): Flow<List<EventPicture>>
 
-    @Query("SELECT * FROM eventPictures WHERE id = :pictureId")
+    @Query("SELECT * FROM eventPictures WHERE eventPictureId = :pictureId")
     fun getById(pictureId: Long): Flow<EventPicture>
 
     @Upsert
     suspend fun upsert(pictures: List<EventPicture>)
 
-    @Query("DELETE FROM eventPictures WHERE id NOT IN (:idsToKeep)")
+    @Query("DELETE FROM eventPictures WHERE eventPictureId NOT IN (:idsToKeep)")
     suspend fun deleteNotInList(idsToKeep: Set<Long>)
 }

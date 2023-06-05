@@ -1,15 +1,12 @@
 <resources>
 
     <!-- App Name -->
-
     <string name="app_name">Iron Road For Children</string>
 
     <!-- Error Messages -->
-
     <string name="could_not_refresh_data_error">Daten konnten nicht aktualisiert werden. Bitte versuche es später erneut.</string>
 
     <!-- Bottom Bar -->
-
     <string name="nav_bar_program">Programm</string>
     <string name="nav_bar_voting">Voting</string>
     <string name="nav_back">Zurück</string>
@@ -17,14 +14,12 @@
     <string name="nav_bar_aboutUs">Mehr</string>
 
     <!-- About Us Page -->
-
     <string name="header_aboutUs">Über uns</string>
     <string name="aboutUs_text">
-        Die Iron Road for Children, kurz IRFC, ist Österreichs größtes marke
-        noffenes Festival-Weekend für Bikes, Vespas und US-Cars. Der Eintritt für das komplette
-        Event-Weekend ist für Besucher kostenlos, stattdessen werden unter dem Motto
-        „Ein Herz für Kinder – Benzin im Blut“, Spendengelder für erkrankte Kinder aus ganz
-        Österreich gesammelt.
+        Die Iron Road for Children, kurz IRFC, ist Österreichs größtes markenoffenes Festival-Weekend
+        für Bikes, Vespas und US-Cars. Der Eintritt für das komplette Event-Weekend ist für Besucher
+        kostenlos, stattdessen werden unter dem Motto „Ein Herz für Kinder – Benzin im Blut“,
+        Spendengelder für erkrankte Kinder aus ganz Österreich gesammelt.
         \n\nNeben Ausfahrten mit den Fahrzeugen, zahlreichen Live Konzerten, einem Kinderbereich und
         einer Tattoo-Area wird den Besuchern auch eine große Austeller- und Streetfood-Area geboten.
         In diesem Jahr wird das Programm auch um eine Custom Bike Area erweitert und die IRFC ist
@@ -37,7 +32,8 @@
     <string name="aboutUs_imprint">Impressum</string>
 
     <!-- Program Screen -->
-    <string name="programmScreen_clearFilter">Filter entfernen</string>
+    <string name="programScreen_clearFilter">Filter entfernen</string>
+    <string name="programScreen_noEventsFound">Für diesen Tag und den gewählten Filter konnte kein Programm gefunden werden.</string>
 
     <!-- Program Detail Screen -->
     <string name="header_programDetailScreen">Progamm Details</string>
@@ -45,6 +41,10 @@
     <string name="programDetailScreen_EventNotFound">Event konnte nicht gefunden werden.</string>
 
     <!-- Voting Screen -->
+    <string name="voting_alreadyVoted">Du hast bereits abgestimmt</string>
+    <string name="voting_submitVoteFailed">Voting konnte nicht gesendet werden</string>
+    <string name="voting_successfullyVoted">Deine Stimme für "%1$s" wurde gespeichert</string>
+    <string name="voting_failedNotActive">Zurzeit kann nicht abgestimmt werden</string>
     <string name="header_VotingScreen">Stimme für deine Lieblingsband ab!</string>
     <string name="subHeader_VotingScreen">Die Band mit den meisten Stimmen darf bei NovaRock auftreten.</string>
     <string name="header_days">Tage</string>

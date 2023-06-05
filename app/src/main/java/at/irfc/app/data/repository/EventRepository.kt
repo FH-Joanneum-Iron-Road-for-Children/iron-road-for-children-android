@@ -3,15 +3,15 @@ package at.irfc.app.data.repository
 import at.irfc.app.data.local.dao.CategoryDao
 import at.irfc.app.data.local.dao.EventDao
 import at.irfc.app.data.local.entity.EventCategory
-import at.irfc.app.data.local.entity.EventWithDetails
+import at.irfc.app.data.local.entity.relations.EventWithDetails
 import at.irfc.app.data.remote.api.EventApi
 import at.irfc.app.data.remote.dto.EventDto
 import at.irfc.app.data.remote.dto.toEventEntity
 import at.irfc.app.util.Resource
 import at.irfc.app.util.cachedRemoteResource
-import at.irfc.app.util.extensions.minus
-import java.util.*
+import java.time.LocalDateTime
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.toJavaDuration
 import kotlinx.coroutines.flow.Flow
 
 class EventRepository(
@@ -24,8 +24,8 @@ class EventRepository(
         fetch = eventApi::getEvents,
         update = { eventDao.replaceEvents(it.map(EventDto::toEventEntity)) },
         shouldFetch = { events ->
-            val updateWhenOlderThan = Date() - cacheDuration
-            force || events.isEmpty() || events.any { it.updated.before(updateWhenOlderThan) }
+            val updateWhenOlderThan = LocalDateTime.now() - cacheDuration
+            force || events.isEmpty() || events.any { it.updated.isBefore(updateWhenOlderThan) }
         }
     )
 
@@ -41,8 +41,8 @@ class EventRepository(
                 }
             },
             shouldFetch = { event ->
-                val updateWhenOlderThan = Date() - cacheDuration
-                force || event == null || event.updated.before(updateWhenOlderThan)
+                val updateWhenOlderThan = LocalDateTime.now() - cacheDuration
+                force || event == null || event.updated.isBefore(updateWhenOlderThan)
             }
         )
     }
@@ -50,6 +50,6 @@ class EventRepository(
     fun getCategories(): Flow<List<EventCategory>> = categoryDao.getAll()
 
     companion object {
-        val cacheDuration = 2.hours
+        val cacheDuration = 2.hours.toJavaDuration()
     }
 }

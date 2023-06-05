@@ -1,16 +1,17 @@
 package at.irfc.app.data.local
 
 import androidx.room.TypeConverter
-import java.util.*
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class Converters {
     @TypeConverter
-    fun dateFromTimestamp(value: Long?): Date? {
-        return value?.let { Date(it) }
+    fun localDateTimeFromTimestamp(value: Long?): LocalDateTime? {
+        return value?.let { LocalDateTime.ofEpochSecond(value, 0, ZoneOffset.UTC) }
     }
 
     @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time
+    fun localDateTimeToTimestamp(localDateTime: LocalDateTime?): Long? {
+        return localDateTime?.toEpochSecond(ZoneOffset.UTC)
     }
 }
