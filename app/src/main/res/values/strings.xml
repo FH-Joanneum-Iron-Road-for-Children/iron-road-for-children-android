@@ -1,10 +1,9 @@
 <resources>
 
-    <!-- App Name -->
+    <!-- Global -->
     <string name="app_name">Iron Road For Children</string>
-
-    <!-- Error Messages -->
     <string name="could_not_refresh_data_error">Daten konnten nicht aktualisiert werden. Bitte versuche es später erneut.</string>
+    <string name="refresh">Aktualisieren</string>
 
     <!-- Bottom Bar -->
     <string name="nav_bar_program">Programm</string>
@@ -33,7 +32,8 @@
 
     <!-- Program Screen -->
     <string name="programScreen_clearFilter">Filter entfernen</string>
-    <string name="programScreen_noEventsFound">Für diesen Tag und den gewählten Filter konnte kein Programm gefunden werden.</string>
+    <string name="programScreen_noEventsFoundForFilter">Für diesen Tag und den gewählten Filter konnte kein Programm gefunden werden.</string>
+    <string name="programScreen_noEventsFound">Derzeit ist kein Programm verfügbar. Bitte versuche es später erneut oder aktualisiere die Daten.</string>
 
     <!-- Program Detail Screen -->
     <string name="header_programDetailScreen">Progamm Details</string>
@@ -49,6 +49,5 @@
     <string name="voting_screenSubHeader">Die Band mit den meisten Stimmen darf bei NovaRock auftreten.</string>
     <string name="voting_sendVote">Stimme abgeben</string>
     <string name="voting_noEventsToVote">Für die gewählte Abstimmung gibt es keine Optionen für welche getstimmt werden können.</string>
-    <string name="voting_noActiveVotings">Derzeit gibt es keine aktiven Abstimmungen.</string>
-    <string name="voting_refresh">Aktualisieren</string>
+    <string name="voting_noActiveVotings">Derzeit gibt es keine aktiven Abstimmungen. Bitte versuche es später erneut oder aktualisiere die Daten.</string>
 </resources>

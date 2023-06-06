@@ -68,6 +68,7 @@ fun VotingScreen(
             if (votingsWithEvents.isNullOrEmpty()) {
                 Column(
                     modifier = Modifier
+                        .padding(10.dp)
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -78,7 +79,7 @@ fun VotingScreen(
                         textAlign = TextAlign.Center
                     )
                     Button(onClick = { viewModel.loadVotings(force = true) }) {
-                        Text(stringResource(id = R.string.voting_refresh))
+                        Text(stringResource(id = R.string.refresh))
                     }
                 }
             } else {
@@ -170,7 +171,9 @@ fun VotingsPager(
 
         if (eventsForVoting.isEmpty()) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
