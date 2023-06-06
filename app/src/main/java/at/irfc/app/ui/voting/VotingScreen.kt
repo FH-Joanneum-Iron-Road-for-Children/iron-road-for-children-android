@@ -58,28 +58,30 @@ fun VotingScreen(
 
         VotingHeader(votingListResource = votingListResource)
 
-        if (votingsWithEvents.isNullOrEmpty()) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceAround
-            ) {
-                Text(
-                    text = stringResource(id = R.string.voting_noActiveVotings),
-                    textAlign = TextAlign.Center
-                )
-                Button(onClick = { viewModel.loadVotings(force = true) }) {
-                    Text(stringResource(id = R.string.voting_refresh))
+        // Material 3 does not include a PullToRefresh right now
+        // TODO replace when added
+        SwipeRefresh(
+            modifier = Modifier.fillMaxSize(),
+            state = rememberSwipeRefreshState(votingListResource is Resource.Loading),
+            onRefresh = { viewModel.loadVotings(force = true) }
+        ) {
+            if (votingsWithEvents.isNullOrEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceAround
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.voting_noActiveVotings),
+                        textAlign = TextAlign.Center
+                    )
+                    Button(onClick = { viewModel.loadVotings(force = true) }) {
+                        Text(stringResource(id = R.string.voting_refresh))
+                    }
                 }
-            }
-        } else {
-            // Material 3 does not include a PullToRefresh right now
-            // TODO replace when added
-            SwipeRefresh(
-                modifier = Modifier.fillMaxSize(),
-                state = rememberSwipeRefreshState(votingListResource is Resource.Loading),
-                onRefresh = { viewModel.loadVotings(force = true) }
-            ) {
+            } else {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     VotingsPager(
                         pagerState = votingsPager,
