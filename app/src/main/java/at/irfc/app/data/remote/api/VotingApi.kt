@@ -15,7 +15,7 @@ interface VotingApi {
     @GET("votings/{votingId}")
     suspend fun getVoting(@Path("votingId") id: Long): VotingDto?
 
-    @POST("votings")
+    @POST("votes")
     @Headers("Content-Type: application/json")
     suspend fun submitUserVoting(@Body voting: UserVotingDto)
 }
