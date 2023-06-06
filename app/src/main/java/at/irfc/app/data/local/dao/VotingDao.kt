@@ -33,7 +33,12 @@ abstract class VotingDao(private val database: IrfcDatabase) {
     abstract suspend fun deleteById(id: Long)
 
     @Upsert
-    protected abstract suspend fun insertVotingEvents(votingEvents: List<VotingEventCrossRef>)
+    protected abstract suspend fun insertVotingEventsCrossRef(
+        votingEvents: List<VotingEventCrossRef>
+    )
+
+    @Query("DELETE FROM votingEvent")
+    protected abstract suspend fun clearVotingEventsCrossRef()
 
     @Update(entity = Voting::class)
     abstract suspend fun insertUserVoting(voting: UserVoting)
@@ -45,8 +50,11 @@ abstract class VotingDao(private val database: IrfcDatabase) {
     open suspend fun replaceVotings(votingsWithEvents: List<ServerVotingWithEvents>) {
         upsertVotings(votingsWithEvents.map(ServerVotingWithEvents::voting))
         deleteNotInList(votingsWithEvents.mapTo(mutableSetOf()) { it.voting.id })
+
         eventDao.upsertEvents(votingsWithEvents.flatMap { it.events })
-        insertVotingEvents(
+
+        clearVotingEventsCrossRef()
+        insertVotingEventsCrossRef(
             votingsWithEvents.flatMap { votingWithEvents ->
                 votingWithEvents.events.map { event ->
                     VotingEventCrossRef(votingId = votingWithEvents.voting.id, eventId = event.id)
