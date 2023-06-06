@@ -46,12 +46,15 @@ class VotingRepository(
             Settings.Secure.ANDROID_ID
         )
         // It should not be possible to associate multiple votes for different votings to one user
+        // -> add the votingId to the hash
+        // (unique for one voting but not possible to get all votings of a user)
         val uniqueId = "${deviceId}___unique-device-id___$votingId".sha256()
         votingApi.submitUserVoting(
             UserVotingDto(
                 votingId = votingId,
                 eventId = eventId,
-                deviceId = "android-$uniqueId"
+                // Use a new id for each build on DEBUG (makes testing easier)
+                deviceId = "${BuildConfig.deviceIdPrefix}-$uniqueId"
             )
         )
         votingDao.insertUserVoting(UserVoting(votingId = votingId, votedEventId = eventId))

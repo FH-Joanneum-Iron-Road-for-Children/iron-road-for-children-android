@@ -4,6 +4,7 @@ import com.android.build.gradle.internal.dsl.NdkOptions.DebugSymbolLevel
 import com.github.triplet.gradle.androidpublisher.ReleaseStatus
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import io.gitlab.arturbosch.detekt.Detekt
+import kotlin.random.Random
 
 plugins {
     kotlin("android")
@@ -70,6 +71,11 @@ android {
                 name = "apiBaseUrl",
                 value = "\"https://backend.irfc.fh-joanneum.at/api/\""
             )
+            buildConfigField(
+                type = "String",
+                name = "deviceIdPrefix",
+                value = "\"android\""
+            )
         }
         debug {
             isDebuggable = true
@@ -79,6 +85,12 @@ android {
                 type = "String",
                 name = "apiBaseUrl",
                 value = "\"https://backend.irfc-test.fh-joanneum.at/api/\""
+            )
+            // Use a new prefix for each debug build to make testing easier
+            buildConfigField(
+                type = "String",
+                name = "deviceIdPrefix",
+                value = "\"android-debug-${Random.Default.nextInt()}\""
             )
         }
     }
