@@ -4,7 +4,7 @@ import com.android.build.gradle.internal.dsl.NdkOptions.DebugSymbolLevel
 import com.github.triplet.gradle.androidpublisher.ReleaseStatus
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import io.gitlab.arturbosch.detekt.Detekt
-import kotlin.random.Random
+import java.util.UUID
 
 plugins {
     kotlin("android")
@@ -90,7 +90,7 @@ android {
             buildConfigField(
                 type = "String",
                 name = "deviceIdPrefix",
-                value = "\"android-debug-${Random.Default.nextInt()}\""
+                value = "\"android-debug-${UUID.randomUUID()}\""
             )
         }
     }
