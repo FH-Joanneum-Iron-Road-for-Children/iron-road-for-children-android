@@ -12,7 +12,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -46,6 +50,18 @@ fun VotingScreen(
         viewModel.toastFlow.collect {
             Toast.makeText(context, it.getMessage(context), Toast.LENGTH_LONG).show()
         }
+    }
+
+    var confirmVotingFor by remember { mutableStateOf<VoteEventRequest?>(null) }
+    if (confirmVotingFor != null) {
+        ConfirmVotingDialog(
+            votingEventName = confirmVotingFor!!.event.title,
+            onCancel = { confirmVotingFor = null },
+            onConfirm = {
+                viewModel.submitVoting(confirmVotingFor!!.voting, confirmVotingFor!!.event)
+                confirmVotingFor = null
+            }
+        )
     }
 
     Column {
@@ -87,7 +103,9 @@ fun VotingScreen(
                     VotingsPager(
                         pagerState = votingsPager,
                         votingsWithEvents = votingsWithEvents,
-                        onVote = viewModel::submitVoting
+                        onVote = { voting, event ->
+                            confirmVotingFor = VoteEventRequest(voting, event)
+                        }
                     )
 
                     if (BuildConfig.DEBUG) {
@@ -230,3 +248,5 @@ fun VotingsPager(
         }
     }
 }
+
+data class VoteEventRequest(val voting: Voting, val event: Event)

@@ -4,6 +4,7 @@ import at.irfc.app.data.remote.dto.UserVotingDto
 import at.irfc.app.data.remote.dto.VotingDto
 import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.POST
 import de.jensklingenberg.ktorfit.http.Path
 
@@ -15,5 +16,6 @@ interface VotingApi {
     suspend fun getVoting(@Path("votingId") id: Long): VotingDto?
 
     @POST("votings")
+    @Headers("Content-Type: application/json")
     suspend fun submitUserVoting(@Body voting: UserVotingDto)
 }

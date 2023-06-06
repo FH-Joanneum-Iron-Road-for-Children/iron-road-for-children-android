@@ -1,5 +1,6 @@
 package at.irfc.app.presentation.program
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import at.irfc.app.R
@@ -66,6 +67,7 @@ class VotingViewModel(
                 repository.submitVoting(votingId = voting.id, eventId = event.id)
                 _toastFlow.emit(StringResource(R.string.voting_successfullyVoted, event.title))
             } catch (e: Exception) {
+                Log.e(this::class.simpleName, "Could not send voting", e)
                 _toastFlow.emit(StringResource(R.string.voting_submitVoteFailed))
             }
         }

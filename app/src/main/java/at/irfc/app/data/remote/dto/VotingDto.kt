@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 class VotingDto(
     val votingId: Long,
     val title: String,
-    val isActive: Boolean,
+    val active: Boolean,
     val events: List<EventDto>
 )
 
@@ -21,6 +21,6 @@ fun VotingDto.toVotingEntity(): ServerVotingWithEvents = ServerVotingWithEvents(
 private fun VotingDto.toServerVoting(): ServerVoting = ServerVoting(
     id = this.votingId,
     title = this.title,
-    isActive = this.isActive,
+    isActive = this.active,
     updated = LocalDateTime.now()
 )
