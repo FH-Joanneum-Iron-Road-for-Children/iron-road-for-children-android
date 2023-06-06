@@ -58,7 +58,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false // TODO enable proguard
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -68,7 +68,7 @@ android {
             buildConfigField(
                 type = "String",
                 name = "apiBaseUrl",
-                value = "\"https://backend.irfc-test.st-ki.at/api/\"" // TODO use correct prod value
+                value = "\"https://backend.irfc.fh-joanneum.at/api/\""
             )
         }
         debug {
@@ -78,7 +78,7 @@ android {
             buildConfigField(
                 type = "String",
                 name = "apiBaseUrl",
-                value = "\"https://backend.irfc-test.st-ki.at/api/\"" // TODO use correct test value
+                value = "\"https://backend.irfc-test.fh-joanneum.at/api/\""
             )
         }
     }
