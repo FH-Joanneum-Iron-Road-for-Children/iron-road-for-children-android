@@ -15,7 +15,7 @@ plugins {
     id("com.github.triplet.play") version "3.8.1"
 }
 
-val versionRegex = Regex("""^\d+\.\d{1,2}\.\d{1,2}$""")
+val versionRegex = Regex("""\d+\.\d{1,2}\.\d{1,2}""")
 
 android {
     namespace = "at.irfc.app"
@@ -198,7 +198,7 @@ dependencies {
 tasks.register("release") {
     doLast {
         val versionParameter: String? = project.findProperty("v")?.toString()?.also { version ->
-            if (!version.matches(versionRegex)) {
+            if (!versionRegex.matches(version)) {
                 throw IllegalArgumentException(
                     "Version argument 'v' must match $versionRegex (e.g. 2.10.2). " +
                         "For usage see README.md"

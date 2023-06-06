@@ -6,19 +6,23 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-private val DarkColorScheme = darkColorScheme(
-    primary = IrfcYellow,
-    onPrimary = IrfcBlue,
-    secondary = IrfcBlue,
-    onSecondary = IrfcYellow
-)
+private val DarkColorScheme
+    @Composable
+    get() = darkColorScheme(
+        primary = IrfcYellow,
+        onPrimary = IrfcBlue,
+        secondary = IrfcBlue,
+        onSecondary = IrfcYellow
+    )
 
-private val LightColorScheme = lightColorScheme(
-    primary = IrfcYellow,
-    onPrimary = IrfcBlue,
-    secondary = IrfcBlue,
-    onSecondary = IrfcYellow
-)
+private val LightColorScheme
+    @Composable
+    get() = lightColorScheme(
+        primary = IrfcYellow,
+        onPrimary = IrfcBlue,
+        secondary = IrfcBlue,
+        onSecondary = IrfcYellow
+    )
 
 @Composable
 fun IronRoadForChildrenTheme(
