@@ -1,8 +1,22 @@
 package at.irfc.app.ui.theme
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import at.irfc.app.R
 
-val IrfcBlue = Color(0xFF174066)
-val IrfcYellow = Color(0xFFFED513)
-val IrfcTurquoise = Color(0xFF4BAFB4)
-val IrfcRed = Color(0xFFE83B45)
+val IrfcBlue: Color
+    @Composable
+    get() = colorResource(id = R.color.irfcBlue)
+
+val IrfcYellow
+    @Composable
+    get() = colorResource(id = R.color.irfcYellow)
+
+val IrfcTurquoise
+    @Composable
+    get() = colorResource(id = R.color.irfcTurquoise)
+
+val IrfcRed
+    @Composable
+    get() = colorResource(id = R.color.irfcRed)

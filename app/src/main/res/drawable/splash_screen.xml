@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/irfcBlue" />
+    <item android:drawable="@drawable/splash_background" />
     <item
         android:width="400dp"
         android:height="400dp"
@@ -8,7 +8,13 @@
         android:top="-150dp"
         android:drawable="@drawable/splash_logo" />
     <item
-        android:top="150dp"
+        android:top="120dp"
+        android:width="200dp"
+        android:height="40dp"
+        android:drawable="@drawable/splash_fhj_logo"
+        android:gravity="center" />
+    <item
+        android:top="250dp"
         android:width="300dp"
         android:height="17dp"
         android:drawable="@drawable/splash_logo_text"
