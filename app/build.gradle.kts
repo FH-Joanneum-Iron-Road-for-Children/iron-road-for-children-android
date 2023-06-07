@@ -92,6 +92,10 @@ android {
                 name = "deviceIdPrefix",
                 value = "\"android-debug-${UUID.randomUUID()}\""
             )
+
+            if (project.findProperty("signDebug") == "true") {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
     compileOptions {

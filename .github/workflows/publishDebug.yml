@@ -1,8 +1,8 @@
-name: Publish App to Google Play Internal Testing
+name: Publish Snapshot App to GitHub Releases
 on:
   push:
-    tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+-b[0-9]+'
+    branches:
+      - develop
 
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
@@ -40,15 +40,12 @@ jobs:
           echo -n "${{ secrets.IRFC_RELEASE_CI_API_JSON }}" | base64 --decode > .keys/service-account.json
 
       - name: Create APK & Bundle
-        run: ./gradlew assembleRelease bundleRelease -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
+        run: ./gradlew assembleDebug bundleDebug -PsignDebug=true -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
 
-      - name: Upload to PlayStore internal Testing
-        run: ./gradlew publishReleaseApps -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
-
-      - name: Create GitHub Release
+      - name: Create GitHub Pre-Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "app/build/outputs/apk/release/*.apk, app/build/outputs/bundle/release/*.aab"
-          generateReleaseNotes: true
-
-      # TODO send notification (Teams/Slack/...)?
+          artifacts: "app/build/outputs/apk/debug/*.apk, app/build/outputs/bundle/debug/*.aab"
+          prerelease: true
+          commit: ${{ github.sha }}
+          tag: snapshot-${{ github.event.repository.updated_at }}

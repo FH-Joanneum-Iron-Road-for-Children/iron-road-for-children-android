@@ -13,7 +13,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 fun ktorfitFactory(networkLogs: Boolean = false): Ktorfit = ktorfit {
-    baseUrl(BuildConfig.apiBaseUrl) // TODO get url from Config
+    baseUrl(BuildConfig.apiBaseUrl)
     httpClient(
         HttpClient {
             expectSuccess = true // Throw on non 2xx codes
