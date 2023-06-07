@@ -12,6 +12,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.BrokenImage
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -55,7 +58,8 @@ fun EventDetailsCard(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(2.5f)
+                    .aspectRatio(2.5f),
+                error = rememberVectorPainter(image = Icons.Outlined.BrokenImage)
             )
 
             Column(
@@ -65,9 +69,11 @@ fun EventDetailsCard(
             ) {
                 val timeString = remember(event.startDateTime, event.endDateTime) {
                     val formatter = DateTimeFormatter.ofPattern("HH:mm")
-                    "${formatter.format(event.startDateTime)} - ${formatter.format(
-                        event.endDateTime
-                    )}"
+                    "${formatter.format(event.startDateTime)} - ${
+                        formatter.format(
+                            event.endDateTime
+                        )
+                    }"
                 }
                 Text(
                     text = stringResource(id = R.string.programDetailScreen_TimeHeading),
@@ -104,7 +110,8 @@ fun EventDetailsCard(
                             model = image.path,
                             contentDescription = image.title,
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier.aspectRatio(4 / 3f)
+                            modifier = Modifier.aspectRatio(4 / 3f),
+                            error = rememberVectorPainter(image = Icons.Outlined.BrokenImage)
                         )
                     }
                 }

@@ -1,10 +1,10 @@
 <resources>
 
-    <!-- App Name -->
+    <!-- Global -->
     <string name="app_name">Iron Road For Children</string>
-
-    <!-- Error Messages -->
     <string name="could_not_refresh_data_error">Daten konnten nicht aktualisiert werden. Bitte versuche es später erneut.</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="cancel">Abbrechen</string>
 
     <!-- Bottom Bar -->
     <string name="nav_bar_program">Programm</string>
@@ -33,7 +33,8 @@
 
     <!-- Program Screen -->
     <string name="programScreen_clearFilter">Filter entfernen</string>
-    <string name="programScreen_noEventsFound">Für diesen Tag und den gewählten Filter konnte kein Programm gefunden werden.</string>
+    <string name="programScreen_noEventsFoundForFilter">Für diesen Tag und den gewählten Filter konnte kein Programm gefunden werden.</string>
+    <string name="programScreen_noEventsFound">Derzeit ist kein Programm verfügbar. Bitte versuche es später erneut oder aktualisiere die Daten.</string>
 
     <!-- Program Detail Screen -->
     <string name="header_programDetailScreen">Progamm Details</string>
@@ -43,12 +44,12 @@
     <!-- Voting Screen -->
     <string name="voting_alreadyVoted">Du hast bereits abgestimmt</string>
     <string name="voting_submitVoteFailed">Voting konnte nicht gesendet werden</string>
-    <string name="voting_successfullyVoted">Deine Stimme für "%1$s" wurde gespeichert</string>
+    <string name="voting_successfullyVoted">Deine Stimme für \"%1$s\" wurde gespeichert</string>
     <string name="voting_failedNotActive">Zurzeit kann nicht abgestimmt werden</string>
-    <string name="voting_screenHeader">Stimme für deine Lieblingsband ab!</string>
-    <string name="voting_screenSubHeader">Die Band mit den meisten Stimmen darf bei NovaRock auftreten.</string>
     <string name="voting_sendVote">Stimme abgeben</string>
     <string name="voting_noEventsToVote">Für die gewählte Abstimmung gibt es keine Optionen für welche getstimmt werden können.</string>
-    <string name="voting_noActiveVotings">Derzeit gibt es keine aktiven Abstimmungen.</string>
-    <string name="voting_refresh">Aktualisieren</string>
+    <string name="voting_noActiveVotings">Derzeit gibt es keine aktiven Abstimmungen. Bitte versuche es später erneut oder aktualisiere die Daten.</string>
+    <string name="voting_confirmVoting">Stimme absenden</string>
+    <string name="voting_confirmVotingTitle">Stimme abgeben</string>
+    <string name="voting_confirmVotingText">Wollen Sie wirklich für \"%1$s\" abstimmen? Sie können die Abstimmung hinterher nicht noch einmal durchführen oder ändern.</string>
 </resources>

@@ -1,6 +1,7 @@
 package at.irfc.app.data.remote
 
 import android.util.Log
+import at.irfc.app.BuildConfig
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.ktorfit
 import io.ktor.client.HttpClient
@@ -12,7 +13,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 fun ktorfitFactory(networkLogs: Boolean = false): Ktorfit = ktorfit {
-    baseUrl("http://10.0.2.2:8080/api/") // TODO get url from Config
+    baseUrl(BuildConfig.apiBaseUrl) // TODO get url from Config
     httpClient(
         HttpClient {
             expectSuccess = true // Throw on non 2xx codes

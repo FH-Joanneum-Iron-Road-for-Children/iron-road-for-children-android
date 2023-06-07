@@ -4,6 +4,7 @@ import com.android.build.gradle.internal.dsl.NdkOptions.DebugSymbolLevel
 import com.github.triplet.gradle.androidpublisher.ReleaseStatus
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import io.gitlab.arturbosch.detekt.Detekt
+import java.util.UUID
 
 plugins {
     kotlin("android")
@@ -58,18 +59,39 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false // TODO enable proguard
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.findByName("release")
             ndk.debugSymbolLevel = DebugSymbolLevel.FULL.name
+            buildConfigField(
+                type = "String",
+                name = "apiBaseUrl",
+                value = "\"https://backend.irfc.fh-joanneum.at/api/\""
+            )
+            buildConfigField(
+                type = "String",
+                name = "deviceIdPrefix",
+                value = "\"android\""
+            )
         }
         debug {
             isDebuggable = true
             applicationIdSuffix = ".debug"
             isMinifyEnabled = false
+            buildConfigField(
+                type = "String",
+                name = "apiBaseUrl",
+                value = "\"https://backend.irfc-test.fh-joanneum.at/api/\""
+            )
+            // Use a new prefix for each debug build to make testing easier
+            buildConfigField(
+                type = "String",
+                name = "deviceIdPrefix",
+                value = "\"android-debug-${UUID.randomUUID()}\""
+            )
         }
     }
     compileOptions {

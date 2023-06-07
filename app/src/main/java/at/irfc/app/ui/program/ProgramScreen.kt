@@ -57,15 +57,35 @@ fun ProgramScreen(
             state = rememberSwipeRefreshState(eventListResource is Resource.Loading),
             onRefresh = { viewModel.loadEvents(force = true) }
         ) {
-            EventListPager(
-                pagerState = pager,
-                eventOnDayList = eventListResource.data,
-                onEventClick = { event ->
-                    navController.navigate(
-                        ProgramDetailScreenDestination(event.id)
+            val eventOnDayList = eventListResource.data
+            if (eventOnDayList.isNullOrEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceAround
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.programScreen_noEventsFound),
+                        textAlign = TextAlign.Center
                     )
+                    Button(onClick = { viewModel.loadEvents(force = true) }) {
+                        Text(stringResource(id = R.string.refresh))
+                    }
                 }
-            )
+            } else {
+                EventListPager(
+                    pagerState = pager,
+                    eventOnDayList = eventOnDayList,
+                    onEventClick = { event ->
+                        navController.navigate(
+                            ProgramDetailScreenDestination(event.id)
+                        )
+                    }
+                )
+            }
         }
     }
 }
@@ -74,15 +94,15 @@ fun ProgramScreen(
 @Composable
 private fun EventListPager(
     pagerState: PagerState,
-    eventOnDayList: List<EventsOnDate>?,
+    eventOnDayList: List<EventsOnDate>,
     onEventClick: (EventWithDetails) -> Unit
 ) {
     HorizontalPager(
-        pageCount = eventOnDayList?.size ?: 1,
+        pageCount = eventOnDayList.size,
         state = pagerState
     ) { page ->
-        val eventsForPage = eventOnDayList?.getOrNull(page)?.events
-        if (eventsForPage.isNullOrEmpty()) {
+        val eventsForPage = eventOnDayList[page].events
+        if (eventsForPage.isEmpty()) {
             Box(
                 modifier = Modifier
                     .padding(10.dp)
@@ -91,7 +111,7 @@ private fun EventListPager(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(R.string.programScreen_noEventsFound),
+                    text = stringResource(R.string.programScreen_noEventsFoundForFilter),
                     textAlign = TextAlign.Center
                 )
             }

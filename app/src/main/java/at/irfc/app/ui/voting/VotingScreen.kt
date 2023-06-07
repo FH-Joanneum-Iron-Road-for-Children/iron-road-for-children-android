@@ -12,7 +12,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -48,6 +52,18 @@ fun VotingScreen(
         }
     }
 
+    var confirmVotingFor by remember { mutableStateOf<VoteEventRequest?>(null) }
+    if (confirmVotingFor != null) {
+        ConfirmVotingDialog(
+            votingEventName = confirmVotingFor!!.event.title,
+            onCancel = { confirmVotingFor = null },
+            onConfirm = {
+                viewModel.submitVoting(confirmVotingFor!!.voting, confirmVotingFor!!.event)
+                confirmVotingFor = null
+            }
+        )
+    }
+
     Column {
         val votingsWithEvents = votingListResource.data
         val votingsPager = rememberPagerState()
@@ -58,33 +74,38 @@ fun VotingScreen(
 
         VotingHeader(votingListResource = votingListResource)
 
-        if (votingsWithEvents.isNullOrEmpty()) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceAround
-            ) {
-                Text(
-                    text = stringResource(id = R.string.voting_noActiveVotings),
-                    textAlign = TextAlign.Center
-                )
-                Button(onClick = { viewModel.loadVotings(force = true) }) {
-                    Text(stringResource(id = R.string.voting_refresh))
+        // Material 3 does not include a PullToRefresh right now
+        // TODO replace when added
+        SwipeRefresh(
+            modifier = Modifier.fillMaxSize(),
+            state = rememberSwipeRefreshState(votingListResource is Resource.Loading),
+            onRefresh = { viewModel.loadVotings(force = true) }
+        ) {
+            if (votingsWithEvents.isNullOrEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceAround
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.voting_noActiveVotings),
+                        textAlign = TextAlign.Center
+                    )
+                    Button(onClick = { viewModel.loadVotings(force = true) }) {
+                        Text(stringResource(id = R.string.refresh))
+                    }
                 }
-            }
-        } else {
-            // Material 3 does not include a PullToRefresh right now
-            // TODO replace when added
-            SwipeRefresh(
-                modifier = Modifier.fillMaxSize(),
-                state = rememberSwipeRefreshState(votingListResource is Resource.Loading),
-                onRefresh = { viewModel.loadVotings(force = true) }
-            ) {
+            } else {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     VotingsPager(
                         pagerState = votingsPager,
                         votingsWithEvents = votingsWithEvents,
-                        onVote = viewModel::submitVoting
+                        onVote = { voting, event ->
+                            confirmVotingFor = VoteEventRequest(voting, event)
+                        }
                     )
 
                     if (BuildConfig.DEBUG) {
@@ -168,7 +189,9 @@ fun VotingsPager(
 
         if (eventsForVoting.isEmpty()) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -225,3 +248,5 @@ fun VotingsPager(
         }
     }
 }
+
+data class VoteEventRequest(val voting: Voting, val event: Event)

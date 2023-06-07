@@ -30,7 +30,8 @@ abstract class EventDao(private val database: IrfcDatabase) {
     @Query("DELETE FROM events WHERE eventId = :id")
     abstract suspend fun deleteById(id: Long)
 
-    suspend fun upsertEvents(events: List<EventWithDetails>) {
+    @Transaction
+    open suspend fun upsertEvents(events: List<EventWithDetails>) {
         categoryDao.upsertCategories(
             events.map(EventWithDetails::category).distinctBy(EventCategory::id)
         )
@@ -41,7 +42,8 @@ abstract class EventDao(private val database: IrfcDatabase) {
         pictureDaoDao.upsert(events.flatMap(EventWithDetails::additionalImages))
     }
 
-    suspend fun deleteNotInList(events: List<EventWithDetails>) {
+    @Transaction
+    open suspend fun deleteNotInList(events: List<EventWithDetails>) {
         pictureDaoDao.deleteNotInList(
             events.flatMapTo(mutableSetOf()) {
                 it.additionalImages.map(EventPicture::id)
