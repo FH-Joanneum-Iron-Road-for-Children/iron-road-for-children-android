@@ -97,6 +97,7 @@ android {
             if (project.findProperty("signDebug") == "true") {
                 signingConfig = signingConfigs.getByName("release")
                 versionNameSuffix = "-test"
+                applicationIdSuffix = ".test"
             }
         }
     }
