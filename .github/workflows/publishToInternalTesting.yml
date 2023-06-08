@@ -40,10 +40,18 @@ jobs:
           echo -n "${{ secrets.IRFC_RELEASE_CI_API_JSON }}" | base64 --decode > .keys/service-account.json
 
       - name: Create APK & Bundle
-        run: ./gradlew assembleRelease bundleRelease -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
+        run: |
+          ./gradlew assembleRelease bundleRelease \
+            -PkeyPassword=${{ secrets.KEY_PASSWORD }} \
+            -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} \
+            -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
 
       - name: Upload to PlayStore internal Testing
-        run: ./gradlew publishReleaseApps -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
+        run: |
+          ./gradlew publishReleaseApps \
+            -PkeyPassword=${{ secrets.KEY_PASSWORD }} \
+            -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} \
+            -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1

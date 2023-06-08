@@ -31,10 +31,29 @@ validate the style again and merging will not be allowed if the checks do not pa
 The tasks can also be executed manually using `./gradlew ktlintCheck` (or `./gradlew ktlintFormat`
 to auto format all files) and `./gradlew detekt`.
 
+## Create test build
+
+The gradle `releaseTest` task does all the magic for you. It will create and push a test tag 
+(e.g. `v2.0.0-test-12345`). This will trigger a CI/CD workflow which creates a release for testing. 
+The signed apk and aab will be uploaded to [GitHub-Releases](https://github.com/FH-Joanneum-Iron-Road-for-Children/iron-road-for-children-android/releases).
+From there it can be downloaded and manually installed.
+
+> Make sure that the working tree is clean, otherwise the command will fail.
+
+> Test releases will use the test deployment of the backend.
+
+```shell
+./gradlew releaseTest
+```
+
 ## Create build for internal Testing (Google PlayStore)
 
 The gradle `release` task does all the magic for you. If no parameters provided it will keep the
 version and increases the build number by one.
+
+> Make sure that the working tree is clean, otherwise the command will fail.
+
+> Builds will use the production deployment of the backend.
 
 ```shell
 ./gradlew release
@@ -57,7 +76,7 @@ If you want to override both use
 
 1. Create a new release branch (can be skipped when already releasing from a non protected branch)
 2. Run the release gradle task (optionally specify the version and/or build number). For current
-   version have a look at the tags or the `gralde.properties` file.
+   version have a look at the tags or the `gradle.properties` file.
     - Will increase the version specified in `gradle.properties` and commit this change
     - Create and push a version tag (e.g. `v2.0.0-b10`)
     - Trigger the publish to internal Testing CI/CD workflow

@@ -4,6 +4,7 @@ import com.android.build.gradle.internal.dsl.NdkOptions.DebugSymbolLevel
 import com.github.triplet.gradle.androidpublisher.ReleaseStatus
 import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import io.gitlab.arturbosch.detekt.Detekt
+import java.time.Instant
 import java.util.UUID
 
 plugins {
@@ -95,6 +96,7 @@ android {
 
             if (project.findProperty("signDebug") == "true") {
                 signingConfig = signingConfigs.getByName("release")
+                versionNameSuffix = "-test"
             }
         }
     }
@@ -271,6 +273,38 @@ tasks.register("release") {
 
         println("Committing version")
         runCommand("git", "commit", "-m", "Update version to $versionTag")
+
+        println("Creating git tag $versionTag")
+        runCommand("git", "tag", versionTag)
+
+        println("Push git tag $versionTag to origin")
+        runCommand("git", "push", "origin", versionTag)
+    }
+}
+
+tasks.register("releaseTest") {
+    doLast {
+        println("Checking if working tree is clean")
+        val workingTreeClean = runCommand(
+            "git",
+            "diff",
+            "--shortstat",
+            "--exit-code",
+            ignoreExitCode = true
+        )
+        if (workingTreeClean.exitValue != 0) {
+            throw IllegalStateException(
+                "Git working tree is not clean. " +
+                    "Commit (or stash) all your local changes before making a release."
+            )
+        }
+        println("Working tree is clean")
+
+        val version = project.getVersionName()
+        // Divide epochSeconds by 60 to get epochMinutes.
+        // This value is used as buildNumber and buildNumbers are limited to Integer
+        // (see Year 2038 problem: https://en.wikipedia.org/wiki/Year_2038_problem)
+        val versionTag = "v$version-test-${Instant.now().epochSecond / 60}"
 
         println("Creating git tag $versionTag")
         runCommand("git", "tag", versionTag)

@@ -1,8 +1,12 @@
-name: Publish Snapshot App to GitHub Releases
+name: Publish Testing App to GitHub Releases
+
+permissions:
+  contents: write
+
 on:
   push:
-    branches:
-      - develop
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+-test-[0-9]+'
 
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx3g"
@@ -39,13 +43,17 @@ jobs:
           echo -n "${{ secrets.SIGNING_KEY }}" | base64 --decode > .keys/app_sign.jks
           echo -n "${{ secrets.IRFC_RELEASE_CI_API_JSON }}" | base64 --decode > .keys/service-account.json
 
-      - name: Create APK & Bundle
-        run: ./gradlew assembleDebug bundleDebug -PsignDebug=true -PkeyPassword=${{ secrets.KEY_PASSWORD }} -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
+      - name: Create Testing APK & Bundle
+        run: |
+          ./gradlew assembleDebug bundleDebug \
+            -PsignDebug=true \
+            -Pversion_build=$(echo $GITHUB_REF_NAME | cut -d'-' -f 3) \
+            -PkeyPassword=${{ secrets.KEY_PASSWORD }} \
+            -PstorePassword=${{ secrets.KEYSTORE_PASSWORD }} \
+            -PkeyAlias=${{ secrets.KEYSTORE_ALIAS }}
 
       - name: Create GitHub Pre-Release
         uses: ncipollo/release-action@v1
         with:
           artifacts: "app/build/outputs/apk/debug/*.apk, app/build/outputs/bundle/debug/*.aab"
           prerelease: true
-          commit: ${{ github.sha }}
-          tag: snapshot-${{ github.event.repository.updated_at }}
