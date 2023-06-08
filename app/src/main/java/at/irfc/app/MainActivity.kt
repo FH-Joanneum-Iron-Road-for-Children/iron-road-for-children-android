@@ -20,10 +20,10 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalLayoutApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         // Switch from SplashScreenTheme to AppTheme
         setTheme(R.style.Theme_IronRoadForChildren)
-
-        super.onCreate(savedInstanceState)
 
         setContent {
             val navController = rememberNavController()
