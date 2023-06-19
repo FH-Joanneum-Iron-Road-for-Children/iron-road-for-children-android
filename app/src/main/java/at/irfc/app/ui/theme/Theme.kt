@@ -12,7 +12,8 @@ private val DarkColorScheme
         primary = IrfcYellow,
         onPrimary = IrfcBlue,
         secondary = IrfcBlue,
-        onSecondary = IrfcYellow
+        onSecondary = IrfcYellow,
+        tertiary = IrfcTurquoise
     )
 
 private val LightColorScheme
@@ -21,7 +22,8 @@ private val LightColorScheme
         primary = IrfcYellow,
         onPrimary = IrfcBlue,
         secondary = IrfcBlue,
-        onSecondary = IrfcYellow
+        onSecondary = IrfcYellow,
+        tertiary = IrfcTurquoise
     )
 
 @Composable

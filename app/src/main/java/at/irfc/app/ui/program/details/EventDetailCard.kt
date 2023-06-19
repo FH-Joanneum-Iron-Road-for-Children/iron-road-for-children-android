@@ -2,6 +2,7 @@ package at.irfc.app.ui.program.details
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Event
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.outlined.BrokenImage
+import androidx.compose.material.icons.outlined.Label
+import androidx.compose.material.icons.outlined.PinDrop
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import at.irfc.app.R
 import at.irfc.app.data.local.entity.EventPicture
 import at.irfc.app.data.local.entity.relations.EventWithDetails
+import at.irfc.app.ui.core.IconText
 import coil.compose.AsyncImage
 import java.time.format.DateTimeFormatter
 
@@ -55,7 +61,7 @@ fun EventDetailsCard(
             AsyncImage(
                 model = event.image.path,
                 contentDescription = event.image.title,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(2.5f),
@@ -75,20 +81,59 @@ fun EventDetailsCard(
                         )
                     }"
                 }
-                Text(
-                    text = stringResource(id = R.string.programDetailScreen_TimeHeading),
-                    fontWeight = FontWeight.Bold
+
+                val dateString = remember(event.startDateTime) {
+                    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+                    formatter.format(event.startDateTime)
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
+                        Text(
+                            text = stringResource(id = R.string.programDetailScreen_TimeHeading),
+                            fontWeight = FontWeight.Bold
+                        )
+                        IconText(
+                            iconVector = Icons.Filled.Schedule,
+                            iconDescription = stringResource(
+                                id = R.string.programDetailScreen_TimeHeading
+                            ),
+                            text = timeString
+                        )
+                    }
+                    Column {
+                        Text(
+                            text = stringResource(id = R.string.programDetailScreen_DateHeading),
+                            fontWeight = FontWeight.Bold
+                        )
+                        IconText(
+                            iconVector = Icons.Filled.Event,
+                            iconDescription = stringResource(
+                                id = R.string.programDetailScreen_DateHeading
+                            ),
+                            text = dateString
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(15.dp))
+
+                IconText(
+                    iconVector = Icons.Outlined.PinDrop,
+                    iconDescription = "Ort",
+                    text = event.location.name
                 )
-                Text(
-                    text = timeString
+                Spacer(modifier = Modifier.height(5.dp))
+                IconText(
+                    iconVector = Icons.Outlined.Label,
+                    iconDescription = "Category",
+                    text = event.category.name
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(text = event.location.name)
-                Text(text = event.category.name)
-
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(15.dp))
 
                 Text(text = event.description)
             }

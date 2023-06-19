@@ -30,6 +30,7 @@ import at.irfc.app.ui.theme.IronRoadForChildrenTheme
 import coil.compose.AsyncImage
 import java.time.LocalDateTime
 
+// TODO mark winner of a voting (with crone on the card after the title and yellow background?)
 @Composable
 fun VotingCard(
     modifier: Modifier = Modifier,
@@ -58,7 +59,7 @@ fun VotingCard(
         AsyncImage(
             model = event.image.path,
             contentDescription = event.image.title,
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(2.5f),

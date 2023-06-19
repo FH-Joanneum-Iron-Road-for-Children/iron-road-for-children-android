@@ -1,4 +1,4 @@
-package at.irfc.app.presentation.program
+package at.irfc.app.presentation.voting
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -39,7 +39,7 @@ class VotingViewModel(
     fun loadVotings(force: Boolean = false) {
         loadJob?.cancel()
         loadJob = repository.loadActiveVotings(force)
-            .onEach { _votingListResource.value = it.filterActive() }
+            .onEach { _votingListResource.value = it }
             .launchIn(viewModelScope)
     }
 
@@ -70,21 +70,6 @@ class VotingViewModel(
                 Log.e(this::class.simpleName, "Could not send voting", e)
                 _toastFlow.emit(StringResource(R.string.voting_submitVoteFailed))
             }
-        }
-    }
-
-    private fun Resource<List<VotingWithEvents>>.filterActive(): Resource<List<VotingWithEvents>> {
-        fun List<VotingWithEvents>.applyFilter() = this.filter {
-            it.isActive && it.events.isNotEmpty()
-        }
-
-        return when (this) {
-            is Resource.Loading -> Resource.Loading(this.data?.applyFilter())
-            is Resource.Success -> Resource.Success(this.data.applyFilter())
-            is Resource.Error -> Resource.Error(
-                this.errorMessage,
-                this.data?.applyFilter()
-            )
         }
     }
 

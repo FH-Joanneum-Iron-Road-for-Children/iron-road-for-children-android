@@ -39,6 +39,7 @@
     <!-- Program Detail Screen -->
     <string name="header_programDetailScreen">Progamm Details</string>
     <string name="programDetailScreen_TimeHeading">Uhrzeit</string>
+    <string name="programDetailScreen_DateHeading">Datum</string>
     <string name="programDetailScreen_EventNotFound">Event konnte nicht gefunden werden.</string>
 
     <!-- Voting Screen -->
