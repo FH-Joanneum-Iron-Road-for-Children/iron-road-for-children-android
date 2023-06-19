@@ -52,7 +52,7 @@ fun ExpandableCard(
                     } else {
                         Icons.Outlined.ExpandMore
                     },
-                    contentDescription = "Mehr anzeigen"
+                    contentDescription = if (expanded) "Weniger anzeigen" else "Mehr anzeigen"
                 )
             }
         }
