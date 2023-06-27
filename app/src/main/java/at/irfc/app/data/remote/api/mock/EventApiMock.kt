@@ -7,7 +7,7 @@ import kotlinx.coroutines.delay
 class EventApiMock : EventApi {
     override suspend fun getEvents(): List<EventDto> {
         delay(500) // Simulate some network latency
-        return emptyList()
+        return events
     }
 
     override suspend fun getEvent(id: Long) = getEvents().firstOrNull { it.eventId == id }

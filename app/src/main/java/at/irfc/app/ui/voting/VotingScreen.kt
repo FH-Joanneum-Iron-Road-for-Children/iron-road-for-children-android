@@ -59,19 +59,19 @@ fun VotingScreen(
             }
         )
     }
+    val votingsWithEvents = votingListResource.data
 
-    Column {
-        val votingsWithEvents = votingListResource.data
+    // Material 3 does not include a PullToRefresh right now
+    // TODO replace when added
+    SwipeRefresh(
+        modifier = Modifier.fillMaxSize(),
+        state = rememberSwipeRefreshState(votingListResource is Resource.Loading),
+        onRefresh = { viewModel.loadVotings(force = true) },
+        clipIndicatorToPadding = false
+    ) {
+        Column {
+            VotingHeader(votingListResource = votingListResource)
 
-        VotingHeader(votingListResource = votingListResource)
-
-        // Material 3 does not include a PullToRefresh right now
-        // TODO replace when added
-        SwipeRefresh(
-            modifier = Modifier.fillMaxSize(),
-            state = rememberSwipeRefreshState(votingListResource is Resource.Loading),
-            onRefresh = { viewModel.loadVotings(force = true) }
-        ) {
             if (votingsWithEvents.isNullOrEmpty()) {
                 Column(
                     modifier = Modifier
@@ -150,7 +150,8 @@ private fun VotingHeader(
         ) {
             Text(
                 text = votingListResource.errorMessage.getMessage(),
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -169,7 +170,7 @@ fun Voting(
             // TODO also add a crown here when voting is already decided?
             Text(text = voting.title, style = MaterialTheme.typography.titleLarge)
             Spacer(modifier = Modifier.height(5.dp))
-            Text(text = "Description for the Voting") // TODO show description for voting
+            // TODO Text(text = "Description for the Voting") // TODO show description for voting
         }
 
         if (voting.events.isEmpty()) {

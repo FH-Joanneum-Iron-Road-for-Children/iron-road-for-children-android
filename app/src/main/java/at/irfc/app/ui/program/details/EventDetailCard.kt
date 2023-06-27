@@ -154,7 +154,7 @@ fun EventDetailsCard(
                         AsyncImage(
                             model = image.path,
                             contentDescription = image.title,
-                            contentScale = ContentScale.Crop,
+                            contentScale = ContentScale.Fit,
                             modifier = Modifier.aspectRatio(4 / 3f),
                             error = rememberVectorPainter(image = Icons.Outlined.BrokenImage)
                         )

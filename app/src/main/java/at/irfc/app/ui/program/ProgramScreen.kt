@@ -47,45 +47,50 @@ fun ProgramScreen(
     Column {
         val pager = rememberPagerState()
         EventListTabRow(pagerState = pager, eventOnDayList = eventListResource.data)
-        ProgramListHeader(
-            eventListResource = eventListResource,
-            selectedCategory = selectedCategory,
-            categories = categories,
-            onToggleCategory = viewModel::toggleCategory
-        )
+
         // Material 3 does not include a PullToRefresh right now // TODO replace when added
         SwipeRefresh(
+            modifier = Modifier.fillMaxSize(),
             state = rememberSwipeRefreshState(eventListResource is Resource.Loading),
             onRefresh = { viewModel.loadEvents(force = true) }
         ) {
-            val eventOnDayList = eventListResource.data
-            if (eventOnDayList.isNullOrEmpty()) {
-                Column(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceAround
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.programScreen_noEventsFound),
-                        textAlign = TextAlign.Center
-                    )
-                    Button(onClick = { viewModel.loadEvents(force = true) }) {
-                        Text(stringResource(id = R.string.refresh))
-                    }
-                }
-            } else {
-                EventListPager(
-                    pagerState = pager,
-                    eventOnDayList = eventOnDayList,
-                    onEventClick = { event ->
-                        navController.navigate(
-                            ProgramDetailScreenDestination(event.id)
-                        )
-                    }
+            Column {
+                ProgramListHeader(
+                    eventListResource = eventListResource,
+                    selectedCategory = selectedCategory,
+                    categories = categories,
+                    onToggleCategory = viewModel::toggleCategory
                 )
+
+                val eventOnDayList = eventListResource.data
+                if (eventOnDayList.isNullOrEmpty()) {
+                    Column(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.SpaceAround
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.programScreen_noEventsFound),
+                            textAlign = TextAlign.Center
+                        )
+                        Button(onClick = { viewModel.loadEvents(force = true) }) {
+                            Text(stringResource(id = R.string.refresh))
+                        }
+                    }
+                } else {
+                    EventListPager(
+                        pagerState = pager,
+                        eventOnDayList = eventOnDayList,
+                        onEventClick = { event ->
+                            navController.navigate(
+                                ProgramDetailScreenDestination(event.id)
+                            )
+                        }
+                    )
+                }
             }
         }
     }
@@ -185,30 +190,32 @@ private fun ProgramListHeader(
         }
     }
 
-    LazyRow(
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-            .fillMaxWidth(),
-        contentPadding = PaddingValues(horizontal = 10.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        if (selectedCategory != null) {
-            item(selectedCategory.id) {
+    if (selectedCategory != null || categories.isNotEmpty()) {
+        LazyRow(
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 10.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            if (selectedCategory != null) {
+                item(selectedCategory.id) {
+                    FilterChip(
+                        modifier = Modifier.animateItemPlacement(),
+                        text = selectedCategory.name,
+                        selected = true,
+                        onClick = { onToggleCategory(selectedCategory) }
+                    )
+                }
+            }
+            items(categories, EventCategory::id) {
                 FilterChip(
                     modifier = Modifier.animateItemPlacement(),
-                    text = selectedCategory.name,
-                    selected = true,
-                    onClick = { onToggleCategory(selectedCategory) }
+                    text = it.name,
+                    selected = false,
+                    onClick = { onToggleCategory(it) }
                 )
             }
-        }
-        items(categories, EventCategory::id) {
-            FilterChip(
-                modifier = Modifier.animateItemPlacement(),
-                text = it.name,
-                selected = false,
-                onClick = { onToggleCategory(it) }
-            )
         }
     }
 }
