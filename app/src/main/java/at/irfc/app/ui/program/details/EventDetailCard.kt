@@ -21,6 +21,7 @@ import androidx.compose.material.icons.outlined.Label
 import androidx.compose.material.icons.outlined.PinDrop
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,6 +38,7 @@ import at.irfc.app.data.local.entity.EventPicture
 import at.irfc.app.data.local.entity.relations.EventWithDetails
 import at.irfc.app.ui.core.IconText
 import coil.compose.AsyncImage
+import dev.jeziellago.compose.markdowntext.MarkdownText
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -135,7 +137,11 @@ fun EventDetailsCard(
 
                 Spacer(modifier = Modifier.height(15.dp))
 
-                Text(text = event.description)
+                MarkdownText(
+                    markdown = event.description,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = LocalContentColor.current
+                )
             }
 
             if (event.additionalImages.isNotEmpty()) {

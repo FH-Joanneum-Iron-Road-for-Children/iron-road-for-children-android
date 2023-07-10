@@ -64,6 +64,15 @@ fun AboutUsScreen() {
                     text = stringResource(R.string.aboutUs_donate)
                 )
             }
+
+            OutlinedButton(onClick = {
+                uriHandler.openUri("https://irfc.at/app/app-gewinnspiel/")
+            }) {
+                Text(
+                    text = stringResource(R.string.aboutUs_raffle),
+                    color = MaterialTheme.colorScheme.tertiary
+                )
+            }
         }
 
         Column(
