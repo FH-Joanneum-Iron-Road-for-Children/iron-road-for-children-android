@@ -16,7 +16,7 @@ data class EventWithDetails(
     @Relation(parentColumn = "locationId", entityColumn = "eventLocationId")
     val location: EventLocation,
 
-    @Relation(parentColumn = "eventId", entityColumn = "eventPictureId")
+    @Relation(parentColumn = "eventId", entityColumn = "eventId")
     val additionalImages: List<EventPicture>
 ) {
     // Shorthand accessors

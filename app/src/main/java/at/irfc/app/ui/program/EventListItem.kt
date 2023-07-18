@@ -30,8 +30,8 @@ fun EventListItem(event: EventWithDetails, onEventClick: (EventWithDetails) -> U
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         modifier = Modifier
-            .clickable { onEventClick(event) }
             .fillMaxWidth()
+            .clickable { onEventClick(event) }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

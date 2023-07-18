@@ -203,6 +203,8 @@ dependencies {
     // Material 3 does not have swipe to refresh yet TODO remove once added to material 3
     implementation("com.google.accompanist:accompanist-swiperefresh:0.30.1")
 
+    implementation("com.github.jeziellago:compose-markdown:0.3.4")
+
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 

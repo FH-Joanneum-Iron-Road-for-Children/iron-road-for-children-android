@@ -91,9 +91,11 @@ class ProgramViewModel(
 }
 
 class EventsOnDate(val date: LocalDate, val events: List<EventWithDetails>) {
-    val dayString: String = formatter.format(date)
+    val dayString: String = dayFormatter.format(date)
+    val dateString: String = dateFormatter.format(date)
 
     companion object {
-        private val formatter = DateTimeFormatter.ofPattern("EEEE", Locale.GERMAN)
+        private val dayFormatter = DateTimeFormatter.ofPattern("EEEE", Locale.GERMAN)
+        private val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale.GERMAN)
     }
 }

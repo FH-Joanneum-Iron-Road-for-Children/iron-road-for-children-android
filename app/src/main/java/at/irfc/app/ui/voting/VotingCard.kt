@@ -12,6 +12,7 @@ import androidx.compose.material.icons.outlined.BrokenImage
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,8 +29,10 @@ import at.irfc.app.data.local.entity.Event
 import at.irfc.app.data.local.entity.Voting
 import at.irfc.app.ui.theme.IronRoadForChildrenTheme
 import coil.compose.AsyncImage
+import dev.jeziellago.compose.markdowntext.MarkdownText
 import java.time.LocalDateTime
 
+// TODO mark winner of a voting (with crone on the card after the title and yellow background?)
 @Composable
 fun VotingCard(
     modifier: Modifier = Modifier,
@@ -58,17 +61,17 @@ fun VotingCard(
         AsyncImage(
             model = event.image.path,
             contentDescription = event.image.title,
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(2.5f),
             error = rememberVectorPainter(image = Icons.Outlined.BrokenImage)
         )
 
-        Text(
-            text = event.description,
+        MarkdownText(
+            markdown = event.description,
             style = MaterialTheme.typography.bodyMedium,
-            overflow = TextOverflow.Ellipsis,
+            color = LocalContentColor.current,
             modifier = padding
         )
 

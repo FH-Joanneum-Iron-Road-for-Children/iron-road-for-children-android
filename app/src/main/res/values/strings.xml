@@ -27,6 +27,7 @@
         Die IRFC ist ein Event für die ganze Familie und zählt mittlerweile über 40.000 Besucher.
     </string>
     <string name="aboutUs_donate">Spenden</string>
+    <string name="aboutUs_raffle">Zum Gewinnspiel</string>
     <string name="aboutUs_providedBy">Zur Verfügung gestellt vom FH JOANNEUM\nStudiengang Mobile Software Development.</string>
     <string name="aboutUs_privacy">Datenschutz</string>
     <string name="aboutUs_imprint">Impressum</string>
@@ -39,6 +40,7 @@
     <!-- Program Detail Screen -->
     <string name="header_programDetailScreen">Progamm Details</string>
     <string name="programDetailScreen_TimeHeading">Uhrzeit</string>
+    <string name="programDetailScreen_DateHeading">Datum</string>
     <string name="programDetailScreen_EventNotFound">Event konnte nicht gefunden werden.</string>
 
     <!-- Voting Screen -->

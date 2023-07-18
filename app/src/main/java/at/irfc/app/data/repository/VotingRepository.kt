@@ -29,7 +29,11 @@ class VotingRepository(
 
     fun loadActiveVotings(force: Boolean): Flow<Resource<List<VotingWithEvents>>> {
         return cachedRemoteResource(
-            query = { votingDao.getAll().map { it.filter(VotingWithEvents::isActive) } },
+            query = {
+                votingDao.getAll().map { votings ->
+                    votings.filter { it.isActive && it.events.isNotEmpty() }
+                }
+            },
             fetch = votingApi::getVotings,
             update = { votingDao.replaceVotings(it.map(VotingDto::toVotingEntity)) },
             shouldFetch = { voting ->
