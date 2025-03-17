@@ -38,7 +38,7 @@
     <string name="programScreen_noEventsFound">Derzeit ist kein Programm verfügbar. Bitte versuche es später erneut oder aktualisiere die Daten.</string>
 
     <!-- Program Detail Screen -->
-    <string name="header_programDetailScreen">Progamm Details</string>
+    <string name="header_programDetailScreen">Programm Details</string>
     <string name="programDetailScreen_TimeHeading">Uhrzeit</string>
     <string name="programDetailScreen_DateHeading">Datum</string>
     <string name="programDetailScreen_EventNotFound">Event konnte nicht gefunden werden.</string>
