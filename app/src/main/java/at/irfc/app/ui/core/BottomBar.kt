@@ -2,6 +2,7 @@ package at.irfc.app.ui.core
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.outlined.PermContactCalendar
@@ -19,6 +20,7 @@ import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.generated.navigation.destinations.AboutUsScreenDestination
+import at.irfc.app.generated.navigation.destinations.HomeScreenDestination
 import at.irfc.app.generated.navigation.destinations.MapScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramScreenDestination
 import at.irfc.app.generated.navigation.destinations.VotingScreenDestination
@@ -69,6 +71,7 @@ enum class BottomBarDestination(
     val icon: ImageVector,
     @StringRes val label: Int
 ) {
+    Home(HomeScreenDestination, Icons.Default.Home, R.string.nav_bar_home),
     Program(ProgramScreenDestination, Icons.Outlined.PermContactCalendar, R.string.nav_bar_program),
     Voting(VotingScreenDestination, Icons.Outlined.ThumbUp, R.string.nav_bar_voting),
     Map(MapScreenDestination, Icons.Default.Map, R.string.nav_bar_map),
