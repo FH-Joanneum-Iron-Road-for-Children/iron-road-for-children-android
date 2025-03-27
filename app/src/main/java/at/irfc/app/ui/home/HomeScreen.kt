@@ -47,7 +47,7 @@ import kotlinx.coroutines.delay
 fun HomeScreen() {
     val videoUrl =
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-    val imageUrl = "https://example.com/image.jpg"
+    // val imageUrl = "https://example.com/image.jpg"
 
     Column(
         modifier = Modifier
