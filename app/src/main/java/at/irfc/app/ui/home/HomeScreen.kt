@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -56,9 +58,7 @@ import kotlinx.coroutines.delay
 fun HomeScreen() {
     val context = LocalContext.current
     val scrollState = rememberScrollState()
-    val videoUrl =
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-    // val imageUrl = "https://example.com/image.jpg"
+    val videoUrl = "https://yourvideo.mp4"
 
     Column(
         modifier = Modifier
@@ -70,13 +70,57 @@ fun HomeScreen() {
 
         CountdownTimer()
 
-        Image(
-            modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(id = R.drawable.startbildschirm_v1),
-            contentDescription = stringResource(R.string.nav_bar_map),
-            contentScale = ContentScale.Crop
-        )
+        Box(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Image(
+                modifier = Modifier.fillMaxWidth(),
+                painter = painterResource(id = R.drawable.startbildschirm_v1),
+                contentDescription = stringResource(R.string.nav_bar_map),
+                contentScale = ContentScale.Crop
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .offset(y = 190.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                IconButton(
+                    onClick = {
+                        val intent =
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://www.facebook.com/irfcfestival/")
+                            )
+                        context.startActivity(intent)
+                    }
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.facebook),
+                        contentDescription = "Facebook",
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
 
+                IconButton(
+                    onClick = {
+                        val intent =
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://www.instagram.com/irfc_festival/")
+                            )
+                        context.startActivity(intent)
+                    }
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.instagram),
+                        contentDescription = "Instagram",
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
+            }
+        }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -96,11 +140,14 @@ fun HomeScreen() {
                     context.startActivity(intent)
                 },
                 modifier = Modifier.padding(10.dp)
+                    .align(Alignment.Center)
+                    .size(90.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Home,
                     contentDescription = "Home",
-                    tint = Color.White
+                    tint = Color.White,
+                    modifier = Modifier.size(100.dp)
                 )
             }
         }
