@@ -1,5 +1,7 @@
 package at.irfc.app.ui.home
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -20,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -45,13 +54,16 @@ import kotlinx.coroutines.delay
 @Destination
 @RootNavGraph(start = true)
 fun HomeScreen() {
+    val context = LocalContext.current
+    val scrollState = rememberScrollState()
     val videoUrl =
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     // val imageUrl = "https://example.com/image.jpg"
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         VideoPlayer(videoUrl)
@@ -62,8 +74,36 @@ fun HomeScreen() {
             modifier = Modifier.fillMaxWidth(),
             painter = painterResource(id = R.drawable.startbildschirm_v1),
             contentDescription = stringResource(R.string.nav_bar_map),
-            contentScale = ContentScale.Crop // Schneidet das Bild passend zur Breite
+            contentScale = ContentScale.Crop
         )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .padding(vertical = 5.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.countdownbackground),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+
+            IconButton(
+                onClick = {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://irfc.at/"))
+                    context.startActivity(intent)
+                },
+                modifier = Modifier.padding(10.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = "Home",
+                    tint = Color.White
+                )
+            }
+        }
     }
 }
 
@@ -95,7 +135,7 @@ fun VideoPlayer(videoUrl: String) {
             }
         },
         modifier = Modifier
-            .padding(vertical = 5.dp)
+            // .padding(vertical = 5.dp)
             .fillMaxWidth()
             .aspectRatio(16f / 9f)
     )
@@ -121,7 +161,7 @@ fun CountdownTimer() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp)
+            .height(140.dp)
             .padding(vertical = 5.dp)
     ) {
         Image(
