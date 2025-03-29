@@ -89,7 +89,7 @@ fun HomeScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .offset(y = if (isLandscape) 500.dp else 190.dp),
+                    .offset(y = if (isLandscape) 400.dp else 190.dp), // Höher im Querformat
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 IconButton(
@@ -99,12 +99,13 @@ fun HomeScreen() {
                             Uri.parse("https://www.facebook.com/irfcfestival/")
                         )
                         context.startActivity(intent)
-                    }
+                    },
+                    modifier = Modifier.size(if (isLandscape) 60.dp else 40.dp)
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.facebook),
                         contentDescription = "Facebook",
-                        modifier = Modifier.size(if (isLandscape) 140.dp else 40.dp)
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
 
@@ -115,12 +116,13 @@ fun HomeScreen() {
                             Uri.parse("https://www.instagram.com/irfc_festival/")
                         )
                         context.startActivity(intent)
-                    }
+                    },
+                    modifier = Modifier.size(if (isLandscape) 60.dp else 40.dp)
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.instagram),
                         contentDescription = "Instagram",
-                        modifier = Modifier.size(if (isLandscape) 60.dp else 40.dp)
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }
