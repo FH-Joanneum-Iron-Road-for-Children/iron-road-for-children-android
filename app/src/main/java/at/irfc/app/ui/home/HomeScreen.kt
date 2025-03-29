@@ -89,7 +89,7 @@ fun HomeScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .offset(y = if (isLandscape) 400.dp else 190.dp), // Höher im Querformat
+                    .offset(y = if (isLandscape) 400.dp else 190.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 IconButton(
@@ -217,12 +217,14 @@ fun CountdownTimer() {
             .height(140.dp)
             .padding(vertical = 5.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.countdownbackground),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
+        Box(modifier = Modifier.fillMaxSize()) {
+            Image(
+                painter = painterResource(id = R.drawable.countdownbackground2),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize(),
