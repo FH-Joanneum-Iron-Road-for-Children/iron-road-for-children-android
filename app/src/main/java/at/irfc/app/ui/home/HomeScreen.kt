@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -73,50 +74,53 @@ fun HomeScreen() {
         Box(
             modifier = Modifier.fillMaxWidth()
         ) {
+            val configuration = LocalConfiguration.current
+            val isLandscape = configuration.orientation ==
+                android.content.res.Configuration.ORIENTATION_LANDSCAPE
+
             Image(
                 modifier = Modifier.fillMaxWidth(),
                 painter = painterResource(id = R.drawable.startbildschirm_v1),
                 contentDescription = stringResource(R.string.nav_bar_map),
                 contentScale = ContentScale.Crop
             )
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .offset(y = 190.dp),
+                    .offset(y = if (isLandscape) 500.dp else 190.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 IconButton(
                     onClick = {
-                        val intent =
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("https://www.facebook.com/irfcfestival/")
-                            )
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://www.facebook.com/irfcfestival/")
+                        )
                         context.startActivity(intent)
                     }
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.facebook),
                         contentDescription = "Facebook",
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(if (isLandscape) 140.dp else 40.dp)
                     )
                 }
 
                 IconButton(
                     onClick = {
-                        val intent =
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("https://www.instagram.com/irfc_festival/")
-                            )
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://www.instagram.com/irfc_festival/")
+                        )
                         context.startActivity(intent)
                     }
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.instagram),
                         contentDescription = "Instagram",
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(if (isLandscape) 60.dp else 40.dp)
                     )
                 }
             }
