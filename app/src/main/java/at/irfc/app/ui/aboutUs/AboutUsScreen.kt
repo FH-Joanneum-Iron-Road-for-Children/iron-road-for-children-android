@@ -2,14 +2,19 @@ package at.irfc.app.ui.aboutUs
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.QueueMusic
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -53,11 +58,16 @@ fun AboutUsScreen() {
         )
 
         Column(
-            modifier = Modifier.padding(bottom = 15.dp),
+            modifier = Modifier
+                .padding(bottom = 15.dp)
+                .width(IntrinsicSize.Max),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(onClick = { uriHandler.openUri("https://irfc.at/#spenden") }) {
+            Button(
+                onClick = { uriHandler.openUri("https://irfc.at/#spenden") },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Icon(IrfcIcons.Donate, contentDescription = null)
                 Text(
                     modifier = Modifier.padding(start = 10.dp),
@@ -65,22 +75,61 @@ fun AboutUsScreen() {
                 )
             }
 
-            OutlinedButton(onClick = {
-                uriHandler.openUri("https://irfc.at/app/app-gewinnspiel/")
-            }) {
+            OutlinedButton(
+                onClick = {
+                    uriHandler.openUri("https://irfc.at/app/app-gewinnspiel/")
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
                     text = stringResource(R.string.aboutUs_raffle),
+                    color = MaterialTheme.colorScheme.tertiary
+                )
+            }
+            OutlinedButton(
+                onClick = {
+                    uriHandler.openUri("https://open.spotify.com/playlist/4XJJEZGjbv39Uit5UVUuK4")
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.QueueMusic,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.tertiary
+                )
+                Text(
+                    modifier = Modifier.padding(start = 10.dp),
+                    text = stringResource(R.string.aboutUs_playlist),
+                    color = MaterialTheme.colorScheme.tertiary
+                )
+            }
+            OutlinedButton(
+                onClick = {
+                    uriHandler.openUri("https://irfc.at/app/app-gewinnspiel/")
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Image,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.tertiary
+                )
+                Text(
+                    modifier = Modifier.padding(start = 10.dp),
+                    text = stringResource(R.string.aboutUs_gallery),
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }
         }
 
         Column(
-            modifier = Modifier.padding(bottom = 15.dp),
+            modifier = Modifier.padding(bottom = 15.dp)
+                .width(IntrinsicSize.Max),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedButton(
-                onClick = { uriHandler.openUri("https://irfc.at/kontakt/impressum") }
+                onClick = { uriHandler.openUri("https://irfc.at/kontakt/impressum") },
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Info,
@@ -94,7 +143,8 @@ fun AboutUsScreen() {
                 )
             }
             OutlinedButton(
-                onClick = { uriHandler.openUri("https://irfc.at/kontakt/datenschutz") }
+                onClick = { uriHandler.openUri("https://irfc.at/kontakt/datenschutz") },
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Shield,

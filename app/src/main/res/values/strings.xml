@@ -31,6 +31,8 @@
     <string name="aboutUs_providedBy">Zur Verfügung gestellt vom FH JOANNEUM\nStudiengang Mobile Software Development.</string>
     <string name="aboutUs_privacy">Datenschutz</string>
     <string name="aboutUs_imprint">Impressum</string>
+    <string name="aboutUs_playlist">Zur Playlist</string>
+    <string name="aboutUs_gallery">Zur Galerie</string>
 
     <!-- Program Screen -->
     <string name="programScreen_clearFilter">Filter entfernen</string>
