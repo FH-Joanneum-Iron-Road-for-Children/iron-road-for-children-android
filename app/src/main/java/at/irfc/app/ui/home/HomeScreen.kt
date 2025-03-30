@@ -3,6 +3,7 @@ package at.irfc.app.ui.home
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -30,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -92,15 +95,17 @@ fun HomeScreen() {
                     .offset(y = if (isLandscape) 400.dp else 190.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                IconButton(
-                    onClick = {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://www.facebook.com/irfcfestival/")
-                        )
-                        context.startActivity(intent)
-                    },
-                    modifier = Modifier.size(if (isLandscape) 60.dp else 40.dp)
+                Box(
+                    modifier = Modifier
+                        .size(if (isLandscape) 60.dp else 40.dp)
+                        .clip(RoundedCornerShape(5.dp))
+                        .clickable {
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://www.facebook.com/irfcfestival/")
+                            )
+                            context.startActivity(intent)
+                        }
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.facebook),
@@ -109,15 +114,17 @@ fun HomeScreen() {
                     )
                 }
 
-                IconButton(
-                    onClick = {
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://www.instagram.com/irfc_festival/")
-                        )
-                        context.startActivity(intent)
-                    },
-                    modifier = Modifier.size(if (isLandscape) 60.dp else 40.dp)
+                Box(
+                    modifier = Modifier
+                        .size(if (isLandscape) 60.dp else 40.dp)
+                        .clip(RoundedCornerShape(5.dp))
+                        .clickable {
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://www.instagram.com/irfc_festival/")
+                            )
+                            context.startActivity(intent)
+                        }
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.instagram),
@@ -238,10 +245,13 @@ fun CountdownTimer() {
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(16.dp)
             )
-            Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
                     text = "$days",
-                    fontSize = 24.sp,
+                    fontSize = 34.sp,
                     fontWeight = FontWeight.Bold,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     textAlign = TextAlign.Center,
@@ -249,7 +259,7 @@ fun CountdownTimer() {
                 )
                 Text(
                     text = "$hours",
-                    fontSize = 24.sp,
+                    fontSize = 34.sp,
                     fontWeight = FontWeight.Bold,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     textAlign = TextAlign.Center,
@@ -257,7 +267,7 @@ fun CountdownTimer() {
                 )
                 Text(
                     text = "$minutes",
-                    fontSize = 24.sp,
+                    fontSize = 34.sp,
                     fontWeight = FontWeight.Bold,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     textAlign = TextAlign.Center,
@@ -265,7 +275,7 @@ fun CountdownTimer() {
                 )
                 Text(
                     text = "$seconds",
-                    fontSize = 24.sp,
+                    fontSize = 34.sp,
                     fontWeight = FontWeight.Bold,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     textAlign = TextAlign.Center,
