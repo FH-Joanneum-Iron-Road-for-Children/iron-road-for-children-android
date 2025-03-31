@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -191,105 +192,64 @@ fun CountdownTimer() {
             .height(180.dp)
             .padding(vertical = 5.dp)
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Image(
-                painter = painterResource(id = R.drawable.countdownbackground2),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
+        Image(
+            painter = painterResource(id = R.drawable.countdownbackground2),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+
         Column(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val textStyle = TextStyle(
+                color = Color.Yellow,
+                fontWeight = FontWeight.Bold
+            )
+
             Text(
                 text = "Countdown to IRFC 2025",
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = androidx.compose.ui.graphics.Color.Yellow,
                 textAlign = TextAlign.Center,
+                style = textStyle,
                 modifier = Modifier.padding(16.dp)
             )
+
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "$days",
-                    fontSize = 38.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = androidx.compose.ui.graphics.Color.Yellow,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = "$hours",
-                    fontSize = 38.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = androidx.compose.ui.graphics.Color.Yellow,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = "$minutes",
-                    fontSize = 38.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = androidx.compose.ui.graphics.Color.Yellow,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = "$seconds",
-                    fontSize = 38.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = androidx.compose.ui.graphics.Color.Yellow,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f)
-                )
+                listOf(days, hours, minutes, seconds).forEach {
+                    Text(
+                        text = "$it",
+                        fontSize = 38.sp,
+                        textAlign = TextAlign.Center,
+                        style = textStyle,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
+
             Divider(
                 color = Color.White,
                 thickness = 3.dp,
                 modifier = Modifier.fillMaxWidth(0.9f)
             )
+
             Row(
                 modifier = Modifier.padding(top = 4.dp).fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = "DAYS",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    color = androidx.compose.ui.graphics.Color.Yellow,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "HOURS",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    color = androidx.compose.ui.graphics.Color.Yellow,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "MIN.",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = androidx.compose.ui.graphics.Color.Yellow,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "SEC.",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = androidx.compose.ui.graphics.Color.Yellow,
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
+                listOf("DAYS", "HOURS", "MIN.", "SEC.").forEach {
+                    Text(
+                        text = it,
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Center,
+                        style = textStyle,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
         }
     }
