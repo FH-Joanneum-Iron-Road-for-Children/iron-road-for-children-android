@@ -18,10 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -134,36 +131,6 @@ fun HomeScreen() {
                 }
             }
         }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .padding(vertical = 5.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.countdownbackground),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
-
-            IconButton(
-                onClick = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://irfc.at/"))
-                    context.startActivity(intent)
-                },
-                modifier = Modifier.padding(10.dp)
-                    .align(Alignment.Center)
-                    .size(90.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = "Home",
-                    tint = Color.White,
-                    modifier = Modifier.size(100.dp)
-                )
-            }
-        }
     }
 }
 
@@ -221,7 +188,7 @@ fun CountdownTimer() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(140.dp)
+            .height(180.dp)
             .padding(vertical = 5.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -251,7 +218,7 @@ fun CountdownTimer() {
             ) {
                 Text(
                     text = "$days",
-                    fontSize = 34.sp,
+                    fontSize = 38.sp,
                     fontWeight = FontWeight.Bold,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     textAlign = TextAlign.Center,
@@ -259,7 +226,7 @@ fun CountdownTimer() {
                 )
                 Text(
                     text = "$hours",
-                    fontSize = 34.sp,
+                    fontSize = 38.sp,
                     fontWeight = FontWeight.Bold,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     textAlign = TextAlign.Center,
@@ -267,7 +234,7 @@ fun CountdownTimer() {
                 )
                 Text(
                     text = "$minutes",
-                    fontSize = 34.sp,
+                    fontSize = 38.sp,
                     fontWeight = FontWeight.Bold,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     textAlign = TextAlign.Center,
@@ -275,37 +242,50 @@ fun CountdownTimer() {
                 )
                 Text(
                     text = "$seconds",
-                    fontSize = 34.sp,
+                    fontSize = 38.sp,
                     fontWeight = FontWeight.Bold,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.weight(1f)
                 )
             }
+            Divider(
+                color = Color.White,
+                thickness = 3.dp,
+                modifier = Modifier.fillMaxWidth(0.9f)
+            )
             Row(
                 modifier = Modifier.padding(top = 4.dp).fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = "DAYS",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center
                 )
                 Text(
                     text = "HOURS",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center
                 )
                 Text(
                     text = "MIN.",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center
                 )
                 Text(
                     text = "SEC.",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
                     color = androidx.compose.ui.graphics.Color.Yellow,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center
