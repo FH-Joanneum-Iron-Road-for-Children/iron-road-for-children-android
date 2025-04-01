@@ -54,4 +54,5 @@
     <string name="voting_confirmVoting">Stimme absenden</string>
     <string name="voting_confirmVotingTitle">Stimme abgeben</string>
     <string name="voting_confirmVotingText">Wollen Sie wirklich für \"%1$s\" abstimmen? Sie können die Abstimmung hinterher nicht noch einmal durchführen oder ändern.</string>
+    <string name="nav_bar_home">Home</string>
 </resources>

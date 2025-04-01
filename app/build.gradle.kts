@@ -153,6 +153,10 @@ play {
 dependencies {
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation("androidx.test.services:storage:1.4.2")
+    implementation("androidx.compose.material3:material3:1.1.2")
+    implementation("androidx.media3:media3-exoplayer:1.1.1")
+    implementation("androidx.media3:media3-ui:1.1.1")
 
     // Room DB
     val roomVersion = "2.5.1"
