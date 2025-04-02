@@ -20,7 +20,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,18 +27,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import at.irfc.app.R
+import at.irfc.app.generated.navigation.NavGraphs
+import at.irfc.app.generated.navigation.destinations.GalleryScreenDestination
 import at.irfc.app.ui.core.ExpandableCard
 import at.irfc.app.ui.core.icons.Donate
 import at.irfc.app.ui.core.icons.IrfcIcons
-import at.irfc.app.ui.theme.IronRoadForChildrenTheme
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.navigate
+import com.ramcosta.composedestinations.navigation.popUpTo
 
 @Composable
 @Destination
-fun AboutUsScreen() {
+fun AboutUsScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -105,7 +107,10 @@ fun AboutUsScreen() {
             }
             OutlinedButton(
                 onClick = {
-                    uriHandler.openUri("https://irfc.at/app/app-gewinnspiel/")
+                    navController.navigate(GalleryScreenDestination) {
+                        popUpTo(NavGraphs.root)
+                        launchSingleTop = true
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -165,15 +170,5 @@ fun AboutUsScreen() {
             style = MaterialTheme.typography.bodySmall
         )
         Spacer(modifier = Modifier.height(20.dp))
-    }
-}
-
-@Preview
-@Composable
-private fun AboutUsScreenPreview() {
-    IronRoadForChildrenTheme {
-        Surface {
-            AboutUsScreen()
-        }
     }
 }
