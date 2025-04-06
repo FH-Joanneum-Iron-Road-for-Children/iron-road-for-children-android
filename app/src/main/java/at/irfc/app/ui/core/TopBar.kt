@@ -55,4 +55,5 @@ private fun TypedDestination<*>?.screenTitle(): String = when (this) {
     AboutUsScreenDestination -> stringResource(id = R.string.header_aboutUs)
     ProgramDetailScreenDestination -> stringResource(id = R.string.header_programDetailScreen)
     GalleryScreenDestination -> stringResource(id = R.string.header_gallery)
+    else -> ""
 }
