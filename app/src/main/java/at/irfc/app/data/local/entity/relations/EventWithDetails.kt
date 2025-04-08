@@ -1,6 +1,7 @@
 package at.irfc.app.data.local.entity.relations
 
 import androidx.room.Embedded
+import androidx.room.Ignore
 import androidx.room.Relation
 import at.irfc.app.data.local.entity.Event
 import at.irfc.app.data.local.entity.EventCategory
@@ -18,7 +19,11 @@ data class EventWithDetails(
 
     @Relation(parentColumn = "eventId", entityColumn = "eventId")
     val additionalImages: List<EventPicture>
+
 ) {
+    @Ignore
+    var isFavorite: Boolean = false
+
     // Shorthand accessors
     inline val id get() = event.id
     inline val title get() = event.title

@@ -55,6 +55,26 @@ class ProgramViewModel(
         }
     }
 
+    fun toggleFavorite(event: EventWithDetails) {
+        val current = _eventListResource.value
+
+        val updatedData = current.data?.map { eventsOnDate ->
+            val updatedEvents = eventsOnDate.events.map {
+                if (it.id == event.id) {
+                    it.apply { isFavorite = !isFavorite } // ✅ modifici direct
+                } else {
+                    it
+                }
+            }
+
+            EventsOnDate(date = eventsOnDate.date, events = updatedEvents)
+        }
+
+        if (updatedData != null) {
+            _eventListResource.value = Resource.Success(updatedData)
+        }
+    }
+
     private fun Resource<List<EventWithDetails>>.filterAndTransform(category: EventCategory?):
         Resource<List<EventsOnDate>> {
         fun List<EventWithDetails>.filterCategory() =

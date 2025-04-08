@@ -86,7 +86,10 @@ fun ProgramScreen(
                             navController.navigate(
                                 ProgramDetailScreenDestination(event.id)
                             )
-                        }
+                        },
+                        onFavoriteToggle = {
+                            viewModel.toggleFavorite(it)
+                        } // 🔥 aici trimitem funcția din ViewModel
                     )
                 }
             }
@@ -99,7 +102,8 @@ fun ProgramScreen(
 private fun EventListPager(
     pagerState: PagerState,
     eventOnDayList: List<EventsOnDate>,
-    onEventClick: (EventWithDetails) -> Unit
+    onEventClick: (EventWithDetails) -> Unit,
+    onFavoriteToggle: (EventWithDetails) -> Unit // 🔸 adăugat
 ) {
     HorizontalPager(
         pageCount = eventOnDayList.size,
@@ -126,7 +130,11 @@ private fun EventListPager(
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 items(eventDay.events, EventWithDetails::id) { event ->
-                    EventListItem(event = event, onEventClick = onEventClick)
+                    EventListItem(
+                        event = event,
+                        onEventClick = onEventClick,
+                        onFavoriteToggle = onFavoriteToggle
+                    ) // ✅ Acum e complet )
                 }
             }
         }
