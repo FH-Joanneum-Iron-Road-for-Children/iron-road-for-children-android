@@ -4,9 +4,11 @@ import androidx.room.Room
 import at.irfc.app.BuildConfig
 import at.irfc.app.data.local.IrfcDatabase
 import at.irfc.app.data.remote.api.createEventApi
+import at.irfc.app.data.remote.api.createPictureApi
 import at.irfc.app.data.remote.api.createVotingApi
 import at.irfc.app.data.remote.ktorfitFactory
 import at.irfc.app.data.repository.EventRepository
+import at.irfc.app.data.repository.GalleryPictureRepository
 import at.irfc.app.data.repository.VotingRepository
 import de.jensklingenberg.ktorfit.Ktorfit
 import org.koin.core.module.dsl.singleOf
@@ -22,7 +24,7 @@ val dataModule = module {
                 klass = IrfcDatabase::class.java,
                 name = IrfcDatabase.DATABASE_NAME
             )
-            .fallbackToDestructiveMigrationFrom(1, 2, 3, 4)
+            .fallbackToDestructiveMigration()
             .build()
     }
 
@@ -31,7 +33,9 @@ val dataModule = module {
     singleOf(IrfcDatabase::locationDao)
     singleOf(IrfcDatabase::pictureDao)
     singleOf(IrfcDatabase::votingDao)
+    singleOf(IrfcDatabase::galleryPictureDao)
 
+    singleOf(Ktorfit::createPictureApi)
     singleOf(Ktorfit::createEventApi)
     // singleOf<EventApi>(::EventApiMock)
     singleOf(Ktorfit::createVotingApi)
@@ -39,4 +43,5 @@ val dataModule = module {
 
     singleOf(::EventRepository)
     singleOf(::VotingRepository)
+    singleOf(::GalleryPictureRepository)
 }

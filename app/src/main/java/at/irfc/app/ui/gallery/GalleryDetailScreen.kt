@@ -1,65 +1,62 @@
 package at.irfc.app.ui.gallery
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import at.irfc.app.generated.navigation.destinations.FullscreenImageScreenDestination
-import coil.compose.AsyncImage
+import at.irfc.app.data.repository.GalleryPictureRepository
+import at.irfc.app.ui.core.ZoomableImage
+import coil.compose.rememberAsyncImagePainter
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.navigate
+import org.koin.compose.koinInject
 
-@Composable
 @Destination
-fun GalleryDetailScreen(topicIndex: Int, navController: NavController) {
-    val topicImages = listOf(
-        listOf("https://example.com/topic1_img1.jpg", "https://example.com/topic1_img2.jpg"),
-        listOf("https://example.com/topic2_img1.jpg", "https://example.com/topic2_img2.jpg"),
-        listOf("https://example.com/topic3_img1.jpg", "https://example.com/topic3_img2.jpg"),
-        listOf("https://example.com/topic4_img1.jpg", "https://example.com/topic4_img2.jpg")
-    )
+@Composable
+fun GalleryDetailScreen(
+    pictureId: Long,
+    navController: NavController,
+    repository: GalleryPictureRepository = koinInject()
+) {
+    var picture by remember { mutableStateOf<at.irfc.app.data.local.entity.GalleryPicture?>(null) }
 
-    val images = topicImages[topicIndex]
-
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(images) { imageUrl ->
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = "Detail image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp)
-                    .padding(8.dp)
-                    .clickable {
-                        navController.navigate(
-                            FullscreenImageScreenDestination(imageUrl = imageUrl)
-                        )
-                    }
-
-            )
+    LaunchedEffect(pictureId) {
+        repository.loadPictures(force = false).collect { result ->
+            picture = result.data?.find { it.id == pictureId }
         }
     }
-}
 
-@Composable
-@Destination
-fun FullscreenImageScreen(imageUrl: String) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        AsyncImage(
-            model = imageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Fit,
-            modifier = Modifier.fillMaxSize()
-        )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        if (picture != null) {
+            val painter = rememberAsyncImagePainter(picture!!.path)
+
+            ZoomableImage(
+                minScale = 1f,
+                maxScale = 5f,
+                painter = painter,
+                contentDescription = picture!!.title
+            )
+        }
+
+        IconButton(
+            onClick = { navController.popBackStack() },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Close"
+            )
+        }
     }
 }
