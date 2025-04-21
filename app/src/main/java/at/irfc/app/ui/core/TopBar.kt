@@ -11,6 +11,7 @@ import at.irfc.app.R
 import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.generated.navigation.appCurrentDestinationAsState
 import at.irfc.app.generated.navigation.destinations.AboutUsScreenDestination
+import at.irfc.app.generated.navigation.destinations.GalleryScreenDestination
 import at.irfc.app.generated.navigation.destinations.HomeScreenDestination
 import at.irfc.app.generated.navigation.destinations.MapScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
@@ -53,4 +54,6 @@ private fun TypedDestination<*>?.screenTitle(): String = when (this) {
     MapScreenDestination -> stringResource(id = R.string.nav_bar_map)
     AboutUsScreenDestination -> stringResource(id = R.string.header_aboutUs)
     ProgramDetailScreenDestination -> stringResource(id = R.string.header_programDetailScreen)
+    GalleryScreenDestination -> stringResource(id = R.string.header_pictures)
+    else -> ""
 }
