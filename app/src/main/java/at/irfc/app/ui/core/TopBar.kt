@@ -11,6 +11,8 @@ import at.irfc.app.R
 import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.generated.navigation.appCurrentDestinationAsState
 import at.irfc.app.generated.navigation.destinations.AboutUsScreenDestination
+import at.irfc.app.generated.navigation.destinations.GalleryScreenDestination
+import at.irfc.app.generated.navigation.destinations.HomeScreenDestination
 import at.irfc.app.generated.navigation.destinations.MapScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramScreenDestination
@@ -46,9 +48,12 @@ fun TopBar(navController: NavController) {
 @Composable
 private fun TypedDestination<*>?.screenTitle(): String = when (this) {
     null -> "" // Empty when starting
+    HomeScreenDestination -> stringResource(id = R.string.nav_bar_home)
     ProgramScreenDestination -> stringResource(id = R.string.nav_bar_program)
     VotingScreenDestination -> stringResource(id = R.string.nav_bar_voting)
     MapScreenDestination -> stringResource(id = R.string.nav_bar_map)
     AboutUsScreenDestination -> stringResource(id = R.string.header_aboutUs)
     ProgramDetailScreenDestination -> stringResource(id = R.string.header_programDetailScreen)
+    GalleryScreenDestination -> stringResource(id = R.string.header_pictures)
+    else -> ""
 }

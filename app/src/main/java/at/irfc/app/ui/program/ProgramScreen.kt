@@ -27,7 +27,6 @@ import at.irfc.app.util.Resource
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.navigate
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
@@ -35,7 +34,6 @@ import org.koin.androidx.compose.getViewModel
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Destination
-@RootNavGraph(start = true)
 fun ProgramScreen(
     navController: NavController,
     viewModel: ProgramViewModel = getViewModel()
