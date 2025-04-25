@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.generated.navigation.NavGraphs
@@ -53,7 +54,14 @@ fun BottomBar(
                         contentDescription = stringResource(destination.label)
                     )
                 },
-                label = { Text(stringResource(destination.label)) },
+                label = {
+                    Text(
+                        text = stringResource(destination.label),
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Visible
+                    )
+                },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = IrfcYellow,
                     selectedTextColor = IrfcYellow,
