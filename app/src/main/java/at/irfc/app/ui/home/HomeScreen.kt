@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -39,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -58,7 +58,6 @@ import kotlinx.coroutines.delay
 @Destination
 @RootNavGraph(start = true)
 fun HomeScreen() {
-    val context = LocalContext.current
     val scrollState = rememberScrollState()
     val videoUrl = "https://yourvideo.mp4"
 
@@ -73,61 +72,46 @@ fun HomeScreen() {
         CountdownTimer()
 
         Box(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
             val configuration = LocalConfiguration.current
+            val screenWidth = configuration.screenWidthDp.dp
             val isLandscape = configuration.orientation ==
                 android.content.res.Configuration.ORIENTATION_LANDSCAPE
+            val iconSize = screenWidth * if (isLandscape) 0.08f else 0.1f
 
             Image(
                 modifier = Modifier.fillMaxWidth(),
                 painter = painterResource(id = R.drawable.startbildschirm_v1),
                 contentDescription = stringResource(R.string.nav_bar_map),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.FillWidth
             )
 
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
-                    .offset(y = if (isLandscape) 400.dp else 190.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(top = screenWidth * if (isLandscape) 0.5f else 0.5f),
+                contentAlignment = Alignment.TopCenter
             ) {
-                Box(
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
-                        .size(if (isLandscape) 60.dp else 40.dp)
-                        .clip(RoundedCornerShape(5.dp))
-                        .clickable {
-                            val intent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("https://www.facebook.com/irfcfestival/")
-                            )
-                            context.startActivity(intent)
-                        }
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.facebook),
-                        contentDescription = "Facebook",
-                        modifier = Modifier.fillMaxSize()
+                    SocialIcon(
+                        R.drawable.facebook,
+                        "Facebook",
+                        "https://www.facebook.com/irfcfestival/",
+                        iconSize
                     )
-                }
 
-                Box(
-                    modifier = Modifier
-                        .size(if (isLandscape) 60.dp else 40.dp)
-                        .clip(RoundedCornerShape(5.dp))
-                        .clickable {
-                            val intent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("https://www.instagram.com/irfc_festival/")
-                            )
-                            context.startActivity(intent)
-                        }
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.instagram),
-                        contentDescription = "Instagram",
-                        modifier = Modifier.fillMaxSize()
+                    SocialIcon(
+                        R.drawable.instagram,
+                        "Instagram",
+                        "https://www.instagram.com/irfc_festival/",
+                        iconSize
                     )
                 }
             }
@@ -252,6 +236,32 @@ fun CountdownTimer() {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun SocialIcon(
+    iconRes: Int,
+    contentDescription: String,
+    url: String,
+    size: Dp
+) {
+    val context = LocalContext.current
+
+    Box(
+        modifier = Modifier
+            .size(size)
+            .clip(RoundedCornerShape(5.dp))
+            .clickable {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                context.startActivity(intent)
+            }
+    ) {
+        Image(
+            painter = painterResource(id = iconRes),
+            contentDescription = contentDescription,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
