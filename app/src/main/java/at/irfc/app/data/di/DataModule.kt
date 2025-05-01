@@ -4,11 +4,11 @@ import androidx.room.Room
 import at.irfc.app.BuildConfig
 import at.irfc.app.data.local.IrfcDatabase
 import at.irfc.app.data.remote.api.createEventApi
-import at.irfc.app.data.remote.api.createPictureApi
+import at.irfc.app.data.remote.api.createGalleryApi
 import at.irfc.app.data.remote.api.createVotingApi
 import at.irfc.app.data.remote.ktorfitFactory
 import at.irfc.app.data.repository.EventRepository
-import at.irfc.app.data.repository.GalleryPictureRepository
+import at.irfc.app.data.repository.GalleryRepository
 import at.irfc.app.data.repository.VotingRepository
 import de.jensklingenberg.ktorfit.Ktorfit
 import org.koin.core.module.dsl.singleOf
@@ -33,9 +33,9 @@ val dataModule = module {
     singleOf(IrfcDatabase::locationDao)
     singleOf(IrfcDatabase::pictureDao)
     singleOf(IrfcDatabase::votingDao)
-    singleOf(IrfcDatabase::galleryPictureDao)
+    singleOf(IrfcDatabase::galleryDao)
 
-    singleOf(Ktorfit::createPictureApi)
+    singleOf(Ktorfit::createGalleryApi)
     singleOf(Ktorfit::createEventApi)
     // singleOf<EventApi>(::EventApiMock)
     singleOf(Ktorfit::createVotingApi)
@@ -43,5 +43,5 @@ val dataModule = module {
 
     singleOf(::EventRepository)
     singleOf(::VotingRepository)
-    singleOf(::GalleryPictureRepository)
+    singleOf(::GalleryRepository)
 }

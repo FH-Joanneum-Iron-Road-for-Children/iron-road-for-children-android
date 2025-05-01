@@ -1,18 +1,18 @@
 package at.irfc.app.data.remote.dto
 
-import at.irfc.app.data.local.entity.GalleryPicture
+import at.irfc.app.data.local.entity.Gallery
 import kotlinx.serialization.Serializable
 
 @Serializable
-class PicturesDto(
-    val pictureId: Long,
+class GalleryDto(
+    val galleryId: Long,
     val altText: String,
     val path: String
 )
 
-fun PicturesDto.toGalleryPicture(): GalleryPicture {
-    return GalleryPicture(
-        id = this.pictureId,
+fun GalleryDto.toGallery(): Gallery {
+    return Gallery(
+        id = this.galleryId,
         title = this.altText,
         path = this.path
     )

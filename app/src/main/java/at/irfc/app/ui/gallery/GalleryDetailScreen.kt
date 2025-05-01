@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import at.irfc.app.data.repository.GalleryPictureRepository
+import at.irfc.app.data.repository.GalleryRepository
 import at.irfc.app.ui.core.ZoomableImage
 import coil.compose.rememberAsyncImagePainter
 import com.ramcosta.composedestinations.annotation.Destination
@@ -18,15 +18,15 @@ import org.koin.compose.koinInject
 @Destination
 @Composable
 fun GalleryDetailScreen(
-    pictureId: Long,
+    galleryId: Long,
     navController: NavController,
-    repository: GalleryPictureRepository = koinInject()
+    repository: GalleryRepository = koinInject()
 ) {
-    var picture by remember { mutableStateOf<at.irfc.app.data.local.entity.GalleryPicture?>(null) }
+    var gallery by remember { mutableStateOf<at.irfc.app.data.local.entity.Gallery?>(null) }
 
-    LaunchedEffect(pictureId) {
-        repository.loadPictures(force = false).collect { result ->
-            picture = result.data?.find { it.id == pictureId }
+    LaunchedEffect(galleryId) {
+        repository.loadGallery(force = false).collect { result ->
+            gallery = result.data?.find { it.id == galleryId }
         }
     }
 
@@ -36,14 +36,22 @@ fun GalleryDetailScreen(
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
-        if (picture != null) {
-            val painter = rememberAsyncImagePainter(picture!!.path)
+        if (gallery != null) {
+            val painter = rememberAsyncImagePainter(gallery!!.path)
 
             ZoomableImage(
                 minScale = 1f,
                 maxScale = 5f,
                 painter = painter,
-                contentDescription = picture!!.title
+                contentDescription = gallery!!.title
+            )
+
+            Text(
+                text = gallery!!.title,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(8.dp)
             )
         }
 
