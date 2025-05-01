@@ -3,11 +3,13 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import at.irfc.app.data.local.dao.CategoryDao
+import at.irfc.app.data.local.dao.CountdownDao
 import at.irfc.app.data.local.dao.EventDao
 import at.irfc.app.data.local.dao.GalleryDao
 import at.irfc.app.data.local.dao.LocationDao
 import at.irfc.app.data.local.dao.PictureDao
 import at.irfc.app.data.local.dao.VotingDao
+import at.irfc.app.data.local.entity.Countdown
 import at.irfc.app.data.local.entity.Event
 import at.irfc.app.data.local.entity.EventCategory
 import at.irfc.app.data.local.entity.EventLocation
@@ -19,9 +21,9 @@ import at.irfc.app.data.local.entity.relations.VotingEventCrossRef
 @Database(
     entities = [
         Event::class, EventCategory::class, EventPicture::class, EventLocation::class,
-        Voting::class, VotingEventCrossRef::class, Gallery::class
+        Voting::class, VotingEventCrossRef::class, Gallery::class, Countdown::class
     ],
-    version = 7
+    version = 8
 )
 @TypeConverters(Converters::class)
 abstract class IrfcDatabase : RoomDatabase() {
@@ -32,6 +34,7 @@ abstract class IrfcDatabase : RoomDatabase() {
     abstract fun locationDao(): LocationDao
     abstract fun votingDao(): VotingDao
     abstract fun galleryDao(): GalleryDao
+    abstract fun countdownDao(): CountdownDao
 
     companion object {
         const val DATABASE_NAME = "IrfcDB"

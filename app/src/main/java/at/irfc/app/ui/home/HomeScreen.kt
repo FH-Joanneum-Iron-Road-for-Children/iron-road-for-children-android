@@ -47,29 +47,49 @@ import androidx.media3.common.MimeTypes
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import at.irfc.app.R
+import at.irfc.app.data.local.entity.Countdown
+import at.irfc.app.data.repository.CountdownRepository
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlinx.coroutines.delay
+import org.koin.compose.koinInject
 
 @Composable
 @Destination
 @RootNavGraph(start = true)
-fun HomeScreen() {
+fun HomeScreen(repository: CountdownRepository = koinInject()) {
     val scrollState = rememberScrollState()
     val videoUrl = "https://yourvideo.mp4"
+    var time by remember { mutableStateOf<Countdown?>(null) }
 
+    LaunchedEffect(Unit) {
+        repository.getCountdown(force = false).collect { result ->
+            time = result.data?.firstOrNull()
+        }
+    }
+
+    val targetDate = time?.let {
+        LocalDateTime.ofEpochSecond(
+            it.time / 1000,
+            0,
+            ZoneId.of("Europe/Berlin").rules.getOffset(LocalDateTime.now())
+        )
+    }
     Column(
         modifier = Modifier
+            .verticalScroll(scrollState)
             .fillMaxSize()
-            .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         VideoPlayer(videoUrl)
 
-        CountdownTimer()
+        if (targetDate != null) {
+            CountdownTimer(targetDate)
+        }
+
+        // rest of the UI...
 
         Box(
             modifier = Modifier
@@ -154,8 +174,7 @@ fun VideoPlayer(videoUrl: String) {
 }
 
 @Composable
-fun CountdownTimer() {
-    val targetDate = LocalDateTime.of(2025, 6, 19, 0, 0)
+fun CountdownTimer(targetDate: LocalDateTime) {
     var timeLeft by remember { mutableStateOf(getTotalSecondsRemaining(targetDate)) }
 
     LaunchedEffect(Unit) {
