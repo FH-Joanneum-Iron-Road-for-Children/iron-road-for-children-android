@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import at.irfc.app.data.local.entity.GalleryPicture
-import at.irfc.app.data.repository.GalleryPictureRepository
+import at.irfc.app.data.local.entity.Gallery
+import at.irfc.app.data.repository.GalleryRepository
 import at.irfc.app.generated.navigation.destinations.GalleryDetailScreenDestination
 import at.irfc.app.util.Resource
 import coil.compose.AsyncImage
@@ -29,18 +29,18 @@ import org.koin.compose.koinInject
 @Destination
 fun GalleryScreen(
     navController: NavController,
-    repository: GalleryPictureRepository = koinInject()
+    repository: GalleryRepository = koinInject()
 ) {
-    var pictures by remember { mutableStateOf<List<GalleryPicture>>(emptyList()) }
+    var gallery by remember { mutableStateOf<List<Gallery>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
-    val failedImages = remember { mutableStateListOf<Long>() } // Track failed loads
+    val failedImages = remember { mutableStateListOf<Long>() }
 
     LaunchedEffect(Unit) {
-        repository.loadPictures(force = false).collect { result ->
+        repository.loadGallery(force = false).collect { result ->
             when (result) {
                 is Resource.Success -> {
-                    // TEMP: only keep URLs that look valid (very basic filter)
-                    pictures = result.data.filter {
+                    // TEMP: only keep URLs that look valid
+                    gallery = result.data.filter {
                         it.path.startsWith("http") && it.path.endsWith(".jpg") || it.path.endsWith(
                             ".png"
                         )
@@ -74,9 +74,9 @@ fun GalleryScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val filteredPictures = pictures.filter { it.id !in failedImages }
+            val filteredPictures = gallery.filter { it.id !in failedImages }
 
-            itemsIndexed(filteredPictures) { _, picture ->
+            itemsIndexed(filteredPictures) { _, gallery ->
                 Card(
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(2.dp),
@@ -84,18 +84,18 @@ fun GalleryScreen(
                         .aspectRatio(1f)
                         .clickable {
                             navController.navigate(
-                                GalleryDetailScreenDestination(pictureId = picture.id)
+                                GalleryDetailScreenDestination(galleryId = gallery.id)
                             )
                         }
                 ) {
                     AsyncImage(
-                        model = picture.path,
-                        contentDescription = picture.title,
+                        model = gallery.path,
+                        contentDescription = gallery.title,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
                         onError = {
-                            Log.e("GalleryImage", "Image failed: ${picture.path}")
-                            failedImages.add(picture.id)
+                            Log.e("GalleryImage", "Image failed: ${gallery.path}")
+                            failedImages.add(gallery.id)
                         }
                     )
                 }

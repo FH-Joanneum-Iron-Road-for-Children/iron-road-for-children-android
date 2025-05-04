@@ -3,12 +3,20 @@ package at.irfc.app.data.di
 import androidx.room.Room
 import at.irfc.app.BuildConfig
 import at.irfc.app.data.local.IrfcDatabase
+import at.irfc.app.data.remote.api.createCountdownApi
 import at.irfc.app.data.remote.api.createEventApi
-import at.irfc.app.data.remote.api.createPictureApi
+import at.irfc.app.data.remote.api.createGalleryApi
+import at.irfc.app.data.remote.api.createIntroVideoApi
+import at.irfc.app.data.remote.api.createPlaylistApi
+import at.irfc.app.data.remote.api.createSocialMediaApi
 import at.irfc.app.data.remote.api.createVotingApi
 import at.irfc.app.data.remote.ktorfitFactory
+import at.irfc.app.data.repository.CountdownRepository
 import at.irfc.app.data.repository.EventRepository
-import at.irfc.app.data.repository.GalleryPictureRepository
+import at.irfc.app.data.repository.GalleryRepository
+import at.irfc.app.data.repository.PlaylistRepository
+import at.irfc.app.data.repository.SocialMediaRepository
+import at.irfc.app.data.repository.VideoRepository
 import at.irfc.app.data.repository.VotingRepository
 import de.jensklingenberg.ktorfit.Ktorfit
 import org.koin.core.module.dsl.singleOf
@@ -33,15 +41,27 @@ val dataModule = module {
     singleOf(IrfcDatabase::locationDao)
     singleOf(IrfcDatabase::pictureDao)
     singleOf(IrfcDatabase::votingDao)
-    singleOf(IrfcDatabase::galleryPictureDao)
+    singleOf(IrfcDatabase::galleryDao)
+    singleOf(IrfcDatabase::countdownDao)
+    singleOf(IrfcDatabase::introVideoDao)
+    singleOf(IrfcDatabase::socialMediaDao)
+    singleOf(IrfcDatabase::playlistDao)
 
-    singleOf(Ktorfit::createPictureApi)
+    singleOf(Ktorfit::createGalleryApi)
     singleOf(Ktorfit::createEventApi)
     // singleOf<EventApi>(::EventApiMock)
     singleOf(Ktorfit::createVotingApi)
+    singleOf(Ktorfit::createCountdownApi)
     // singleOf<VotingApi>(::VotingApiMock)
+    singleOf(Ktorfit::createIntroVideoApi)
+    singleOf(Ktorfit::createSocialMediaApi)
+    singleOf(Ktorfit::createPlaylistApi)
 
     singleOf(::EventRepository)
     singleOf(::VotingRepository)
-    singleOf(::GalleryPictureRepository)
+    singleOf(::GalleryRepository)
+    singleOf(::CountdownRepository)
+    singleOf(::VideoRepository)
+    singleOf(::SocialMediaRepository)
+    singleOf(::PlaylistRepository)
 }
