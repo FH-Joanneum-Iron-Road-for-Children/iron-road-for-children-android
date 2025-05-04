@@ -6,11 +6,17 @@ import at.irfc.app.data.local.IrfcDatabase
 import at.irfc.app.data.remote.api.createCountdownApi
 import at.irfc.app.data.remote.api.createEventApi
 import at.irfc.app.data.remote.api.createGalleryApi
+import at.irfc.app.data.remote.api.createIntroVideoApi
+import at.irfc.app.data.remote.api.createPlaylistApi
+import at.irfc.app.data.remote.api.createSocialMediaApi
 import at.irfc.app.data.remote.api.createVotingApi
 import at.irfc.app.data.remote.ktorfitFactory
 import at.irfc.app.data.repository.CountdownRepository
 import at.irfc.app.data.repository.EventRepository
 import at.irfc.app.data.repository.GalleryRepository
+import at.irfc.app.data.repository.PlaylistRepository
+import at.irfc.app.data.repository.SocialMediaRepository
+import at.irfc.app.data.repository.VideoRepository
 import at.irfc.app.data.repository.VotingRepository
 import de.jensklingenberg.ktorfit.Ktorfit
 import org.koin.core.module.dsl.singleOf
@@ -37,6 +43,9 @@ val dataModule = module {
     singleOf(IrfcDatabase::votingDao)
     singleOf(IrfcDatabase::galleryDao)
     singleOf(IrfcDatabase::countdownDao)
+    singleOf(IrfcDatabase::introVideoDao)
+    singleOf(IrfcDatabase::socialMediaDao)
+    singleOf(IrfcDatabase::playlistDao)
 
     singleOf(Ktorfit::createGalleryApi)
     singleOf(Ktorfit::createEventApi)
@@ -44,9 +53,15 @@ val dataModule = module {
     singleOf(Ktorfit::createVotingApi)
     singleOf(Ktorfit::createCountdownApi)
     // singleOf<VotingApi>(::VotingApiMock)
+    singleOf(Ktorfit::createIntroVideoApi)
+    singleOf(Ktorfit::createSocialMediaApi)
+    singleOf(Ktorfit::createPlaylistApi)
 
     singleOf(::EventRepository)
     singleOf(::VotingRepository)
     singleOf(::GalleryRepository)
     singleOf(::CountdownRepository)
+    singleOf(::VideoRepository)
+    singleOf(::SocialMediaRepository)
+    singleOf(::PlaylistRepository)
 }

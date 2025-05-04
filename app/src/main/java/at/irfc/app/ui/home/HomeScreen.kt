@@ -48,26 +48,40 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import at.irfc.app.R
 import at.irfc.app.data.local.entity.Countdown
+import at.irfc.app.data.local.entity.IntroVideo
 import at.irfc.app.data.repository.CountdownRepository
+import at.irfc.app.data.repository.VideoRepository
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @Composable
 @Destination
 @RootNavGraph(start = true)
-fun HomeScreen(repository: CountdownRepository = koinInject()) {
+fun HomeScreen(
+    countdownRepository: CountdownRepository = koinInject(),
+    videoRepository: VideoRepository = koinInject()
+) {
     val scrollState = rememberScrollState()
-    val videoUrl = "https://yourvideo.mp4"
+    var video by remember { mutableStateOf<IntroVideo?>(null) }
     var time by remember { mutableStateOf<Countdown?>(null) }
 
     LaunchedEffect(Unit) {
-        repository.getCountdown(force = false).collect { result ->
-            time = result.data?.firstOrNull()
+        launch {
+            countdownRepository.getCountdown(force = false).collect { result ->
+                time = result.data?.firstOrNull()
+            }
+        }
+
+        launch {
+            videoRepository.getVideo(force = true).collect { result ->
+                video = result.data
+            }
         }
     }
 
@@ -78,12 +92,15 @@ fun HomeScreen(repository: CountdownRepository = koinInject()) {
             ZoneId.of("Europe/Berlin").rules.getOffset(LocalDateTime.now())
         )
     }
+
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
             .fillMaxSize()
     ) {
-        VideoPlayer(videoUrl)
+        if (video != null) {
+            VideoPlayer(video!!.path)
+        }
 
         if (targetDate != null) {
             CountdownTimer(targetDate)
@@ -149,6 +166,7 @@ fun VideoPlayer(videoUrl: String) {
                 .setMimeType(MimeTypes.APPLICATION_MP4)
                 .build()
             setMediaItem(mediaItem)
+            repeatMode = ExoPlayer.REPEAT_MODE_ALL
             prepare()
             volume = 0f
             playWhenReady = true

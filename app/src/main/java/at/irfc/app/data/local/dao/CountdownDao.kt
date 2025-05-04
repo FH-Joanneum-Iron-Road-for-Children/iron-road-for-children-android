@@ -11,4 +11,7 @@ interface CountdownDao {
 
     @Upsert
     suspend fun upsert(countdown: List<Countdown>)
+
+    @Query("DELETE FROM countdown WHERE countdownId NOT IN (:idsToKeep)")
+    suspend fun deleteNotInList(idsToKeep: Set<Long>)
 }
