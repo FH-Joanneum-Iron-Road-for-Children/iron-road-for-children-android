@@ -49,7 +49,9 @@ import androidx.media3.ui.PlayerView
 import at.irfc.app.R
 import at.irfc.app.data.local.entity.Countdown
 import at.irfc.app.data.local.entity.IntroVideo
+import at.irfc.app.data.local.entity.SocialMedia
 import at.irfc.app.data.repository.CountdownRepository
+import at.irfc.app.data.repository.SocialMediaRepository
 import at.irfc.app.data.repository.VideoRepository
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -65,11 +67,13 @@ import org.koin.compose.koinInject
 @RootNavGraph(start = true)
 fun HomeScreen(
     countdownRepository: CountdownRepository = koinInject(),
-    videoRepository: VideoRepository = koinInject()
+    videoRepository: VideoRepository = koinInject(),
+    socialMediaRepository: SocialMediaRepository = koinInject()
 ) {
     val scrollState = rememberScrollState()
     var video by remember { mutableStateOf<IntroVideo?>(null) }
     var time by remember { mutableStateOf<Countdown?>(null) }
+    var socialMedia by remember { mutableStateOf<List<SocialMedia>>(emptyList()) }
 
     LaunchedEffect(Unit) {
         launch {
@@ -83,13 +87,18 @@ fun HomeScreen(
                 video = result.data
             }
         }
+        launch {
+            socialMediaRepository.getSocialMedia(force = true).collect { result ->
+                socialMedia = result.data?.toList() ?: emptyList()
+            }
+        }
     }
 
     val targetDate = time?.let {
         LocalDateTime.ofEpochSecond(
             it.time / 1000,
             0,
-            ZoneId.of("Europe/Berlin").rules.getOffset(LocalDateTime.now())
+            ZoneId.systemDefault().rules.getOffset(LocalDateTime.now())
         )
     }
 
@@ -105,8 +114,6 @@ fun HomeScreen(
         if (targetDate != null) {
             CountdownTimer(targetDate)
         }
-
-        // rest of the UI...
 
         Box(
             modifier = Modifier
@@ -137,17 +144,24 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp)
                 ) {
+                    val facebookUrl = socialMedia.find {
+                        it.title == "Facebook"
+                    }?.path ?: "https://www.facebook.com/irfcfestival/"
+                    val instagramUrl = socialMedia.find {
+                        it.title == "Instagram"
+                    }?.path ?: "https://www.instagram.com/irfc_festival/"
+
                     SocialIcon(
                         R.drawable.facebook,
                         "Facebook",
-                        "https://www.facebook.com/irfcfestival/",
+                        facebookUrl,
                         iconSize
                     )
 
                     SocialIcon(
                         R.drawable.instagram,
                         "Instagram",
-                        "https://www.instagram.com/irfc_festival/",
+                        instagramUrl,
                         iconSize
                     )
                 }

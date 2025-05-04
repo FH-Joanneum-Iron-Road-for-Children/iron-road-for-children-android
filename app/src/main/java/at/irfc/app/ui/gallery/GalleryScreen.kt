@@ -33,13 +33,13 @@ fun GalleryScreen(
 ) {
     var gallery by remember { mutableStateOf<List<Gallery>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
-    val failedImages = remember { mutableStateListOf<Long>() } // Track failed loads
+    val failedImages = remember { mutableStateListOf<Long>() }
 
     LaunchedEffect(Unit) {
         repository.loadGallery(force = false).collect { result ->
             when (result) {
                 is Resource.Success -> {
-                    // TEMP: only keep URLs that look valid (very basic filter)
+                    // TEMP: only keep URLs that look valid
                     gallery = result.data.filter {
                         it.path.startsWith("http") && it.path.endsWith(".jpg") || it.path.endsWith(
                             ".png"

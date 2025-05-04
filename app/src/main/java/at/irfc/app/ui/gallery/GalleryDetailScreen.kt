@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import at.irfc.app.data.local.entity.Gallery
 import at.irfc.app.data.repository.GalleryRepository
 import at.irfc.app.ui.core.ZoomableImage
 import coil.compose.rememberAsyncImagePainter
@@ -22,7 +23,7 @@ fun GalleryDetailScreen(
     navController: NavController,
     repository: GalleryRepository = koinInject()
 ) {
-    var gallery by remember { mutableStateOf<at.irfc.app.data.local.entity.Gallery?>(null) }
+    var gallery by remember { mutableStateOf<Gallery?>(null) }
 
     LaunchedEffect(galleryId) {
         repository.loadGallery(force = false).collect { result ->
