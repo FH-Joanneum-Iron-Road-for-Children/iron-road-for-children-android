@@ -47,29 +47,73 @@ import androidx.media3.common.MimeTypes
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import at.irfc.app.R
+import at.irfc.app.data.local.entity.Countdown
+import at.irfc.app.data.local.entity.IntroVideo
+import at.irfc.app.data.local.entity.SocialMedia
+import at.irfc.app.data.repository.CountdownRepository
+import at.irfc.app.data.repository.SocialMediaRepository
+import at.irfc.app.data.repository.VideoRepository
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.ZoneId
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 @Composable
 @Destination
 @RootNavGraph(start = true)
-fun HomeScreen() {
+fun HomeScreen(
+    countdownRepository: CountdownRepository = koinInject(),
+    videoRepository: VideoRepository = koinInject(),
+    socialMediaRepository: SocialMediaRepository = koinInject()
+) {
     val scrollState = rememberScrollState()
-    val videoUrl = "https://yourvideo.mp4"
+    var video by remember { mutableStateOf<IntroVideo?>(null) }
+    var time by remember { mutableStateOf<Countdown?>(null) }
+    var socialMedia by remember { mutableStateOf<List<SocialMedia>>(emptyList()) }
+
+    LaunchedEffect(Unit) {
+        launch {
+            countdownRepository.getCountdown(force = false).collect { result ->
+                time = result.data?.firstOrNull()
+            }
+        }
+
+        launch {
+            videoRepository.getVideo(force = true).collect { result ->
+                video = result.data
+            }
+        }
+        launch {
+            socialMediaRepository.getSocialMedia(force = true).collect { result ->
+                socialMedia = result.data?.toList() ?: emptyList()
+            }
+        }
+    }
+
+    val targetDate = time?.let {
+        LocalDateTime.ofEpochSecond(
+            it.time / 1000,
+            0,
+            ZoneId.systemDefault().rules.getOffset(LocalDateTime.now())
+        )
+    }
 
     Column(
         modifier = Modifier
+            .verticalScroll(scrollState)
             .fillMaxSize()
-            .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        VideoPlayer(videoUrl)
+        if (video != null) {
+            VideoPlayer(video!!.path)
+        }
 
-        CountdownTimer()
+        if (targetDate != null) {
+            CountdownTimer(targetDate)
+        }
 
         Box(
             modifier = Modifier
@@ -100,17 +144,24 @@ fun HomeScreen() {
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp)
                 ) {
+                    val facebookUrl = socialMedia.find {
+                        it.title == "Facebook"
+                    }?.path ?: "https://www.facebook.com/irfcfestival/"
+                    val instagramUrl = socialMedia.find {
+                        it.title == "Instagram"
+                    }?.path ?: "https://www.instagram.com/irfc_festival/"
+
                     SocialIcon(
                         R.drawable.facebook,
                         "Facebook",
-                        "https://www.facebook.com/irfcfestival/",
+                        facebookUrl,
                         iconSize
                     )
 
                     SocialIcon(
                         R.drawable.instagram,
                         "Instagram",
-                        "https://www.instagram.com/irfc_festival/",
+                        instagramUrl,
                         iconSize
                     )
                 }
@@ -129,6 +180,7 @@ fun VideoPlayer(videoUrl: String) {
                 .setMimeType(MimeTypes.APPLICATION_MP4)
                 .build()
             setMediaItem(mediaItem)
+            repeatMode = ExoPlayer.REPEAT_MODE_ALL
             prepare()
             volume = 0f
             playWhenReady = true
@@ -154,8 +206,7 @@ fun VideoPlayer(videoUrl: String) {
 }
 
 @Composable
-fun CountdownTimer() {
-    val targetDate = LocalDateTime.of(2025, 6, 19, 0, 0)
+fun CountdownTimer(targetDate: LocalDateTime) {
     var timeLeft by remember { mutableStateOf(getTotalSecondsRemaining(targetDate)) }
 
     LaunchedEffect(Unit) {
