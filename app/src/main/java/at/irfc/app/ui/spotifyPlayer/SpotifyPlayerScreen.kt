@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.navigation.NavController
 import com.ramcosta.composedestinations.annotation.Destination
 
 @Composable
 @Destination
 fun SpotifyPlayerScreen(
-    navController: NavController,
     playlistId: String
 ) {
     AndroidView(
