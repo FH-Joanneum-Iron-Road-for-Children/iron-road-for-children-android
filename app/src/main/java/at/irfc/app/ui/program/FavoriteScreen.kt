@@ -9,7 +9,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import at.irfc.app.presentation.program.ProgramViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.getViewModel
@@ -17,7 +16,6 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 @Destination
 fun FavoriteScreen(
-    navController: NavController,
     viewModel: ProgramViewModel = getViewModel()
 ) {
     val favorites by viewModel.favoriteEvents.collectAsState()
