@@ -22,8 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
@@ -32,7 +30,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import at.irfc.app.R
-import at.irfc.app.data.repository.PlaylistRepository
 import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.generated.navigation.destinations.GalleryScreenDestination
 import at.irfc.app.generated.navigation.destinations.SpotifyPlayerScreenDestination
@@ -42,11 +39,10 @@ import at.irfc.app.ui.core.icons.IrfcIcons
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.navigate
 import com.ramcosta.composedestinations.navigation.popUpTo
-import org.koin.compose.koinInject
 
 @Composable
 @Destination
-fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: NavController) {
+fun AboutUsScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
