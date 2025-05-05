@@ -39,6 +39,7 @@ import at.irfc.app.data.local.entity.Playlist
 import at.irfc.app.data.repository.PlaylistRepository
 import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.generated.navigation.destinations.GalleryScreenDestination
+import at.irfc.app.generated.navigation.destinations.SpotifyPlayerScreenDestination
 import at.irfc.app.ui.core.ExpandableCard
 import at.irfc.app.ui.core.icons.Donate
 import at.irfc.app.ui.core.icons.IrfcIcons
@@ -105,7 +106,13 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
             }
             OutlinedButton(
                 onClick = {
-                    uriHandler.openUri("https://open.spotify.com/playlist/" + playlist?.spotifyId)
+                    // uriHandler.openUri("https://open.spotify.com/playlist/" + playlist?.spotifyId)
+                    navController.navigate(
+                        SpotifyPlayerScreenDestination(playlist?.spotifyId ?: "")
+                    ) {
+                        popUpTo(NavGraphs.root)
+                        launchSingleTop = true
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
