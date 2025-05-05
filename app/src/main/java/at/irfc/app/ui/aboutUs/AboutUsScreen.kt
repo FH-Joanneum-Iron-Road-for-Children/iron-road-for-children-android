@@ -93,7 +93,6 @@ fun AboutUsScreen(navController: NavController) {
                 onClick = {
                     // uriHandler.openUri("https://open.spotify.com/playlist/" + playlist?.spotifyId)
                     navController.navigate(
-                        // SpotifyPlayerScreenDestination(playlist?.spotifyId ?: "")
                         SpotifyPlayerScreenDestination
                     ) {
                         popUpTo(NavGraphs.root)

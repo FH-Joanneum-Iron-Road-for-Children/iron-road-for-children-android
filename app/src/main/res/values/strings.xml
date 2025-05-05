@@ -59,4 +59,7 @@
     <string name="nav_bar_home">Home</string>
     <string name="header_gallery">Galerie</string>
     <string name="header_pictures">Bilder</string>
+
+    <!-- SpotifyPlayer Screen -->
+    <string name="header_spotifyPlayer">Spotify Playlist</string>
 </resources>

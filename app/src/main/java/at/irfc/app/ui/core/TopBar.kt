@@ -16,6 +16,7 @@ import at.irfc.app.generated.navigation.destinations.HomeScreenDestination
 import at.irfc.app.generated.navigation.destinations.MapScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramScreenDestination
+import at.irfc.app.generated.navigation.destinations.SpotifyPlayerScreenDestination
 import at.irfc.app.generated.navigation.destinations.TypedDestination
 import at.irfc.app.generated.navigation.destinations.VotingScreenDestination
 import at.irfc.app.generated.navigation.startAppDestination
@@ -55,5 +56,6 @@ private fun TypedDestination<*>?.screenTitle(): String = when (this) {
     AboutUsScreenDestination -> stringResource(id = R.string.header_aboutUs)
     ProgramDetailScreenDestination -> stringResource(id = R.string.header_programDetailScreen)
     GalleryScreenDestination -> stringResource(id = R.string.header_pictures)
+    SpotifyPlayerScreenDestination -> stringResource(id = R.string.header_spotifyPlayer)
     else -> ""
 }
