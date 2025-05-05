@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 5,
-    "identityHash": "22baabeddce0e79bf2eb6f41a8937b00",
+    "version": 7,
+    "identityHash": "451e3ba03127906007a7fc39e4e90a34",
     "entities": [
       {
         "tableName": "events",
@@ -251,12 +251,12 @@
         "foreignKeys": []
       },
       {
-        "tableName": "galleryPictures",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`galleryPictureId` INTEGER NOT NULL, `title` TEXT NOT NULL, `path` TEXT NOT NULL, PRIMARY KEY(`galleryPictureId`))",
+        "tableName": "gallery",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`galleryId` INTEGER NOT NULL, `title` TEXT NOT NULL, `path` TEXT NOT NULL, PRIMARY KEY(`galleryId`))",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "galleryPictureId",
+            "columnName": "galleryId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -276,7 +276,7 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "galleryPictureId"
+            "galleryId"
           ]
         },
         "indices": [],
@@ -286,7 +286,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '22baabeddce0e79bf2eb6f41a8937b00')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '451e3ba03127906007a7fc39e4e90a34')"
     ]
   }
 }

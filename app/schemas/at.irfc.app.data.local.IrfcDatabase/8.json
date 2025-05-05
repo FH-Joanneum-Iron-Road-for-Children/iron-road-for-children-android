@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 5,
-    "identityHash": "22baabeddce0e79bf2eb6f41a8937b00",
+    "version": 8,
+    "identityHash": "3f969e6b9ba8f4e9577d570f8a48fc72",
     "entities": [
       {
         "tableName": "events",
@@ -251,12 +251,12 @@
         "foreignKeys": []
       },
       {
-        "tableName": "galleryPictures",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`galleryPictureId` INTEGER NOT NULL, `title` TEXT NOT NULL, `path` TEXT NOT NULL, PRIMARY KEY(`galleryPictureId`))",
+        "tableName": "gallery",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`galleryId` INTEGER NOT NULL, `title` TEXT NOT NULL, `path` TEXT NOT NULL, PRIMARY KEY(`galleryId`))",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "galleryPictureId",
+            "columnName": "galleryId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -276,7 +276,129 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "galleryPictureId"
+            "galleryId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "countdown",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`countdownId` INTEGER NOT NULL, `time` INTEGER NOT NULL, PRIMARY KEY(`countdownId`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "countdownId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "time",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "countdownId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "intro_video",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`videoId` INTEGER NOT NULL, `altText` TEXT NOT NULL, `path` TEXT NOT NULL, PRIMARY KEY(`videoId`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "videoId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "altText",
+            "columnName": "altText",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "path",
+            "columnName": "path",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "videoId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "socialMedia",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`socialMediaId` INTEGER NOT NULL, `title` TEXT NOT NULL, `path` TEXT NOT NULL, PRIMARY KEY(`socialMediaId`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "socialMediaId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "path",
+            "columnName": "path",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "socialMediaId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "playlist",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`playlistId` INTEGER NOT NULL, `title` TEXT NOT NULL, `spotifyId` TEXT NOT NULL, PRIMARY KEY(`playlistId`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "playlistId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "spotifyId",
+            "columnName": "spotifyId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "playlistId"
           ]
         },
         "indices": [],
@@ -286,7 +408,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '22baabeddce0e79bf2eb6f41a8937b00')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3f969e6b9ba8f4e9577d570f8a48fc72')"
     ]
   }
 }
