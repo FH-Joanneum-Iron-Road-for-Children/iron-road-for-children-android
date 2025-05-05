@@ -1,6 +1,7 @@
 package at.irfc.app.ui.spotifyPlayer
 
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -38,6 +39,9 @@ fun SpotifyPlayerScreen(playlistId: String, navController: NavController) {
                 WebView(context).apply {
                     settings.javaScriptEnabled = true
                     settings.domStorageEnabled = true
+                    settings.allowFileAccess = false
+                    settings.allowContentAccess = false
+                    webViewClient = WebViewClient()
                     loadUrl("https://open.spotify.com/embed/playlist/$playlistId")
                 }
             },
