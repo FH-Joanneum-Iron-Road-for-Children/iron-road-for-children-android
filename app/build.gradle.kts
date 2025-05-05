@@ -26,7 +26,7 @@ android {
     defaultConfig {
         applicationId = "at.irfc.app"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 33
 
         versionName = project.getVersionName()
         versionCode = project.getVersionBuild()
@@ -117,6 +117,11 @@ android {
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    applicationVariants.all {
+        kotlin.sourceSets.getByName(name) {
+            kotlin.srcDir("build/generated/ksp/$name/kotlin")
         }
     }
 }

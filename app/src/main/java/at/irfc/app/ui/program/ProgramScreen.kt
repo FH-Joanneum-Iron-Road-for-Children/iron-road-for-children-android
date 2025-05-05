@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.data.local.entity.EventCategory
 import at.irfc.app.data.local.entity.relations.EventWithDetails
+import at.irfc.app.generated.navigation.destinations.FavoriteScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
 import at.irfc.app.presentation.program.EventsOnDate
 import at.irfc.app.presentation.program.ProgramViewModel
@@ -57,7 +58,8 @@ fun ProgramScreen(
                     eventListResource = eventListResource,
                     selectedCategory = selectedCategory,
                     categories = categories,
-                    onToggleCategory = viewModel::toggleCategory
+                    onToggleCategory = viewModel::toggleCategory,
+                    navController = navController
                 )
 
                 val eventOnDayList = eventListResource.data
@@ -178,7 +180,8 @@ private fun ProgramListHeader(
     eventListResource: Resource<*>,
     selectedCategory: EventCategory?,
     categories: List<EventCategory>,
-    onToggleCategory: (EventCategory) -> Unit
+    onToggleCategory: (EventCategory) -> Unit,
+    navController: NavController
 ) {
     if (eventListResource is Resource.Error) {
         Box(
@@ -220,6 +223,19 @@ private fun ProgramListHeader(
                     text = it.name,
                     selected = false,
                     onClick = { onToggleCategory(it) }
+                )
+            }
+
+            item {
+                FilterChip(
+                    modifier = Modifier.animateItemPlacement(),
+                    text = "Favoriten",
+                    selected = false,
+                    onClick = {
+                        navController.navigate(
+                            FavoriteScreenDestination
+                        )
+                    }
                 )
             }
         }
