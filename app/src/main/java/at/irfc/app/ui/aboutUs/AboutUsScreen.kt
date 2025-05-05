@@ -22,10 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +32,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import at.irfc.app.R
-import at.irfc.app.data.local.entity.Playlist
 import at.irfc.app.data.repository.PlaylistRepository
 import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.generated.navigation.destinations.GalleryScreenDestination
@@ -51,13 +47,6 @@ import org.koin.compose.koinInject
 @Composable
 @Destination
 fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: NavController) {
-    var playlist by remember { mutableStateOf<Playlist?>(null) }
-    LaunchedEffect(Unit) {
-        repository.getPlaylist(force = false).collect { result ->
-            playlist = result.data
-        }
-    }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -108,7 +97,8 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
                 onClick = {
                     // uriHandler.openUri("https://open.spotify.com/playlist/" + playlist?.spotifyId)
                     navController.navigate(
-                        SpotifyPlayerScreenDestination(playlist?.spotifyId ?: "")
+                        // SpotifyPlayerScreenDestination(playlist?.spotifyId ?: "")
+                        SpotifyPlayerScreenDestination
                     ) {
                         popUpTo(NavGraphs.root)
                         launchSingleTop = true
