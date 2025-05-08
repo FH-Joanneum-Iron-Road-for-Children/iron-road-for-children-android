@@ -59,4 +59,5 @@
     <string name="nav_bar_home">Home</string>
     <string name="header_gallery">Galerie</string>
     <string name="header_pictures">Bilder</string>
+    <string name="title_activity_full_splash_screen">FullSplashScreen</string>
 </resources>
