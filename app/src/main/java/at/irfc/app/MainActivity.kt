@@ -42,7 +42,8 @@ class MainActivity : ComponentActivity() {
             var showSplash by remember { mutableStateOf(true) }
 
             LaunchedEffect(Unit) {
-                delay(2000)
+                val SPLASH_SCREEN_DELAY_MS = 2000L
+                delay(SPLASH_SCREEN_DELAY_MS)
                 showSplash = false
             }
 
