@@ -40,10 +40,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             var showSplash by remember { mutableStateOf(true) }
-            val splashScreenDelayMs = 2000L
 
             LaunchedEffect(Unit) {
-                delay(splashScreenDelayMs)
+                delay(Companion.splashScreenDelayMs)
                 showSplash = false
             }
 
@@ -76,5 +75,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    companion object {
+        private const val splashScreenDelayMs = 2000L
     }
 }
