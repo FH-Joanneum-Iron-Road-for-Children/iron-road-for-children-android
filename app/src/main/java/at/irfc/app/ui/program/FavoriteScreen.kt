@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import at.irfc.app.presentation.program.ProgramViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import org.koin.androidx.compose.getViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Destination
@@ -34,12 +35,22 @@ fun FavoriteScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(favorites) { event ->
-                EventListItem(
-                    event = event,
-                    onEventClick = { /* poți naviga la detalii aici dacă vrei */ },
-                    onFavoriteToggle = { viewModel.toggleFavorite(it) }
-                )
+            if (favorites.isEmpty()) {
+                item {
+                    Text(
+                        text = "Es gibt keine favorite.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            } else {
+                items(favorites) { event ->
+                    EventListItem(
+                        event = event.copyWithFavorite(true), // ne asigurăm că apare ca favorit
+                        onEventClick = { /* navigare la detalii, dacă vrei */ },
+                        onFavoriteToggle = { viewModel.toggleFavorite(it) }
+                    )
+                }
             }
         }
     }

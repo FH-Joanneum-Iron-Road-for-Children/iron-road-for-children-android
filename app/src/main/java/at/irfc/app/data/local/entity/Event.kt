@@ -6,6 +6,7 @@ import java.util.*
 
 @Entity(tableName = "events")
 data class Event(
+    // val isFavorite: Boolean,
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "eventId")
     val id: Long,

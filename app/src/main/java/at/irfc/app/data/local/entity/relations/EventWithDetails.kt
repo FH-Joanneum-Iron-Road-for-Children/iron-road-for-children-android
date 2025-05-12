@@ -24,6 +24,17 @@ data class EventWithDetails(
     @Ignore
     var isFavorite: Boolean = false
 
+    fun copyWithFavorite(newFavorite: Boolean): EventWithDetails {
+        return EventWithDetails(
+            event = this.event,
+            category = this.category,
+            location = this.location,
+            additionalImages = this.additionalImages
+        ).also {
+            it.isFavorite = newFavorite
+        }
+    }
+
     // Shorthand accessors
     inline val id get() = event.id
     inline val title get() = event.title

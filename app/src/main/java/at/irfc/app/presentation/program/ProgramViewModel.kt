@@ -58,13 +58,13 @@ class ProgramViewModel(
     }
 
     fun toggleFavorite(event: EventWithDetails) {
-        val current = _eventListResource.value
+        val currentList = _eventListResource.value.data ?: return
 
-        // 1. Toggle vizual (în listă)
-        val updatedData = current.data?.map { eventsOnDate ->
+        // 1. Modify visual state in the list
+        val updatedEventsOnDate = currentList.map { eventsOnDate ->
             val updatedEvents = eventsOnDate.events.map {
                 if (it.id == event.id) {
-                    it.also { e -> e.isFavorite = !e.isFavorite }
+                    it.copyWithFavorite(!it.isFavorite)
                 } else {
                     it
                 }
@@ -72,23 +72,14 @@ class ProgramViewModel(
             EventsOnDate(eventsOnDate.date, updatedEvents)
         }
 
-        if (updatedData != null) {
-            _eventListResource.value = Resource.Success(updatedData)
-        }
+        _eventListResource.value = Resource.Success(updatedEventsOnDate)
 
-        // 2. Update lista de favorite în memorie
-        val currentFavorites = _favoriteEvents.value.toMutableList()
-        val alreadyFavorite = currentFavorites.any { it.id == event.id }
+        // 2. Update favorite list
+        val newFavorites = updatedEventsOnDate
+            .flatMap { it.events }
+            .filter { it.isFavorite }
 
-        if (alreadyFavorite) {
-            currentFavorites.removeAll { it.id == event.id }
-        } else {
-            // Adăugăm o instanță cu flag-ul modificat manual
-            event.also { it.isFavorite = true }
-            currentFavorites.add(event)
-        }
-
-        _favoriteEvents.value = currentFavorites
+        _favoriteEvents.value = newFavorites
     }
 
     private fun Resource<List<EventWithDetails>>.filterAndTransform(category: EventCategory?):
