@@ -25,7 +25,9 @@ class ProgramViewModel(
 
     private val _selectedCategory: MutableStateFlow<EventCategory?> = MutableStateFlow(null)
     val selectedCategory: StateFlow<EventCategory?> = _selectedCategory
-
+    private companion object {
+        private const val WHILE_SUBSCRIBED_TIMEOUT = 5_000L
+    }
     val favoriteEvents: StateFlow<List<EventWithDetails>> =
         repository.loadEvents(force = false)
             .map { resource ->
@@ -41,7 +43,11 @@ class ProgramViewModel(
                     }
                 }
             }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(WHILE_SUBSCRIBED_TIMEOUT),
+                emptyList()
+            )
 
     private var loadEventsJob: Job? = null
 

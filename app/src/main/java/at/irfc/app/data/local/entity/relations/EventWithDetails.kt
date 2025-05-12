@@ -20,14 +20,6 @@ data class EventWithDetails(
     val additionalImages: List<EventPicture>
 
 ) {
-    fun copyWithFavorite(newFavorite: Boolean): EventWithDetails {
-        return EventWithDetails(
-            event = this.event,
-            category = this.category,
-            location = this.location,
-            additionalImages = this.additionalImages
-        )
-    }
 
     // Shorthand accessors
     inline val id get() = event.id
