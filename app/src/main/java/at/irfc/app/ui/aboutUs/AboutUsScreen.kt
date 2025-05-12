@@ -3,14 +3,13 @@ package at.irfc.app.ui.aboutUs
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -48,7 +47,6 @@ import at.irfc.app.data.local.entity.Playlist
 import at.irfc.app.data.repository.PlaylistRepository
 import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.generated.navigation.destinations.GalleryScreenDestination
-import at.irfc.app.ui.core.ExpandableCard
 import at.irfc.app.ui.core.icons.Donate
 import at.irfc.app.ui.core.icons.IrfcIcons
 import com.ramcosta.composedestinations.annotation.Destination
@@ -68,59 +66,38 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 10.dp)
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val uriHandler = LocalUriHandler.current
-        // Spacer(modifier = Modifier.height(20.dp))
-        ExpandableCard(
-            unexpandedLines = 3,
+        Text(
             text = stringResource(R.string.aboutUs_text)
         )
-        Row(
+        Spacer(modifier = Modifier.height(20.dp))
+        Image(
+            painter = painterResource(id = R.drawable.shs),
+            contentDescription = stringResource(R.string.shs),
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Box(
-                modifier = Modifier
-                    .weight(3f)
-                    .aspectRatio(3f / 2f),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.shs),
-                    contentDescription = stringResource(R.string.shs),
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Fit
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            Box(
-                modifier = Modifier
-                    .weight(2f)
-                    .aspectRatio(3f / 2f),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.lid),
-                    contentDescription = stringResource(R.string.lid),
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Fit
-                )
-            }
-        }
+                .fillMaxWidth(0.7f),
+            contentScale = ContentScale.Fit
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Image(
+            painter = painterResource(id = R.drawable.lid),
+            contentDescription = stringResource(R.string.lid),
+            modifier = Modifier
+                .fillMaxWidth(0.7f),
+            contentScale = ContentScale.Fit
+        )
+        Spacer(modifier = Modifier.height(20.dp))
         Column(
             modifier = Modifier
-                // .padding(bottom = 15.dp)
                 .width(IntrinsicSize.Max),
-            verticalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val uriHandler = LocalUriHandler.current
             Button(
                 onClick = { uriHandler.openUri("https://irfc.at/#spenden") },
                 modifier = Modifier.fillMaxWidth()
@@ -138,6 +115,7 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
+                    modifier = Modifier.padding(start = 10.dp),
                     text = stringResource(R.string.aboutUs_raffle),
                     color = MaterialTheme.colorScheme.tertiary
                 )
@@ -149,6 +127,7 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
+                    modifier = Modifier.padding(start = 10.dp),
                     imageVector = Icons.Outlined.ChildCare,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.tertiary
@@ -166,6 +145,7 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
+                    modifier = Modifier.padding(start = 10.dp),
                     imageVector = Icons.Outlined.ShoppingCart,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.tertiary
@@ -183,6 +163,7 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
+                    modifier = Modifier.padding(start = 10.dp),
                     imageVector = Icons.Outlined.DirectionsCarFilled,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.tertiary
@@ -200,6 +181,7 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
+                    modifier = Modifier.padding(start = 10.dp),
                     imageVector = Icons.Outlined.QueueMusic,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.tertiary
@@ -220,6 +202,7 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
+                    modifier = Modifier.padding(start = 10.dp),
                     imageVector = Icons.Outlined.Image,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.tertiary
@@ -230,12 +213,7 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }
-        }
-        Column(
-            modifier = Modifier.padding(bottom = 15.dp)
-                .width(IntrinsicSize.Max),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+            Spacer(modifier = Modifier.height(20.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -245,7 +223,9 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Info,
-                    contentDescription = null
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(start = 15.dp)
                 )
                 Text(
                     text = stringResource(R.string.aboutUs_imprint) + "  >",
@@ -258,12 +238,16 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
                 modifier = Modifier
                     .fillMaxWidth()
                     // .padding(vertical = 6.dp) // controls height
-                    .clickable { uriHandler.openUri("https://irfc.at/kontakt/datenschutz") },
+                    .clickable {
+                        uriHandler.openUri("https://irfc.at/kontakt/datenschutz")
+                    },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Shield,
-                    contentDescription = null
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(start = 15.dp)
                 )
                 Text(
                     text = stringResource(R.string.aboutUs_privacy) + "  >",
@@ -273,11 +257,12 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject(), navController: 
                 )
             }
         }
+        Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = stringResource(R.string.aboutUs_providedBy),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall
         )
-        // Spacer(modifier = Modifier.height(20.dp))
     }
 }
+// Spacer(modifier = Modifier.height(20.dp))
