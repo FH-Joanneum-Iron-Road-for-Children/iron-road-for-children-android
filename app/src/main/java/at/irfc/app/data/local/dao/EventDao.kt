@@ -30,6 +30,9 @@ abstract class EventDao(private val database: IrfcDatabase) {
     @Query("DELETE FROM events WHERE eventId = :id")
     abstract suspend fun deleteById(id: Long)
 
+    @Update
+    abstract suspend fun updateEvent(event: Event)
+
     @Transaction
     open suspend fun upsertEvents(events: List<EventWithDetails>) {
         categoryDao.upsertCategories(

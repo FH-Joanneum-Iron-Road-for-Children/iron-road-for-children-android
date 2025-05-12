@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 8,
-    "identityHash": "3f969e6b9ba8f4e9577d570f8a48fc72",
+    "identityHash": "2551d1c2e3060b566be4fb6fc26e63ab",
     "entities": [
       {
         "tableName": "events",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventId` INTEGER NOT NULL, `title` TEXT NOT NULL, `startDateTime` INTEGER NOT NULL, `endDateTime` INTEGER NOT NULL, `description` TEXT NOT NULL, `categoryId` INTEGER NOT NULL, `locationId` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `imageTitle` TEXT NOT NULL, `imagePath` TEXT NOT NULL, PRIMARY KEY(`eventId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventId` INTEGER NOT NULL, `title` TEXT NOT NULL, `startDateTime` INTEGER NOT NULL, `endDateTime` INTEGER NOT NULL, `description` TEXT NOT NULL, `categoryId` INTEGER NOT NULL, `locationId` INTEGER NOT NULL, `isFavorite` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `imageTitle` TEXT NOT NULL, `imagePath` TEXT NOT NULL, PRIMARY KEY(`eventId`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -47,6 +47,12 @@
           {
             "fieldPath": "locationId",
             "columnName": "locationId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "isFavorite",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -408,7 +414,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3f969e6b9ba8f4e9577d570f8a48fc72')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2551d1c2e3060b566be4fb6fc26e63ab')"
     ]
   }
 }

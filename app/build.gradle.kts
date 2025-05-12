@@ -26,7 +26,7 @@ android {
     defaultConfig {
         applicationId = "at.irfc.app"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
 
         versionName = project.getVersionName()
         versionCode = project.getVersionBuild()

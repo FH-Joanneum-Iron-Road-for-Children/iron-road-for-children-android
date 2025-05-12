@@ -52,4 +52,8 @@ class EventRepository(
     companion object {
         val cacheDuration = 2.hours.toJavaDuration()
     }
+
+    suspend fun updateFavorite(eventWithDetails: EventWithDetails) {
+        eventDao.updateEvent(eventWithDetails.event)
+    }
 }

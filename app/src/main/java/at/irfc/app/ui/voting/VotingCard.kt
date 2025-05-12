@@ -114,11 +114,13 @@ private fun VotingCardPreview() {
                 description = "Test description of the event.",
                 categoryId = 1,
                 locationId = 1,
+                isFavorite = false,
                 image = Event.Image(
                     title = "Header picture",
                     path = "https://picsum.photos/350/100"
                 ),
                 updated = LocalDateTime.now()
+
             ),
             onVote = {}
         )

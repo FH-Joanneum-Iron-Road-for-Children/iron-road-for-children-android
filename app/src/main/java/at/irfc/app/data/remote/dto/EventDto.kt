@@ -76,6 +76,7 @@ fun EventDto.toEventEntity(): EventWithDetails {
             image = Event.Image(this.picture.altText, this.picture.path),
             categoryId = category.id,
             locationId = location.id,
+            isFavorite = false,
             updated = LocalDateTime.now()
         ),
         category = category,

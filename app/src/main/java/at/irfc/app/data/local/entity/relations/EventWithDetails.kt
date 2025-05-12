@@ -1,7 +1,6 @@
 package at.irfc.app.data.local.entity.relations
 
 import androidx.room.Embedded
-import androidx.room.Ignore
 import androidx.room.Relation
 import at.irfc.app.data.local.entity.Event
 import at.irfc.app.data.local.entity.EventCategory
@@ -21,18 +20,13 @@ data class EventWithDetails(
     val additionalImages: List<EventPicture>
 
 ) {
-    @Ignore
-    var isFavorite: Boolean = false
-
     fun copyWithFavorite(newFavorite: Boolean): EventWithDetails {
         return EventWithDetails(
             event = this.event,
             category = this.category,
             location = this.location,
             additionalImages = this.additionalImages
-        ).also {
-            it.isFavorite = newFavorite
-        }
+        )
     }
 
     // Shorthand accessors

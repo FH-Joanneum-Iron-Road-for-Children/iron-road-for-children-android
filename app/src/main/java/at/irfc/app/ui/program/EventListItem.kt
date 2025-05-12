@@ -89,10 +89,10 @@ fun EventListItem(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 IconToggleButton(
-                    checked = event.isFavorite,
+                    checked = event.event.isFavorite,
                     onCheckedChange = { onFavoriteToggle(event) }
                 ) {
-                    val icon = if (event.isFavorite) {
+                    val icon = if (event.event.isFavorite) {
                         Icons.Filled.Favorite
                     } else {
                         Icons.Outlined.FavoriteBorder

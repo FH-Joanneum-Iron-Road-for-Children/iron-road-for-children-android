@@ -45,6 +45,8 @@ fun ProgramScreen(
 
     Column {
         val pager = rememberPagerState()
+        val coroutineScope = rememberCoroutineScope()
+
         EventListTabRow(pagerState = pager, eventOnDayList = eventListResource.data)
 
         // Material 3 does not include a PullToRefresh right now // TODO replace when added
@@ -90,8 +92,10 @@ fun ProgramScreen(
                             )
                         },
                         onFavoriteToggle = {
-                            viewModel.toggleFavorite(it)
-                        } // 🔥 aici trimitem funcția din ViewModel
+                            coroutineScope.launch {
+                                viewModel.toggleFavorite(it)
+                            }
+                        }
                     )
                 }
             }

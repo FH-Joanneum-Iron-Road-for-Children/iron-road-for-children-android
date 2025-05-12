@@ -10,14 +10,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 
 class ProgramViewModel(
     private val repository: EventRepository
@@ -32,8 +25,23 @@ class ProgramViewModel(
 
     private val _selectedCategory: MutableStateFlow<EventCategory?> = MutableStateFlow(null)
     val selectedCategory: StateFlow<EventCategory?> = _selectedCategory
-    private val _favoriteEvents = MutableStateFlow<List<EventWithDetails>>(emptyList())
-    val favoriteEvents: StateFlow<List<EventWithDetails>> = _favoriteEvents
+
+    val favoriteEvents: StateFlow<List<EventWithDetails>> =
+        repository.loadEvents(force = false)
+            .map { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        resource.data.filter { it.event.isFavorite }
+                    }
+                    is Resource.Error -> {
+                        resource.data?.filter { it.event.isFavorite } ?: emptyList()
+                    }
+                    is Resource.Loading -> {
+                        resource.data?.filter { it.event.isFavorite } ?: emptyList()
+                    }
+                }
+            }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private var loadEventsJob: Job? = null
 
@@ -57,29 +65,11 @@ class ProgramViewModel(
         }
     }
 
-    fun toggleFavorite(event: EventWithDetails) {
-        val currentList = _eventListResource.value.data ?: return
-
-        // 1. Modify visual state in the list
-        val updatedEventsOnDate = currentList.map { eventsOnDate ->
-            val updatedEvents = eventsOnDate.events.map {
-                if (it.id == event.id) {
-                    it.copyWithFavorite(!it.isFavorite)
-                } else {
-                    it
-                }
-            }
-            EventsOnDate(eventsOnDate.date, updatedEvents)
-        }
-
-        _eventListResource.value = Resource.Success(updatedEventsOnDate)
-
-        // 2. Update favorite list
-        val newFavorites = updatedEventsOnDate
-            .flatMap { it.events }
-            .filter { it.isFavorite }
-
-        _favoriteEvents.value = newFavorites
+    suspend fun toggleFavorite(event: EventWithDetails) {
+        val updatedEvent = event.copy(
+            event = event.event.copy(isFavorite = !event.event.isFavorite)
+        )
+        repository.updateFavorite(updatedEvent)
     }
 
     private fun Resource<List<EventWithDetails>>.filterAndTransform(category: EventCategory?):
