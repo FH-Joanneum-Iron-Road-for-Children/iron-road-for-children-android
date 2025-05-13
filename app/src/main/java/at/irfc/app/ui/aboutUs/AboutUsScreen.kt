@@ -163,7 +163,6 @@ fun AboutUsScreen(navController: NavController) {
             }
             OutlinedButton(
                 onClick = {
-                    // uriHandler.openUri("https://open.spotify.com/playlist/" + playlist?.spotifyId)
                     navController.navigate(
                         SpotifyPlayerScreenDestination
                     ) {
