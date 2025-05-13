@@ -29,4 +29,5 @@ data class EventWithDetails(
     inline val description get() = event.description
     inline val image get() = event.image
     inline val updated get() = event.updated
+    inline val date get() = startDateTime.toLocalDate()
 }

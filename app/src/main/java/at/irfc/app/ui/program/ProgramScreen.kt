@@ -140,7 +140,7 @@ private fun EventListPager(
                         event = event,
                         onEventClick = onEventClick,
                         onFavoriteToggle = onFavoriteToggle
-                    ) // ✅ Acum e complet )
+                    )
                 }
             }
         }
