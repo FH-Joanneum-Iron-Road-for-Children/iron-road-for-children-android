@@ -56,4 +56,7 @@
     <string name="aboutUs_verlosung">Zur Verlosung</string>
     <string name="aboutUs_shop">Zum Shop</string>
     <string name="aboutUs_children">Spendenkinder</string>
+
+    <!-- SpotifyPlayer Screen -->
+    <string name="header_spotifyPlayer">Spotify Playlist</string>
 </resources>
