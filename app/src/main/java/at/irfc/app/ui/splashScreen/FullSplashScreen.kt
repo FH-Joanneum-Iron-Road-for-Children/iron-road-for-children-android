@@ -31,7 +31,7 @@ fun FullSplashScreen() {
             Image(
                 painter = painterResource(R.drawable.splash_logo),
                 contentDescription = null,
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.size(300.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
             Image(
