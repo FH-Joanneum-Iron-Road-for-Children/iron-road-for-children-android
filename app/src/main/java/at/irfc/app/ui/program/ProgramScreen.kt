@@ -43,7 +43,10 @@ fun ProgramScreen(
     val categories = viewModel.categoryList.collectAsState().value.filter { it != selectedCategory }
 
     Column {
-        val pager = rememberPagerState()
+        val pager = rememberPagerState(
+            initialPage = 0,
+            pageCount = { eventListResource.data?.size ?: 0 }
+        )
         EventListTabRow(pagerState = pager, eventOnDayList = eventListResource.data)
 
         // Material 3 does not include a PullToRefresh right now // TODO replace when added
@@ -102,7 +105,6 @@ private fun EventListPager(
     onEventClick: (EventWithDetails) -> Unit
 ) {
     HorizontalPager(
-        pageCount = eventOnDayList.size,
         state = pagerState
     ) { page ->
         val eventDay = eventOnDayList[page]

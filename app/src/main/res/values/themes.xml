@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.IronRoadForChildren" parent="android:Theme.Material.Light.NoActionBar" />
-
-    <style name="SplashTheme" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+    <style name="Theme.IronRoadForChildren" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="colorPrimary">@color/irfcBlue</item>
         <item name="android:statusBarColor">@color/irfcBlue</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen</item>
+        <item name="windowSplashScreenBackground">@color/irfcBlue</item>
+        <item name="postSplashScreenTheme">@style/Theme.IronRoadForChildren</item>
     </style>
 
 </resources>
