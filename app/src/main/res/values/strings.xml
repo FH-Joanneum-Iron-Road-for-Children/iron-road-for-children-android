@@ -25,6 +25,11 @@
     <string name="aboutUs_imprint">Impressum</string>
     <string name="aboutUs_playlist">Zur Playlist</string>
     <string name="aboutUs_gallery">Zur Galerie</string>
+    <string name="lid">Licht ins Dunkel</string>
+    <string name="shs">Steirer helfen Steirern</string>
+    <string name="aboutUs_verlosung">Zur Verlosung</string>
+    <string name="aboutUs_shop">Zum Shop</string>
+    <string name="aboutUs_children">Spendenkinder</string>
 
     <!-- Program Screen -->
     <string name="programScreen_clearFilter">Filter entfernen</string>
@@ -50,13 +55,9 @@
     <string name="voting_confirmVotingText">Wollen Sie wirklich für \"%1$s\" abstimmen? Sie können die Abstimmung hinterher nicht noch einmal durchführen oder ändern.</string>
     <string name="nav_bar_home">Home</string>
     <string name="header_gallery">Galerie</string>
-    <string name="header_pictures">Bilder</string>
-    <string name="lid">Licht ins Dunkel</string>
-    <string name="shs">Steirer helfen Steirern</string>
-    <string name="aboutUs_verlosung">Zur Verlosung</string>
-    <string name="aboutUs_shop">Zum Shop</string>
-    <string name="aboutUs_children">Spendenkinder</string>
+    <string name="header_pictures">Bilder</string> 
+    <string name="title_activity_full_splash_screen">FullSplashScreen</string>
 
     <!-- SpotifyPlayer Screen -->
-    <string name="header_spotifyPlayer">Spotify Playlist</string>
+    <string name="header_spotifyPlayer">Spotify Playlist</string> 
 </resources>

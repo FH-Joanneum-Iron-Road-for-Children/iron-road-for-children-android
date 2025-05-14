@@ -189,10 +189,13 @@ fun Voting(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val eventsPager = rememberPagerState()
+                val eventsPager = rememberPagerState(
+                    initialPage = 0,
+                    pageCount = { voting.events.size }
+                )
                 HorizontalPager(
                     state = eventsPager,
-                    pageCount = voting.events.size,
+                    //  pageCount = voting.events.size,
                     pageSpacing = 20.dp,
                     contentPadding = PaddingValues(
                         horizontal = 40.dp,
