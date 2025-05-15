@@ -17,7 +17,7 @@ fun MapScreen() {
             .fillMaxSize()
     ) {
         ZoomableImage(
-            painter = painterResource(id = R.drawable.map),
+            painter = painterResource(id = R.drawable.irfc_map),
             contentDescription = stringResource(R.string.nav_bar_map),
             minScale = 1f,
             maxScale = 3f
