@@ -16,12 +16,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ChildCare
-import androidx.compose.material.icons.outlined.DirectionsCarFilled
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Motorcycle
 import androidx.compose.material.icons.outlined.QueueMusic
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material.icons.outlined.Tram
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -97,13 +98,22 @@ fun AboutUsScreen(navController: NavController) {
             }
             OutlinedButton(
                 onClick = {
-                    uriHandler.openUri("https://irfc.at/app/app-gewinnspiel/")
+                    uriHandler.openUri(
+                        "https://www.oebb.at/de/regionale-angebote/" +
+                            "steiermark/freizeit-ticket-steiermark"
+                    )
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
+                Icon(
+                    modifier = Modifier.padding(start = 10.dp),
+                    imageVector = Icons.Outlined.Tram,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.tertiary
+                )
                 Text(
                     modifier = Modifier.padding(start = 10.dp),
-                    text = stringResource(R.string.aboutUs_raffle),
+                    text = stringResource(R.string.aboutUs_tipp),
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }
@@ -151,7 +161,7 @@ fun AboutUsScreen(navController: NavController) {
             ) {
                 Icon(
                     modifier = Modifier.padding(start = 10.dp),
-                    imageVector = Icons.Outlined.DirectionsCarFilled,
+                    imageVector = Icons.Outlined.Motorcycle,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.tertiary
                 )

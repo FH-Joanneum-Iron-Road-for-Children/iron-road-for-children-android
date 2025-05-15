@@ -30,6 +30,7 @@
     <string name="aboutUs_verlosung">Zur Verlosung</string>
     <string name="aboutUs_shop">Zum Shop</string>
     <string name="aboutUs_children">Spendenkinder</string>
+    <string name="aboutUs_tipp">IRFC Tipp</string>
 
     <!-- Program Screen -->
     <string name="programScreen_clearFilter">Filter entfernen</string>
@@ -59,5 +60,5 @@
     <string name="title_activity_full_splash_screen">FullSplashScreen</string>
 
     <!-- SpotifyPlayer Screen -->
-    <string name="header_spotifyPlayer">Spotify Playlist</string> 
+    <string name="header_spotifyPlayer">Spotify Playlist</string>
 </resources>
