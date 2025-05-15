@@ -244,7 +244,7 @@ fun CountdownTimer(targetDate: LocalDateTime) {
             )
 
             Text(
-                text = "Countdown to IRFC 2025",
+                text = "Countdown to IRFC",
                 fontSize = 18.sp,
                 textAlign = TextAlign.Center,
                 style = textStyle,
