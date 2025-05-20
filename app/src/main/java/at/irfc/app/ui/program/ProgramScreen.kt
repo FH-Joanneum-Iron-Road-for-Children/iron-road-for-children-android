@@ -44,8 +44,11 @@ fun ProgramScreen(
     val categories = viewModel.categoryList.collectAsState().value.filter { it != selectedCategory }
 
     Column {
-        val pager = rememberPagerState()
         val coroutineScope = rememberCoroutineScope()
+        val pager = rememberPagerState(
+            initialPage = 0,
+            pageCount = { eventListResource.data?.size ?: 0 }
+        )
 
         EventListTabRow(pagerState = pager, eventOnDayList = eventListResource.data)
 
@@ -112,7 +115,6 @@ private fun EventListPager(
     onFavoriteToggle: (EventWithDetails) -> Unit // 🔸 adăugat
 ) {
     HorizontalPager(
-        pageCount = eventOnDayList.size,
         state = pagerState
     ) { page ->
         val eventDay = eventOnDayList[page]
