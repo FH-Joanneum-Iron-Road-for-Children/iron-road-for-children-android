@@ -28,7 +28,10 @@ fun FavoriteScreen(
 ) {
     val favorites by viewModel.favoriteEvents.collectAsState()
     val eventListResource = viewModel.eventListResource.collectAsState().value
-    val pager = rememberPagerState()
+    val pager = rememberPagerState(
+        initialPage = 0,
+        pageCount = { eventListResource.data?.size ?: 0 }
+    )
     val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -59,7 +62,6 @@ fun FavoriteScreen(
 
         // PAGINARE: afișează favoritele doar pentru ziua curentă
         HorizontalPager(
-            pageCount = eventListResource.data?.size ?: 0,
             state = pager
         ) { page ->
             val eventDay = eventListResource.data?.get(page)
