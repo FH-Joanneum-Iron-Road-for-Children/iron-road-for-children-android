@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.data.local.entity.EventCategory
 import at.irfc.app.data.local.entity.relations.EventWithDetails
+import at.irfc.app.generated.navigation.destinations.FavoriteScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
 import at.irfc.app.presentation.program.EventsOnDate
 import at.irfc.app.presentation.program.ProgramViewModel
@@ -43,10 +44,12 @@ fun ProgramScreen(
     val categories = viewModel.categoryList.collectAsState().value.filter { it != selectedCategory }
 
     Column {
+        val coroutineScope = rememberCoroutineScope()
         val pager = rememberPagerState(
             initialPage = 0,
             pageCount = { eventListResource.data?.size ?: 0 }
         )
+
         EventListTabRow(pagerState = pager, eventOnDayList = eventListResource.data)
 
         // Material 3 does not include a PullToRefresh right now // TODO replace when added
@@ -60,7 +63,8 @@ fun ProgramScreen(
                     eventListResource = eventListResource,
                     selectedCategory = selectedCategory,
                     categories = categories,
-                    onToggleCategory = viewModel::toggleCategory
+                    onToggleCategory = viewModel::toggleCategory,
+                    navController = navController
                 )
 
                 val eventOnDayList = eventListResource.data
@@ -89,6 +93,11 @@ fun ProgramScreen(
                             navController.navigate(
                                 ProgramDetailScreenDestination(event.id)
                             )
+                        },
+                        onFavoriteToggle = {
+                            coroutineScope.launch {
+                                viewModel.toggleFavorite(it)
+                            }
                         }
                     )
                 }
@@ -102,7 +111,8 @@ fun ProgramScreen(
 private fun EventListPager(
     pagerState: PagerState,
     eventOnDayList: List<EventsOnDate>,
-    onEventClick: (EventWithDetails) -> Unit
+    onEventClick: (EventWithDetails) -> Unit,
+    onFavoriteToggle: (EventWithDetails) -> Unit // 🔸 adăugat
 ) {
     HorizontalPager(
         state = pagerState
@@ -128,7 +138,11 @@ private fun EventListPager(
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 items(eventDay.events, EventWithDetails::id) { event ->
-                    EventListItem(event = event, onEventClick = onEventClick)
+                    EventListItem(
+                        event = event,
+                        onEventClick = onEventClick,
+                        onFavoriteToggle = onFavoriteToggle
+                    )
                 }
             }
         }
@@ -172,7 +186,8 @@ private fun ProgramListHeader(
     eventListResource: Resource<*>,
     selectedCategory: EventCategory?,
     categories: List<EventCategory>,
-    onToggleCategory: (EventCategory) -> Unit
+    onToggleCategory: (EventCategory) -> Unit,
+    navController: NavController
 ) {
     if (eventListResource is Resource.Error) {
         Box(
@@ -214,6 +229,19 @@ private fun ProgramListHeader(
                     text = it.name,
                     selected = false,
                     onClick = { onToggleCategory(it) }
+                )
+            }
+
+            item {
+                FilterChip(
+                    modifier = Modifier.animateItemPlacement(),
+                    text = "Favoriten",
+                    selected = false,
+                    onClick = {
+                        navController.navigate(
+                            FavoriteScreenDestination
+                        )
+                    }
                 )
             }
         }

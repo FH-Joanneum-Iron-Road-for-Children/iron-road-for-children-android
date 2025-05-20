@@ -8,9 +8,13 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.BrokenImage
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +30,11 @@ import coil.compose.AsyncImage
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun EventListItem(event: EventWithDetails, onEventClick: (EventWithDetails) -> Unit) {
+fun EventListItem(
+    event: EventWithDetails,
+    onEventClick: (EventWithDetails) -> Unit,
+    onFavoriteToggle: (EventWithDetails) -> Unit
+) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         modifier = Modifier
@@ -34,28 +42,31 @@ fun EventListItem(event: EventWithDetails, onEventClick: (EventWithDetails) -> U
             .clickable { onEventClick(event) }
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // Provided image ratio should be 2,5:1 -> crop
-            AsyncImage(
-                model = event.image.path,
-                contentDescription = event.image.title,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .weight(0.2f)
-                    .aspectRatio(1f),
-                error = rememberVectorPainter(image = Icons.Outlined.BrokenImage)
-            )
-
+            // 🔹 Imagine + text
             Row(
-                modifier = Modifier
-                    .weight(0.8f)
-                    .padding(10.dp),
+                modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                AsyncImage(
+                    model = event.image.path,
+                    contentDescription = event.image.title ?: "Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .weight(0.2f)
+                        .aspectRatio(1f),
+                    error = rememberVectorPainter(image = Icons.Outlined.BrokenImage)
+                )
+
                 Column(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(0.8f)
+                        .padding(start = 10.dp),
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
@@ -70,12 +81,37 @@ fun EventListItem(event: EventWithDetails, onEventClick: (EventWithDetails) -> U
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
+            }
+
+            // 🔸 Ora + inimioară (în colțul din dreapta sus)
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                IconToggleButton(
+                    checked = event.event.isFavorite,
+                    onCheckedChange = { onFavoriteToggle(event) }
+                ) {
+                    val icon = if (event.event.isFavorite) {
+                        Icons.Filled.Favorite
+                    } else {
+                        Icons.Outlined.FavoriteBorder
+                    }
+
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = androidx.compose.ui.graphics.Color.Red
+                    )
+                }
 
                 val timeString = remember(event.startDateTime, event.endDateTime) {
                     val formatter = DateTimeFormatter.ofPattern("HH:mm")
-                    "${formatter.format(event.startDateTime)} - " +
-                        formatter.format(event.endDateTime)
+                    "${formatter.format(event.startDateTime)} - ${formatter.format(
+                        event.endDateTime
+                    )}"
                 }
+
                 Text(
                     text = timeString,
                     style = MaterialTheme.typography.bodyMedium.copy(

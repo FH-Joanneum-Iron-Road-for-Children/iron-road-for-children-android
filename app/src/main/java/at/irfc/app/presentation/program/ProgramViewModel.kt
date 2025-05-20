@@ -10,14 +10,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 
 class ProgramViewModel(
     private val repository: EventRepository
@@ -32,6 +25,29 @@ class ProgramViewModel(
 
     private val _selectedCategory: MutableStateFlow<EventCategory?> = MutableStateFlow(null)
     val selectedCategory: StateFlow<EventCategory?> = _selectedCategory
+    private companion object {
+        private const val WHILE_SUBSCRIBED_TIMEOUT = 5_000L
+    }
+    val favoriteEvents: StateFlow<List<EventWithDetails>> =
+        repository.loadEvents(force = false)
+            .map { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        resource.data.filter { it.event.isFavorite }
+                    }
+                    is Resource.Error -> {
+                        resource.data?.filter { it.event.isFavorite } ?: emptyList()
+                    }
+                    is Resource.Loading -> {
+                        resource.data?.filter { it.event.isFavorite } ?: emptyList()
+                    }
+                }
+            }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(WHILE_SUBSCRIBED_TIMEOUT),
+                emptyList()
+            )
 
     private var loadEventsJob: Job? = null
 
@@ -53,6 +69,13 @@ class ProgramViewModel(
         _selectedCategory.update { current ->
             if (current != category) category else null
         }
+    }
+
+    suspend fun toggleFavorite(event: EventWithDetails) {
+        val updatedEvent = event.copy(
+            event = event.event.copy(isFavorite = !event.event.isFavorite)
+        )
+        repository.updateFavorite(updatedEvent)
     }
 
     private fun Resource<List<EventWithDetails>>.filterAndTransform(category: EventCategory?):

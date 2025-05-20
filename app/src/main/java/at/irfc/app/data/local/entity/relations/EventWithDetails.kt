@@ -18,7 +18,9 @@ data class EventWithDetails(
 
     @Relation(parentColumn = "eventId", entityColumn = "eventId")
     val additionalImages: List<EventPicture>
+
 ) {
+
     // Shorthand accessors
     inline val id get() = event.id
     inline val title get() = event.title
@@ -27,4 +29,5 @@ data class EventWithDetails(
     inline val description get() = event.description
     inline val image get() = event.image
     inline val updated get() = event.updated
+    inline val date get() = startDateTime.toLocalDate()
 }

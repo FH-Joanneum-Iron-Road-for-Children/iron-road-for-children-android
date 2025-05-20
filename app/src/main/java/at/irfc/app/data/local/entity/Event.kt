@@ -6,6 +6,7 @@ import java.util.*
 
 @Entity(tableName = "events")
 data class Event(
+
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "eventId")
     val id: Long,
@@ -15,6 +16,7 @@ data class Event(
     val description: String,
     val categoryId: Long,
     val locationId: Long,
+    val isFavorite: Boolean,
 
     @Embedded val image: Image,
 
