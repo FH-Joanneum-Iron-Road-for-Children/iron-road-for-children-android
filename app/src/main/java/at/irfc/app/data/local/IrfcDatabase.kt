@@ -30,7 +30,7 @@ import at.irfc.app.data.local.entity.relations.VotingEventCrossRef
         Voting::class, VotingEventCrossRef::class, Gallery::class, Countdown::class,
         IntroVideo::class, SocialMedia::class, Playlist::class
     ],
-    version = 8
+    version = 9
 )
 @TypeConverters(Converters::class)
 abstract class IrfcDatabase : RoomDatabase() {
