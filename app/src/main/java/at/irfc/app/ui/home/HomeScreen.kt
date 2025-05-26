@@ -17,7 +17,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.MusicOff
+import androidx.compose.material.icons.rounded.MusicNote
+import androidx.compose.material.icons.rounded.MusicOff
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -173,6 +179,8 @@ fun HomeScreen(
 @Composable
 fun VideoPlayer(videoUrl: String) {
     val context = LocalContext.current
+    var isMuted by remember { mutableStateOf(true) }
+
     val exoPlayer = remember {
         ExoPlayer.Builder(context).build().apply {
             val mediaItem = MediaItem.Builder()
@@ -182,27 +190,45 @@ fun VideoPlayer(videoUrl: String) {
             setMediaItem(mediaItem)
             repeatMode = ExoPlayer.REPEAT_MODE_ALL
             prepare()
-            volume = 0f
+            volume = if (isMuted) 0f else 1f
             playWhenReady = true
         }
+    }
+
+    LaunchedEffect(isMuted) {
+        exoPlayer.volume = if (isMuted) 0f else 1f
     }
 
     DisposableEffect(Unit) {
         onDispose { exoPlayer.release() }
     }
 
-    AndroidView(
-        factory = {
-            PlayerView(context).apply {
-                player = exoPlayer
-                useController = false
-            }
-        },
+    Box(
         modifier = Modifier
-            // .padding(vertical = 5.dp)
             .fillMaxWidth()
             .aspectRatio(16f / 9f)
-    )
+    ) {
+        AndroidView(
+            factory = {
+                PlayerView(context).apply {
+                    player = exoPlayer
+                    useController = false
+                }
+            },
+            modifier = Modifier.matchParentSize()
+        )
+
+        Icon(
+            imageVector = if (isMuted) Icons.Rounded.MusicOff else Icons.Rounded.MusicNote,
+            contentDescription = if (isMuted) "Sound Off" else "Sound On",
+            tint = MaterialTheme.colorScheme.tertiary,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp)
+                .size(32.dp)
+                .clickable { isMuted = !isMuted }
+        )
+    }
 }
 
 @Composable
