@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                    1001
+                    REQUEST_CODE_POST_NOTIFICATIONS
                 )
             }
         }
@@ -99,5 +99,6 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         private const val splashScreenDelayMs = 2000L
+        private const val REQUEST_CODE_POST_NOTIFICATIONS = 1001
     }
 }
