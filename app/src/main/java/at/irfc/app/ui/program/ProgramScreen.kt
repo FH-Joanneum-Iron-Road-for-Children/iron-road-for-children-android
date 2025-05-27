@@ -1,5 +1,9 @@
 package at.irfc.app.ui.program
 
+import android.Manifest as AndroidManifest
+import android.app.Activity
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -8,14 +12,18 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.data.local.entity.EventCategory
@@ -23,6 +31,8 @@ import at.irfc.app.data.local.entity.relations.EventWithDetails
 import at.irfc.app.generated.navigation.destinations.FavoriteScreenDestination
 import at.irfc.app.generated.navigation.destinations.ProgramDetailScreenDestination
 import at.irfc.app.presentation.program.EventsOnDate
+import at.irfc.app.presentation.program.NotificationScheduler.cancelNotification
+import at.irfc.app.presentation.program.NotificationScheduler.scheduleNotification
 import at.irfc.app.presentation.program.ProgramViewModel
 import at.irfc.app.util.Resource
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -39,6 +49,8 @@ fun ProgramScreen(
     navController: NavController,
     viewModel: ProgramViewModel = getViewModel()
 ) {
+    val context = LocalContext.current
+    val activity = context as? Activity
     val eventListResource = viewModel.eventListResource.collectAsState().value
     val selectedCategory = viewModel.selectedCategory.collectAsState().value
     val categories = viewModel.categoryList.collectAsState().value.filter { it != selectedCategory }
@@ -86,6 +98,23 @@ fun ProgramScreen(
                         }
                     }
                 } else {
+                    LaunchedEffect(Unit) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            if (ContextCompat.checkSelfPermission(
+                                    context,
+                                    AndroidManifest.permission.POST_NOTIFICATIONS
+                                ) != PackageManager.PERMISSION_GRANTED
+                            ) {
+                                activity?.let {
+                                    ActivityCompat.requestPermissions(
+                                        it,
+                                        arrayOf(AndroidManifest.permission.POST_NOTIFICATIONS),
+                                        1001
+                                    )
+                                }
+                            }
+                        }
+                    }
                     EventListPager(
                         pagerState = pager,
                         eventOnDayList = eventOnDayList,
@@ -97,6 +126,12 @@ fun ProgramScreen(
                         onFavoriteToggle = {
                             coroutineScope.launch {
                                 viewModel.toggleFavorite(it)
+
+                                if (it.event.isFavorite) {
+                                    cancelNotification(context = context, event = it.event)
+                                } else {
+                                    scheduleNotification(context = context, event = it.event)
+                                }
                             }
                         }
                     )
