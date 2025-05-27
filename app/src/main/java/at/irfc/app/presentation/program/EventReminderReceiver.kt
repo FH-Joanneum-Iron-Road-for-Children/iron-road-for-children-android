@@ -15,7 +15,8 @@ import at.irfc.app.R
 class EventReminderReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val title = intent.getStringExtra("title") ?: "Event Reminder"
-        val description = intent.getStringExtra("description") ?: "Don't miss it!"
+        val description = intent.getStringExtra("description")
+            ?: "Startet in 15 Minuten. Don't miss it!"
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE)
             as NotificationManager
