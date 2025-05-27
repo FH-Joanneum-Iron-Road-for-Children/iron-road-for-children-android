@@ -6,9 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import at.irfc.app.data.local.entity.Event
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
+import java.util.concurrent.TimeUnit
 
 object NotificationScheduler {
 
@@ -28,7 +26,7 @@ object NotificationScheduler {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val isTest = true
+       /* val isTest = true
 
         val now = LocalDate.now()
         val triggerTime = if (isTest) {
@@ -53,9 +51,9 @@ object NotificationScheduler {
                 .atZone(ZoneId.systemDefault())
                 .toInstant()
                 .toEpochMilli()
-        }
+        }*/
 
-        // val triggerTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(1)
+        val triggerTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(1)
 
         /*val triggerTime = event.startDateTime
             .minusMinutes(15)
