@@ -9,6 +9,7 @@ import at.irfc.app.data.local.entity.Event
 import java.time.ZoneId
 
 object NotificationScheduler {
+    private const val CACHE_VALIDITY_DURATION_MINUTES = 15
 
     @SuppressLint("ScheduleExactAlarm")
     fun scheduleNotification(context: Context, event: Event) {
@@ -30,7 +31,7 @@ object NotificationScheduler {
         // val triggerTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(1)
 
         val triggerTime = event.startDateTime
-            .minusMinutes(15)
+            .minusMinutes(CACHE_VALIDITY_DURATION_MINUTES.toLong())
             .atZone(ZoneId.systemDefault())
             .toInstant()
             .toEpochMilli()
