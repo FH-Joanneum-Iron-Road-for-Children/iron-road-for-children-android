@@ -6,7 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import at.irfc.app.data.local.entity.Event
-import java.util.concurrent.TimeUnit
+import java.time.ZoneId
 
 object NotificationScheduler {
 
@@ -26,40 +26,14 @@ object NotificationScheduler {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-       /* val isTest = true
+        // Set the trigger time to 1 minute from now for testing purposes
+        // val triggerTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(1)
 
-        val now = LocalDate.now()
-        val triggerTime = if (isTest) {
-            val testDay = when (event.startDateTime.dayOfMonth) {
-                20 -> now // Event vom 20.06. → heute
-                21 -> now.plusDays(1) // Event vom 21.06. → morgen
-                else -> now
-            }
-
-            val testDateTime = LocalDateTime.of(
-                testDay.year,
-                testDay.month,
-                testDay.dayOfMonth,
-                event.startDateTime.hour,
-                event.startDateTime.minute
-            ).minusMinutes(15)
-
-            testDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-        } else {
-            event.startDateTime
-                .minusMinutes(15)
-                .atZone(ZoneId.systemDefault())
-                .toInstant()
-                .toEpochMilli()
-        }*/
-
-        val triggerTime = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(1)
-
-        /*val triggerTime = event.startDateTime
+        val triggerTime = event.startDateTime
             .minusMinutes(15)
             .atZone(ZoneId.systemDefault())
             .toInstant()
-            .toEpochMilli()*/
+            .toEpochMilli()
 
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,

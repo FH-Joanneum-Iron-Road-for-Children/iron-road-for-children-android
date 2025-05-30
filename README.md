@@ -114,3 +114,42 @@ If you want to override both use
     - [ktlint-gradle](https://github.com/JLLeitschuh/ktlint-gradle) Ktlint gradle plugin
 - [Detekt](https://detekt.dev/) Kotlin static code analyzer
 - [GGP](https://github.com/Triple-T/gradle-play-publisher) Gradle Play Publisher Plugin
+
+## Room Database
+Local data on a device are stored in a Room database.
+
+### Increase version
+After making changes to the database schema, such as adding a new column or table, upgrade the database version.
+
+Under: package at.irfc.app.data.local
+IrfcDatabase
+
+This version number is used by Room to detect changes in the database schema. If Room notices that the version number has changed, it knows that it needs to migrate the database from the old version to the new one.
+
+If you don’t update the version number, Room will assume the schema hasn’t changed and may throw a runtime error when it finds inconsistencies between the expected schema and the actual database structure.
+
+By increasing the version number and providing a corresponding migration strategy, you ensure that:
+- The user's existing data is preserved.
+- Room can safely adapt the database to the new structure.
+- The app avoids crashes due to schema mismatches.
+
+## Event Reminder Notifications
+This app provides users with a helpful notification 15 minutes before an event begins, ensuring they stay informed and prepared.
+
+### How It Works
+The notification system is implemented using Android’s AlarmManager and a BroadcastReceiver, and consists of two main components:
+
+#### NotificationScheduler
+This object is responsible for scheduling and canceling event reminder notifications.
+When an event is created or updated, the app uses the event’s start time to calculate a trigger time exactly 15 minutes before the event begins.
+Using AlarmManager.setExactAndAllowWhileIdle(...), it sets an exact alarm to fire at the calculated time, even when the device is idle (Doze mode).
+A PendingIntent is created to deliver the event’s title and ID to the EventReminderReceiver when the alarm goes off.
+The cancelNotification function allows previously scheduled notifications to be removed using the same PendingIntent.
+
+#### EventReminderReceiver
+This is a BroadcastReceiver that responds when the alarm is triggered.
+It extracts the event title and description from the Intent.
+If running on Android 8.0 (API level 26) or above, it creates a notification channel (if not already present).
+On Android 13+ (API 33+), it checks whether the app has the required POST_NOTIFICATIONS permission before attempting to show a notification.
+It builds and displays a high-priority notification with the event information, using NotificationCompat.
+
