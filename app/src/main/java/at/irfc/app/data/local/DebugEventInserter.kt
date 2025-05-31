@@ -8,6 +8,8 @@ import java.time.LocalDateTime
 
 object DebugEventInserter {
     private const val CACHE_VALIDITY_DURATION_MINUTES = 16 // set test time
+    private const val testCategoryId = 999L
+    private const val testLocationId = 999L
 
     suspend fun insertTestEvent(database: IrfcDatabase) {
         val now = LocalDateTime.now()
@@ -25,8 +27,8 @@ object DebugEventInserter {
             updated = now
         )
 
-        val testCategory = EventCategory(999L, "Debug-Kategorie")
-        val testLocation = EventLocation(999L, "Debug-Ort")
+        val testCategory = EventCategory(testCategoryId, "Debug-Kategorie")
+        val testLocation = EventLocation(testLocationId, "Debug-Ort")
 
         val eventWithDetails = EventWithDetails(
             event = testEvent,
