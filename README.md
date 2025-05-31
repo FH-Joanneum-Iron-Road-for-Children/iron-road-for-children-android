@@ -153,3 +153,44 @@ If running on Android 8.0 (API level 26) or above, it creates a notification cha
 On Android 13+ (API 33+), it checks whether the app has the required POST_NOTIFICATIONS permission before attempting to show a notification.
 It builds and displays a high-priority notification with the event information, using NotificationCompat.
 
+### Manual Test Notification
+To manually test the local notification system in the app (e.g., reminder 15 minutes before an event), follow these steps:
+
+#### 1. Insert a Test Event Locally
+In debug mode, a utility class called DebugEventInserter can insert a predefined event directly into the local Room database. This test event is configured to start in 16 minutes — which means a notification should appear in approximately 1 minute after inserting the event.
+
+The event will only appear in the app if:
+
+It was successfully inserted into the Room DB
+
+The event is marked as favorite manually in the UI (e.g., by tapping the heart icon)
+
+#### 2. Enable Debug Insertion
+Ensure DebugEventInserter.insertTestEvent() is called from your Activity or Fragment (MainActivity). For example:
+
+```kotlin
+private val database: IrfcDatabase by inject()
+
+if (BuildConfig.DEBUG) {
+            lifecycleScope.launch {
+                DebugEventInserter.insertTestEvent(database)
+            }
+        }
+```
+Note: database is provided via Koin DI (val database: IrfcDatabase by inject())
+
+#### 3. Trigger a Notification
+After launching the app:
+
+Open the Programm screen
+
+Mark the test event as favorite
+
+Wait ~1 minute
+
+A notification should appear 15 minutes before the event's scheduled time
+
+#### 4. Modify Timing for Testing
+```kotlin
+startDateTime = now.plusMinutes(21) // Triggers notification in ~5 min
+```

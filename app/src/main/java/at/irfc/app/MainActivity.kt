@@ -17,15 +17,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import at.irfc.app.data.local.DebugEventInserter
+import at.irfc.app.data.local.IrfcDatabase
 import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.ui.core.BottomBar
 import at.irfc.app.ui.core.TopBar
 import at.irfc.app.ui.theme.IronRoadForChildrenTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
+
+    private val database: IrfcDatabase by inject()
 
     @OptIn(ExperimentalLayoutApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +43,12 @@ class MainActivity : ComponentActivity() {
         // simulateStartup()
         // Switch from SplashScreenTheme to AppTheme
         // setTheme(R.style.Theme_IronRoadForChildren)
+
+        if (BuildConfig.DEBUG) {
+            lifecycleScope.launch {
+                DebugEventInserter.insertTestEvent(database)
+            }
+        }
 
         setContent {
             val navController = rememberNavController()
