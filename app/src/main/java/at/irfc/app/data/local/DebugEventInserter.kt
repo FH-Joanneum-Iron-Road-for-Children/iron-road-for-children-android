@@ -7,13 +7,15 @@ import at.irfc.app.data.local.entity.relations.EventWithDetails
 import java.time.LocalDateTime
 
 object DebugEventInserter {
+    private const val CACHE_VALIDITY_DURATION_MINUTES = 16 // set test time
+
     suspend fun insertTestEvent(database: IrfcDatabase) {
         val now = LocalDateTime.now()
 
         val testEvent = Event(
             id = 9999L,
             title = "🧪 Testevent mit Notification",
-            startDateTime = now.plusMinutes(16), // set test event to start in 1 minute
+            startDateTime = now.plusMinutes(CACHE_VALIDITY_DURATION_MINUTES.toLong()),
             endDateTime = now.plusHours(1),
             description = "Debug-Event für lokale Notification-Tests.",
             categoryId = 999L,
