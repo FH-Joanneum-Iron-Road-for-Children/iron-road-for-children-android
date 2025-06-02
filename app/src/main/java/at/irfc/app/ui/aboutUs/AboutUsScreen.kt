@@ -40,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.generated.navigation.NavGraphs
-import at.irfc.app.generated.navigation.destinations.GalleryScreenDestination
 import at.irfc.app.generated.navigation.destinations.SpotifyPlayerScreenDestination
 import at.irfc.app.ui.core.icons.Donate
 import at.irfc.app.ui.core.icons.IrfcIcons
@@ -195,10 +194,12 @@ fun AboutUsScreen(navController: NavController) {
             }
             OutlinedButton(
                 onClick = {
-                    navController.navigate(GalleryScreenDestination) {
+                    // not in use at the moment, but could be used in the future
+                    /*navController.navigate(GalleryScreenDestination) {
                         popUpTo(NavGraphs.root)
                         launchSingleTop = true
-                    }
+                    }*/
+                    uriHandler.openUri("https://irfc.at/home/fotos/")
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
