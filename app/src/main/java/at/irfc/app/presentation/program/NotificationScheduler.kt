@@ -36,11 +36,13 @@ object NotificationScheduler {
             .toInstant()
             .toEpochMilli()
 
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            triggerTime,
-            pendingIntent
-        )
+        if (triggerTime > System.currentTimeMillis()) {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerTime,
+                pendingIntent
+            )
+        }
     }
 
     fun cancelNotification(context: Context, event: Event) {
