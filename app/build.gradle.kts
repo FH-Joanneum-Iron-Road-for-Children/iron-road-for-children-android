@@ -70,7 +70,7 @@ android {
             buildConfigField(
                 type = "String",
                 name = "apiBaseUrl",
-                value = "\"https://backend.irfc.fh-joanneum.at/api/\""
+                value = "\"https://backend.irfc-test.fh-joanneum.at/api/\""
             )
             buildConfigField(
                 type = "String",
