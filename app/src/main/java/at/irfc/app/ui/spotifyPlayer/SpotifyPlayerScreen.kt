@@ -1,21 +1,16 @@
 package at.irfc.app.ui.spotifyPlayer
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.util.Log
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
@@ -27,6 +22,7 @@ import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.ui.core.TopBar
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
+import java.net.URISyntaxException
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -70,15 +66,62 @@ fun SpotifyPlayerScreen(
                     settings.domStorageEnabled = true
                     settings.allowFileAccess = false
                     settings.allowContentAccess = false
-                    webViewClient = WebViewClient()
-                    loadUrl("https://open.spotify.com/playlist/${playlist!!.spotifyId}")
+
+                    webViewClient = object : WebViewClient() {
+                        override fun shouldOverrideUrlLoading(
+                            view: WebView?,
+                            request: WebResourceRequest?
+                        ): Boolean {
+                            val url = request?.url.toString()
+                            return when {
+                                url.startsWith("http") -> false
+                                url.startsWith("intent:") || url.startsWith("spotify:") -> {
+                                    try {
+                                        val intent = Intent.parseUri(
+                                            url,
+                                            Intent.URI_INTENT_SCHEME
+                                        )
+                                        if (
+                                            intent.resolveActivity(
+                                                context.packageManager
+                                            ) != null
+                                        ) {
+                                            context.startActivity(intent)
+                                        } else {
+                                            val fallbackUrl =
+                                                intent.getStringExtra("browser_fallback_url")
+                                            if (fallbackUrl != null) {
+                                                view?.loadUrl(fallbackUrl)
+                                            }
+                                        }
+                                    } catch (e: URISyntaxException) {
+                                        Log.e("SpotifyWebView", "Ungültige URI: $url", e)
+                                    } catch (e: ActivityNotFoundException) {
+                                        Log.e(
+                                            "SpotifyWebView",
+                                            "Keine App gefunden zum Öffnen von: $url",
+                                            e
+                                        )
+                                    }
+                                    true
+                                }
+                                else -> true
+                            }
+                        }
+                    }
+
+                    loadUrl(
+                        "https://open.spotify.com/playlist/${playlist!!.spotifyId}"
+                    )
                 }
             },
             modifier = Modifier.fillMaxSize()
         )
     } else {
-        // Show a loading indicator while the playlist is being fetched
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
             CircularProgressIndicator()
         }
     }
