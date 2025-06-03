@@ -42,7 +42,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.data.local.entity.Playlist
 import at.irfc.app.data.repository.PlaylistRepository
@@ -53,7 +52,7 @@ import org.koin.compose.koinInject
 
 @Composable
 @Destination
-fun AboutUsScreen(navController: NavController, repository: PlaylistRepository = koinInject()) {
+fun AboutUsScreen(repository: PlaylistRepository = koinInject()) {
     var playlist by remember { mutableStateOf<Playlist?>(null) }
     LaunchedEffect(Unit) {
         repository.getPlaylist(force = false).collect { result ->
