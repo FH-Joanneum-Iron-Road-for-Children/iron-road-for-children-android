@@ -1,5 +1,6 @@
 package at.irfc.app.ui.spotifyPlayer
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.util.Log
 import android.webkit.WebResourceRequest
@@ -21,6 +22,7 @@ import at.irfc.app.generated.navigation.NavGraphs
 import at.irfc.app.ui.core.TopBar
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.annotation.Destination
+import java.net.URISyntaxException
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -92,16 +94,17 @@ fun SpotifyPlayerScreen(
                                                 view?.loadUrl(fallbackUrl)
                                             }
                                         }
-                                    } catch (e: Exception) {
+                                    } catch (e: URISyntaxException) {
+                                        Log.e("SpotifyWebView", "Ungültige URI: $url", e)
+                                    } catch (e: ActivityNotFoundException) {
                                         Log.e(
                                             "SpotifyWebView",
-                                            "Fehler beim Öffnen von URL: $url",
+                                            "Keine App gefunden zum Öffnen von: $url",
                                             e
                                         )
                                     }
                                     true
                                 }
-
                                 else -> true
                             }
                         }
