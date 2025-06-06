@@ -50,7 +50,10 @@ fun EventDetailsCard(
     val scrollState = rememberScrollState()
     Card(
         modifier = modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        )
     ) {
         Column(modifier = Modifier.verticalScroll(scrollState)) {
             Text(
