@@ -24,6 +24,9 @@ import at.irfc.app.generated.navigation.startAppDestination
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(navController: NavController) {
+    if (navController.currentDestination?.route == HomeScreenDestination.route) {
+        return
+    }
     val destination = navController.appCurrentDestinationAsState().value
         ?: NavGraphs.root.startAppDestination
     val backStack = navController.currentBackStack.collectAsState().value
@@ -49,7 +52,6 @@ fun TopBar(navController: NavController) {
 @Composable
 private fun TypedDestination<*>?.screenTitle(): String = when (this) {
     null -> "" // Empty when starting
-    HomeScreenDestination -> stringResource(id = R.string.nav_bar_home)
     ProgramScreenDestination -> stringResource(id = R.string.nav_bar_program)
     VotingScreenDestination -> stringResource(id = R.string.nav_bar_voting)
     MapScreenDestination -> stringResource(id = R.string.nav_bar_map)
