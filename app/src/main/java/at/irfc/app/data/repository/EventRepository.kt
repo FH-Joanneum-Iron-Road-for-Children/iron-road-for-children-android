@@ -5,7 +5,6 @@ import at.irfc.app.data.local.dao.EventDao
 import at.irfc.app.data.local.entity.EventCategory
 import at.irfc.app.data.local.entity.relations.EventWithDetails
 import at.irfc.app.data.remote.api.EventApi
-import at.irfc.app.data.remote.dto.EventDto
 import at.irfc.app.data.remote.dto.toEventEntity
 import at.irfc.app.util.Resource
 import at.irfc.app.util.cachedRemoteResource
@@ -22,7 +21,19 @@ class EventRepository(
     fun loadEvents(force: Boolean): Flow<Resource<List<EventWithDetails>>> = cachedRemoteResource(
         query = eventDao::getAll,
         fetch = eventApi::getEvents,
-        update = { eventDao.replaceEvents(it.map(EventDto::toEventEntity)) },
+        update = { eventDtos ->
+            val favoriteMap = eventDao.getAllFavoritesRaw()
+                .associate { it.eventId to it.isFavorite }
+
+            val eventWithDetailsList = eventDtos.map { dto ->
+                val fullDetails = dto.toEventEntity()
+                val isFavorite = favoriteMap[fullDetails.event.id] ?: false
+                val updatedEvent = fullDetails.event.copy(isFavorite = isFavorite)
+                fullDetails.copy(event = updatedEvent)
+            }
+
+            eventDao.replaceEvents(eventWithDetailsList)
+        },
         shouldFetch = { events ->
             val updateWhenOlderThan = LocalDateTime.now() - cacheDuration
             force || events.isEmpty() || events.any { it.updated.isBefore(updateWhenOlderThan) }

@@ -6,6 +6,7 @@ import at.irfc.app.data.local.entity.*
 import at.irfc.app.data.local.entity.relations.EventWithDetails
 import kotlinx.coroutines.flow.Flow
 
+@Suppress("TooManyFunctions")
 @Dao
 abstract class EventDao(private val database: IrfcDatabase) {
 
@@ -29,6 +30,9 @@ abstract class EventDao(private val database: IrfcDatabase) {
 
     @Query("DELETE FROM events WHERE eventId = :id")
     abstract suspend fun deleteById(id: Long)
+
+    @Query("SELECT eventId, isFavorite FROM events")
+    abstract suspend fun getAllFavoritesRaw(): List<EventFavoriteStatus>
 
     @Update
     abstract suspend fun updateEvent(event: Event)
