@@ -30,6 +30,9 @@ abstract class EventDao(private val database: IrfcDatabase) {
     @Query("DELETE FROM events WHERE eventId = :id")
     abstract suspend fun deleteById(id: Long)
 
+    @Query("SELECT eventId, isFavorite FROM events")
+    abstract suspend fun getAllFavoritesRaw(): List<EventFavoriteStatus>
+
     @Update
     abstract suspend fun updateEvent(event: Event)
 
