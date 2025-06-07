@@ -6,6 +6,7 @@ import at.irfc.app.data.local.entity.*
 import at.irfc.app.data.local.entity.relations.EventWithDetails
 import kotlinx.coroutines.flow.Flow
 
+@Suppress("TooManyFunctions")
 @Dao
 abstract class EventDao(private val database: IrfcDatabase) {
 
