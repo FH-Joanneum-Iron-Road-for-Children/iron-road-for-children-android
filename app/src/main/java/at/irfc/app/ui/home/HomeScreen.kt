@@ -87,7 +87,6 @@ fun HomeScreen(
                 time = result.data?.firstOrNull()
             }
         }
-
         launch {
             videoRepository.getVideo(force = true).collect { result ->
                 video = result.data
@@ -108,68 +107,74 @@ fun HomeScreen(
         )
     }
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(scrollState)
-            .fillMaxSize()
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        if (video != null) {
-            VideoPlayer(video!!.path)
-        }
-
-        if (targetDate != null) {
-            CountdownTimer(targetDate)
-        }
-
-        Box(
+        Column(
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .fillMaxWidth()
+                .verticalScroll(scrollState)
+                .fillMaxSize()
         ) {
-            val configuration = LocalConfiguration.current
-            val screenWidth = configuration.screenWidthDp.dp
-            val isLandscape = configuration.orientation ==
-                android.content.res.Configuration.ORIENTATION_LANDSCAPE
-            val iconSize = screenWidth * if (isLandscape) 0.08f else 0.1f
+            if (video != null) {
+                VideoPlayer(video!!.path)
+            }
 
-            Image(
-                modifier = Modifier.fillMaxWidth(),
-                painter = painterResource(id = R.drawable.startbildschirm_v1),
-                contentDescription = stringResource(R.string.nav_bar_map),
-                contentScale = ContentScale.FillWidth
-            )
+            if (targetDate != null) {
+                CountdownTimer(targetDate)
+            }
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = screenWidth * if (isLandscape) 0.5f else 0.5f),
-                contentAlignment = Alignment.TopCenter
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                val configuration = LocalConfiguration.current
+                val screenWidth = configuration.screenWidthDp.dp
+                val isLandscape = configuration.orientation ==
+                    android.content.res.Configuration.ORIENTATION_LANDSCAPE
+                val iconSize = screenWidth * if (isLandscape) 0.08f else 0.1f
+
+                Image(
+                    modifier = Modifier.fillMaxWidth(),
+                    painter = painterResource(id = R.drawable.startbildschirm_v1),
+                    contentDescription = stringResource(R.string.nav_bar_map),
+                    contentScale = ContentScale.FillWidth
+                )
+
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
+                        .padding(top = screenWidth * if (isLandscape) 0.5f else 0.5f),
+                    contentAlignment = Alignment.TopCenter
                 ) {
-                    val facebookUrl = socialMedia.find {
-                        it.title == "Facebook"
-                    }?.path ?: "https://www.facebook.com/irfcfestival/"
-                    val instagramUrl = socialMedia.find {
-                        it.title == "Instagram"
-                    }?.path ?: "https://www.instagram.com/irfc_festival/"
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                    ) {
+                        val facebookUrl = socialMedia.find {
+                            it.title == "Facebook"
+                        }?.path ?: "https://www.facebook.com/irfcfestival/"
+                        val instagramUrl = socialMedia.find {
+                            it.title == "Instagram"
+                        }?.path ?: "https://www.instagram.com/irfc_festival/"
 
-                    SocialIcon(
-                        R.drawable.facebook,
-                        "Facebook",
-                        facebookUrl,
-                        iconSize
-                    )
+                        SocialIcon(
+                            R.drawable.facebook,
+                            "Facebook",
+                            facebookUrl,
+                            iconSize
+                        )
 
-                    SocialIcon(
-                        R.drawable.instagram,
-                        "Instagram",
-                        instagramUrl,
-                        iconSize
-                    )
+                        SocialIcon(
+                            R.drawable.instagram,
+                            "Instagram",
+                            instagramUrl,
+                            iconSize
+                        )
+                    }
                 }
             }
         }
