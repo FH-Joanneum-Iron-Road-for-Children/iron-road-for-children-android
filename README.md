@@ -133,6 +133,92 @@ By increasing the version number and providing a corresponding migration strateg
 - Room can safely adapt the database to the new structure.
 - The app avoids crashes due to schema mismatches.
 
+## Navigation with com.ramcosta.composedestinations
+This project uses the com.ramcosta.composedestinations library to simplify and strongly-type navigation in Jetpack Compose.
+
+### What is Compose Destinations?
+Compose Destinations is a navigation library built on top of Jetpack Compose Navigation. It reduces boilerplate and eliminates hardcoded route strings by generating code for navigation targets (aka "destinations").
+
+You annotate your Composable screens with @Destination, and the library generates all required navigation boilerplate, like route strings, argument handling, deep links, and more.
+
+### How It Works
+#### 1. Annotate Your Composables
+To create a navigation destination, annotate a Composable with @Destination:
+```kotlin
+@Destination
+@Composable
+fun ProgramScreen(navController: NavHostController) {
+    // Screen UI
+}
+```
+
+#### 2. Generated Destination Object
+For each @Destination, a corresponding object is generated, such as:
+```kotlin
+object ProgramScreenDestination : DirectionDestination {
+    override val route = "program_screen"
+
+    @Composable
+    override fun DestinationScope<Unit>.Content() {
+        ProgramScreen(navController = navController)
+    }
+}
+```
+
+#### 3. Type-Safe Navigation
+Use the generated destination objects to navigate without worrying about route strings:
+```kotlin
+navController.navigate(ProgramScreenDestination())
+```
+
+No more "program_screen" strings or manual argument parsing.
+
+## Home Screen Overview
+The HomeScreen is the app’s landing screen and serves as the starting point of the navigation graph (@RootNavGraph(start = true)). It combines dynamic backend-driven content (video, countdown, social media links) with a clean, responsive UI built in Jetpack Compose.
+
+### Features
+#### Intro Video
+A promotional intro video is loaded dynamically from the backend and played in a loop using ExoPlayer. The video is muted by default but can be toggled via an on-screen icon.
+
+#### Countdown Timer
+A real-time countdown to a specified event date is displayed prominently. It updates every second and visually adapts to both portrait and landscape modes.
+
+#### Social Media Integration
+Facebook and Instagram links are fetched dynamically and displayed as clickable icons, which open the respective profiles in the user's browser.
+
+#### Background Imagery
+Static images (e.g., banner and countdown background) enhance visual appeal and provide branding support.
+
+### Data Architecture
+The HomeScreen relies on three repositories, each using a shared cachedRemoteResource pattern that ensures efficiency and offline support:
+
+VideoRepository - 	Fetches a single IntroVideo object from the backend.
+
+CountdownRepository -	Loads countdown data indicating the target event time.
+
+SocialMediaRepository -	Retrieves a list of SocialMedia entries (e.g. Facebook, Instagram).
+
+All repositories:
+- Fetch from local cache (Room) by default.
+- Optionally force a network refresh with the force: Boolean parameter.
+- Update the local database if remote data has changed.
+
+### Lifecycle Behavior
+- All data is fetched in parallel when the screen is first composed via LaunchedEffect.
+- DisposableEffect ensures ExoPlayer is properly released on screen disposal.
+- The countdown timer uses a coroutine loop to stay updated every second.
+- Muting behavior is tied to a remember state and can be toggled by the user.
+
+### Responsive Design
+The layout adjusts according to screen width and orientation:
+- Social icons and video adapt their size based on the current screen configuration.
+- The countdown and background image scale appropriately across devices.
+
+### Developer Notes
+- The HomeScreen uses koinInject() to access repositories, which allows easy testing and swapping of implementations.
+- Additional social platforms can be added by extending the socialMedia list handling and updating the UI layout accordingly.
+- The cachedRemoteResource utility simplifies reactive data flows and is a good candidate for reuse in future features.
+
 ## Event Reminder Notifications
 This app provides users with a helpful notification 15 minutes before an event begins, ensuring they stay informed and prepared.
 
