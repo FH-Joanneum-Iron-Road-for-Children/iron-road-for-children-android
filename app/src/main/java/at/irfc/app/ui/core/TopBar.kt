@@ -24,29 +24,29 @@ import at.irfc.app.generated.navigation.startAppDestination
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(navController: NavController) {
-    if (navController.currentDestination?.route == HomeScreenDestination.route) {
-        return
-    }
     val destination = navController.appCurrentDestinationAsState().value
         ?: NavGraphs.root.startAppDestination
     val backStack = navController.currentBackStack.collectAsState().value
-
-    TopAppBar(
-        navigationIcon = {
-            // There is also a entry for the RootNavigationGraph in the list
-            if (backStack.count() > 2) {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(
-                        Icons.Default.NavigateBefore,
-                        contentDescription = stringResource(R.string.nav_back)
-                    )
+    if (destination == HomeScreenDestination) {
+        return
+    } else {
+        TopAppBar(
+            navigationIcon = {
+                // There is also a entry for the RootNavigationGraph in the list
+                if (backStack.count() > 2) {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            Icons.Default.NavigateBefore,
+                            contentDescription = stringResource(R.string.nav_back)
+                        )
+                    }
                 }
+            },
+            title = {
+                Text(text = destination.screenTitle())
             }
-        },
-        title = {
-            Text(text = destination.screenTitle())
-        }
-    )
+        )
+    }
 }
 
 @Composable
