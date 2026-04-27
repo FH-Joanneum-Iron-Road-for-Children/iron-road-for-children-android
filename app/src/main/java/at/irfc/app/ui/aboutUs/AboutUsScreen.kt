@@ -59,7 +59,7 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject()) {
             repository.getPlaylist(force = false).collect { result ->
                 playlist = result.data
             }
-        } catch (e: Exception) {
+        } catch (e: IllegalStateException) {
             println(e.toString())
         }
     }
