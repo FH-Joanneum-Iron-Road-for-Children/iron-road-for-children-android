@@ -191,7 +191,11 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject()) {
                         popUpTo(NavGraphs.root)
                         launchSingleTop = true
                     }*/
-                    uriHandler.openUri("https://open.spotify.com/playlist/${playlist!!.spotifyId}")
+                    if (playlist != null) {
+                        uriHandler.openUri(
+                            "https://open.spotify.com/playlist/${playlist!!.spotifyId}"
+                        )
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
