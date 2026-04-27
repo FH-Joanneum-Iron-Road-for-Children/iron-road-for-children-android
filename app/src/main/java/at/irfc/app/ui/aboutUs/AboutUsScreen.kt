@@ -55,8 +55,12 @@ import org.koin.compose.koinInject
 fun AboutUsScreen(repository: PlaylistRepository = koinInject()) {
     var playlist by remember { mutableStateOf<Playlist?>(null) }
     LaunchedEffect(Unit) {
-        repository.getPlaylist(force = false).collect { result ->
-            playlist = result.data
+        try {
+            repository.getPlaylist(force = false).collect { result ->
+                playlist = result.data
+            }
+        } catch (e: Exception) {
+            println(e.toString())
         }
     }
     Column(
