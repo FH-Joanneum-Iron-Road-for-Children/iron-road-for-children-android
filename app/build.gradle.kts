@@ -21,12 +21,12 @@ val versionRegex = Regex("""\d+\.\d{1,2}\.\d{1,2}""")
 
 android {
     namespace = "at.irfc.app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "at.irfc.app"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
 
         versionName = project.getVersionName()
         versionCode = project.getVersionBuild()
