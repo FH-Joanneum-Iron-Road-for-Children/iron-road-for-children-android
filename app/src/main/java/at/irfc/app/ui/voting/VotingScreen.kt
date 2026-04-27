@@ -63,6 +63,7 @@ fun VotingScreen(
 
     // Material 3 does not include a PullToRefresh right now
     // TODO replace when added
+    @Suppress("DEPRECATION")
     SwipeRefresh(
         modifier = Modifier.fillMaxSize(),
         state = rememberSwipeRefreshState(votingListResource is Resource.Loading),

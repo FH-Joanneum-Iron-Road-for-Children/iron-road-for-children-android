@@ -1,6 +1,8 @@
 package at.irfc.app.ui.core
 
+import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.NavigateBefore
 import androidx.compose.material.icons.filled.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -26,6 +28,8 @@ import at.irfc.app.generated.navigation.startAppDestination
 fun TopBar(navController: NavController) {
     val destination = navController.appCurrentDestinationAsState().value
         ?: NavGraphs.root.startAppDestination
+
+    @SuppressLint("RestrictedApi")
     val backStack = navController.currentBackStack.collectAsState().value
     if (destination == HomeScreenDestination) {
         return
@@ -36,7 +40,7 @@ fun TopBar(navController: NavController) {
                 if (backStack.count() > 2) {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
-                            Icons.Default.NavigateBefore,
+                            Icons.AutoMirrored.Filled.NavigateBefore,
                             contentDescription = stringResource(R.string.nav_back)
                         )
                     }

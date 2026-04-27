@@ -31,7 +31,7 @@ fun DotsIndicator(
             .wrapContentWidth()
             .wrapContentHeight()
     ) {
-        (0 until totalDots).forEach { index ->
+        for (index in 0 until totalDots) {
             IndicatorDot(
                 color = if (index == selectedIndex) selectedColor else unSelectedColor,
                 size = dotSize

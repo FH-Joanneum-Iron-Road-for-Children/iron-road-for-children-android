@@ -13,7 +13,10 @@ class PlaylistRepository(
 ) {
     fun getPlaylist(force: Boolean): Flow<Resource<Playlist?>> = cachedRemoteResource(
         query = playlistDao::getAll,
-        fetch = { playlistApi.getPlaylist().toPlaylist() },
+        fetch = {
+            playlistApi.getPlaylist()?.toPlaylist()
+                ?: error("Playlist response was empty")
+        },
         update = { playlist ->
             playlistDao.upsert(playlist)
             playlistDao.deleteNotInList(setOf(playlist.id))

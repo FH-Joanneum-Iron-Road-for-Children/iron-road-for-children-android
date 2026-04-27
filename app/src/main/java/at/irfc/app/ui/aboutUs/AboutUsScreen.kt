@@ -55,8 +55,12 @@ import org.koin.compose.koinInject
 fun AboutUsScreen(repository: PlaylistRepository = koinInject()) {
     var playlist by remember { mutableStateOf<Playlist?>(null) }
     LaunchedEffect(Unit) {
-        repository.getPlaylist(force = false).collect { result ->
-            playlist = result.data
+        try {
+            repository.getPlaylist(force = false).collect { result ->
+                playlist = result.data
+            }
+        } catch (e: IllegalStateException) {
+            println(e.toString())
         }
     }
     Column(
@@ -187,7 +191,11 @@ fun AboutUsScreen(repository: PlaylistRepository = koinInject()) {
                         popUpTo(NavGraphs.root)
                         launchSingleTop = true
                     }*/
-                    uriHandler.openUri("https://open.spotify.com/playlist/${playlist!!.spotifyId}")
+                    if (playlist != null) {
+                        uriHandler.openUri(
+                            "https://open.spotify.com/playlist/${playlist!!.spotifyId}"
+                        )
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

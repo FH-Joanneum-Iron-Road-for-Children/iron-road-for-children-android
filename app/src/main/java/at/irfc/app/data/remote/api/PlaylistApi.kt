@@ -5,5 +5,5 @@ import de.jensklingenberg.ktorfit.http.GET
 
 interface PlaylistApi {
     @GET("playlist")
-    suspend fun getPlaylist(): PlaylistDto
+    suspend fun getPlaylist(): PlaylistDto?
 }
