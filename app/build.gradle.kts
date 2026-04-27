@@ -2,26 +2,29 @@
 
 import com.android.build.gradle.internal.dsl.NdkOptions.DebugSymbolLevel
 import com.github.triplet.gradle.androidpublisher.ReleaseStatus
-import de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration
 import io.gitlab.arturbosch.detekt.Detekt
 import java.time.Instant
 import java.util.UUID
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+
 
 plugins {
     kotlin("android")
     id("com.android.application")
-    id("com.google.devtools.ksp") version "1.8.10-1.0.9"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
-    id("de.jensklingenberg.ktorfit") version "1.0.0"
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
-    id("com.github.triplet.play") version "3.8.1"
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("com.google.devtools.ksp") version "2.1.21-2.0.2"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.21"
+    id("de.jensklingenberg.ktorfit") version "1.14.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.8"
+    id("com.github.triplet.play") version "3.13.0"
 }
 
 val versionRegex = Regex("""\d+\.\d{1,2}\.\d{1,2}""")
 
 android {
     namespace = "at.irfc.app"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "at.irfc.app"
@@ -61,6 +64,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -102,11 +106,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
     buildFeatures {
         compose = true
@@ -114,7 +120,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.2"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -126,11 +132,11 @@ android {
     }
 }
 
-val ktorfitVersion = "1.4.1"
-
-configure<KtorfitGradleConfiguration> {
-    version = ktorfitVersion
-}
+val ktorfitVersion = "1.14.0"
+//
+// configure<KtorfitGradleConfiguration> {
+//     version = ktorfitVersion
+// }
 
 ksp {
     arg("compose-destinations.codeGenPackageName", "at.irfc.app.generated.navigation")
@@ -166,7 +172,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
 
     // Room DB
-    val roomVersion = "2.5.1"
+    val roomVersion = "2.7.1"
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
@@ -199,7 +205,7 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:$composeDestinationsVersion")
 
     // Compose UI
-    val composeBom = platform("androidx.compose:compose-bom:2023.05.01")
+    val composeBom = platform("androidx.compose:compose-bom:2025.04.01")
     implementation(composeBom)
     debugImplementation(composeBom)
     androidTestImplementation(composeBom)
@@ -232,16 +238,15 @@ tasks.register("release") {
         val versionParameter: String? = project.findProperty("v")?.toString()?.also { version ->
             if (!versionRegex.matches(version)) {
                 throw IllegalArgumentException(
-                    "Version argument 'v' must match $versionRegex (e.g. 2.10.2). " +
-                        "For usage see README.md"
+                    "Version argument 'v' must match $versionRegex (e.g. 2.10.2)." +
+                        " For usage see README.md"
                 )
             }
         }
 
         val buildParameter: Int? = project.findProperty("b")?.toString()?.let { build ->
             build.toIntOrNull() ?: throw IllegalArgumentException(
-                "Build number argument 'b' must be an integer." +
-                    "For usage see README.md"
+                "Build number argument 'b' must be an integer. For usage see README.md"
             )
         }
 
@@ -271,15 +276,19 @@ tasks.register("release") {
         println("Working tree is clean, changing version to $versionTag.")
         val file = rootDir.resolve("gradle.properties")
         file.writeText(
-            file.readText()
-                .replace(
-                    Regex("^(version_name=)$versionRegex$", RegexOption.MULTILINE),
-                    "$1$newVersion"
-                )
-                .replace(
-                    Regex("^(version_build=)\\d+$", RegexOption.MULTILINE),
-                    "$1$newBuild"
-                )
+            file.readText().replace(
+                Regex(
+                    "^(version_name=)$versionRegex$",
+                    RegexOption.MULTILINE
+                ),
+                "$1$newVersion"
+            ).replace(
+                Regex(
+                    "^(version_build=)\\d+$",
+                    RegexOption.MULTILINE
+                ),
+                "$1$newBuild"
+            )
         )
 
         println("Updating version")
@@ -333,14 +342,13 @@ fun runCommand(vararg args: String, ignoreExitCode: Boolean = false): ExecResult
     commandLine(*args)
 }
 
-fun Project.getVersionName() = this.properties["version_name"]?.toString()
-    ?.takeIf { it.matches(versionRegex) }
-    ?: throw IllegalArgumentException(
-        "version_name must be set in gradle.properties and match $versionRegex (e.g. 2.10.1)."
-    )
+fun Project.getVersionName() =
+    this.properties["version_name"]?.toString()?.takeIf { it.matches(versionRegex) }
+        ?: throw IllegalArgumentException(
+            "version_name must be set in gradle.properties and match $versionRegex (e.g. 2.10.1)."
+        )
 
-fun Project.getVersionBuild() = this.properties["version_build"]?.toString()
-    ?.toIntOrNull()
-    ?: throw IllegalArgumentException(
+fun Project.getVersionBuild() =
+    this.properties["version_build"]?.toString()?.toIntOrNull() ?: throw IllegalArgumentException(
         "version_build must be set in gradle.properties and must be an integer."
     )

@@ -25,6 +25,7 @@ import org.koin.dsl.module
 val dataModule = module {
     single { ktorfitFactory(networkLogs = BuildConfig.DEBUG) }
     single {
+
         @Suppress("MagicNumber")
         Room
             .databaseBuilder(
@@ -32,7 +33,7 @@ val dataModule = module {
                 klass = IrfcDatabase::class.java,
                 name = IrfcDatabase.DATABASE_NAME
             )
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
     }
 

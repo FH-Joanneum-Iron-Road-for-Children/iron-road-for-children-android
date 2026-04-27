@@ -2,18 +2,20 @@ import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 buildscript {
+    val kotlinVersion = "2.1.21"
     repositories {
         gradlePluginPortal()
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.4.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
+        classpath("com.android.tools.build:gradle:8.13.2")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
 }
 plugins {
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
+    id("org.jetbrains.kotlin.plugin.compose") version "2.1.21" apply false
 }
 
 subprojects {

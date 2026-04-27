@@ -251,7 +251,7 @@ private fun ProgramListHeader(
             if (selectedCategory != null) {
                 item(selectedCategory.id) {
                     FilterChip(
-                        modifier = Modifier.animateItemPlacement(),
+                        modifier = Modifier.animateItem(),
                         text = selectedCategory.name,
                         selected = true,
                         onClick = { onToggleCategory(selectedCategory) }
@@ -260,7 +260,7 @@ private fun ProgramListHeader(
             }
             items(categories, EventCategory::id) {
                 FilterChip(
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier.animateItem(),
                     text = it.name,
                     selected = false,
                     onClick = { onToggleCategory(it) }
@@ -269,7 +269,7 @@ private fun ProgramListHeader(
 
             item {
                 FilterChip(
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier.animateItem(),
                     text = "Favoriten",
                     selected = false,
                     onClick = {
