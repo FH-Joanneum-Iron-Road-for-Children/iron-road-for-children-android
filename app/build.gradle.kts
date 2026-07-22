@@ -3,26 +3,24 @@
 import com.android.build.gradle.internal.dsl.NdkOptions.DebugSymbolLevel
 import com.github.triplet.gradle.androidpublisher.ReleaseStatus
 import io.gitlab.arturbosch.detekt.Detekt
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.time.Instant
 import java.util.UUID
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 
 
 plugins {
-    kotlin("android")
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
-    id("com.google.devtools.ksp") version "2.1.21-2.0.2"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.21"
-    id("de.jensklingenberg.ktorfit") version "1.14.0"
+    id("com.google.devtools.ksp") version "2.3.2"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.4.10"
+    id("de.jensklingenberg.ktorfit") version "2.7.5"
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
-    id("com.github.triplet.play") version "3.13.0"
+    id("com.github.triplet.play") version "4.0.0"
 }
 
 val versionRegex = Regex("""\d+\.\d{1,2}\.\d{1,2}""")
 
-android {
+configure<com.android.build.api.dsl.ApplicationExtension> {
     namespace = "at.irfc.app"
     compileSdk = 36
 
@@ -71,19 +69,19 @@ android {
             isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
             signingConfig = signingConfigs.findByName("release")
             ndk.debugSymbolLevel = DebugSymbolLevel.FULL.name
             buildConfigField(
                 type = "String",
                 name = "apiBaseUrl",
-                value = "\"https://backend.irfc.fh-joanneum.at/api/\""
+                value = "\"https://backend.irfc.fh-joanneum.at/api/\"",
             )
             buildConfigField(
                 type = "String",
                 name = "deviceIdPrefix",
-                value = "\"android\""
+                value = "\"android\"",
             )
         }
         debug {
@@ -93,13 +91,13 @@ android {
             buildConfigField(
                 type = "String",
                 name = "apiBaseUrl",
-                value = "\"https://backend.irfc-test.fh-joanneum.at/api/\""
+                value = "\"https://backend.irfc-test.fh-joanneum.at/api/\"",
             )
             // Use a new prefix for each debug build to make testing easier
             buildConfigField(
                 type = "String",
                 name = "deviceIdPrefix",
-                value = "\"android-debug-${UUID.randomUUID()}\""
+                value = "\"android-debug-${UUID.randomUUID()}\"",
             )
 
             if (project.findProperty("signDebug") == "true") {
@@ -113,34 +111,21 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlin {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
-        }
-    }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    applicationVariants.all {
-        kotlin.sourceSets.getByName(name) {
-            kotlin.srcDir("build/generated/ksp/$name/kotlin")
-        }
-    }
 }
 
-val ktorfitVersion = "1.14.0"
-//
-// configure<KtorfitGradleConfiguration> {
-//     version = ktorfitVersion
-// }
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
+    }
+}
 
 ksp {
     arg("compose-destinations.codeGenPackageName", "at.irfc.app.generated.navigation")
@@ -148,7 +133,7 @@ ksp {
 }
 
 detekt {
-    config = files(rootDir.resolve("detekt.yml"))
+    config.setFrom(files(rootDir.resolve("detekt.yml")))
     buildUponDefaultConfig = true
     basePath = rootDir.path
 }
@@ -182,11 +167,13 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
 
     // Ktorfit HTTP client
+    val ktorfitVersion = "2.7.5"
     implementation("de.jensklingenberg.ktorfit:ktorfit-lib:$ktorfitVersion")
     ksp("de.jensklingenberg.ktorfit:ktorfit-ksp:$ktorfitVersion")
 
-    val ktorVersion = "2.3.1"
-    implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+    val ktorVersion = "3.5.1"
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
@@ -238,34 +225,38 @@ dependencies {
 }
 
 tasks.register("release") {
+    description = ""
     doLast {
-        val versionParameter: String? = project.findProperty("v")?.toString()?.also { version ->
-            if (!versionRegex.matches(version)) {
-                throw IllegalArgumentException(
-                    "Version argument 'v' must match $versionRegex (e.g. 2.10.2)." +
-                        " For usage see README.md"
+        val versionParameter: String? =
+            project.findProperty("v")?.toString()?.also { version ->
+                if (!versionRegex.matches(version)) {
+                    throw IllegalArgumentException(
+                        "Version argument 'v' must match $versionRegex (e.g. 2.10.2)." +
+                            " For usage see README.md",
+                    )
+                }
+            }
+
+        val buildParameter: Int? =
+            project.findProperty("b")?.toString()?.let { build ->
+                build.toIntOrNull() ?: throw IllegalArgumentException(
+                    "Build number argument 'b' must be an integer. For usage see README.md",
                 )
             }
-        }
-
-        val buildParameter: Int? = project.findProperty("b")?.toString()?.let { build ->
-            build.toIntOrNull() ?: throw IllegalArgumentException(
-                "Build number argument 'b' must be an integer. For usage see README.md"
-            )
-        }
 
         println("Checking if working tree is clean")
-        val workingTreeClean = runCommand(
-            "git",
-            "diff",
-            "--shortstat",
-            "--exit-code",
-            ignoreExitCode = true
-        )
+        val workingTreeClean =
+            project.runCommand(
+                "git",
+                "diff",
+                "--shortstat",
+                "--exit-code",
+                ignoreExitCode = true,
+            )
         if (workingTreeClean.exitValue != 0) {
             throw IllegalStateException(
                 "Git working tree is not clean. " +
-                    "Commit (or stash) all your local changes before making a release."
+                    "Commit (or stash) all your local changes before making a release.",
             )
         }
 
@@ -280,19 +271,21 @@ tasks.register("release") {
         println("Working tree is clean, changing version to $versionTag.")
         val file = rootDir.resolve("gradle.properties")
         file.writeText(
-            file.readText().replace(
-                Regex(
-                    "^(version_name=)$versionRegex$",
-                    RegexOption.MULTILINE
+            file
+                .readText()
+                .replace(
+                    Regex(
+                        "^(version_name=)$versionRegex$",
+                        RegexOption.MULTILINE,
+                    ),
+                    "$1$newVersion",
+                ).replace(
+                    Regex(
+                        "^(version_build=)\\d+$",
+                        RegexOption.MULTILINE,
+                    ),
+                    "$1$newBuild",
                 ),
-                "$1$newVersion"
-            ).replace(
-                Regex(
-                    "^(version_build=)\\d+$",
-                    RegexOption.MULTILINE
-                ),
-                "$1$newBuild"
-            )
         )
 
         println("Updating version")
@@ -310,19 +303,21 @@ tasks.register("release") {
 }
 
 tasks.register("releaseTest") {
+    description = ""
     doLast {
         println("Checking if working tree is clean")
-        val workingTreeClean = runCommand(
-            "git",
-            "diff",
-            "--shortstat",
-            "--exit-code",
-            ignoreExitCode = true
-        )
+        val workingTreeClean =
+            runCommand(
+                "git",
+                "diff",
+                "--shortstat",
+                "--exit-code",
+                ignoreExitCode = true,
+            )
         if (workingTreeClean.exitValue != 0) {
             throw IllegalStateException(
                 "Git working tree is not clean. " +
-                    "Commit (or stash) all your local changes before making a release."
+                    "Commit (or stash) all your local changes before making a release.",
             )
         }
         println("Working tree is clean")
@@ -341,18 +336,24 @@ tasks.register("releaseTest") {
     }
 }
 
-fun runCommand(vararg args: String, ignoreExitCode: Boolean = false): ExecResult = exec {
-    isIgnoreExitValue = ignoreExitCode
-    commandLine(*args)
-}
+fun Project.runCommand(
+    vararg args: String,
+    ignoreExitCode: Boolean = false,
+): ExecResult =
+    providers
+        .exec {
+            isIgnoreExitValue = ignoreExitCode
+            commandLine(*args)
+        }.result
+        .get()
 
 fun Project.getVersionName() =
-    this.properties["version_name"]?.toString()?.takeIf { it.matches(versionRegex) }
+    findProperty("version_name")?.toString()?.takeIf { it.matches(versionRegex) }
         ?: throw IllegalArgumentException(
-            "version_name must be set in gradle.properties and match $versionRegex (e.g. 2.10.1)."
+            "version_name must be set in gradle.properties and match $versionRegex (e.g. 2.10.1).",
         )
 
 fun Project.getVersionBuild() =
-    this.properties["version_build"]?.toString()?.toIntOrNull() ?: throw IllegalArgumentException(
-        "version_build must be set in gradle.properties and must be an integer."
+    findProperty("version_build")?.toString()?.toIntOrNull() ?: throw IllegalArgumentException(
+        "version_build must be set in gradle.properties and must be an integer.",
     )

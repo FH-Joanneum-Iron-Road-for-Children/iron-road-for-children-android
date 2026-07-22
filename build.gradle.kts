@@ -2,15 +2,13 @@ import org.jlleitschuh.gradle.ktlint.KtlintExtension
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 buildscript {
-    val kotlinVersion = "2.1.21"
     repositories {
         gradlePluginPortal()
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.13.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        classpath("com.android.tools.build:gradle:9.3.0")
     }
 }
 plugins {
@@ -19,7 +17,7 @@ plugins {
 }
 
 subprojects {
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    pluginManager.apply("org.jlleitschuh.gradle.ktlint")
     ktlint.configure()
 }
 
@@ -32,10 +30,11 @@ fun KtlintExtension.configure() {
         reporter(ReporterType.HTML)
     }
     relative.set(true)
-    version.set("0.48.2")
+    version.set("1.5.0")
 }
 
 tasks.register("setupGitHooks") {
+    description = ""
     dependsOn(tasks.getByPath(":addKtlintFormatGitPreCommitHook"))
 
     doLast {
@@ -43,29 +42,30 @@ tasks.register("setupGitHooks") {
         val prePushHookFile = file(rootProject.projectDir.resolve(".git/hooks/pre-push"))
 
         if (!prePushHookFile.exists() || !prePushHookFile.endsWith(prePushHookVersionMarker)) {
-            val script = """
+            val script =
+                """
                 #!/bin/bash -e
-    
+                
                 # Prevents pushing any code to the server that does not comply with klint or detekt
                 # It ignores any unchecked files.
-    
+                
                 # Ignore any unchecked file
                 echo "Stashing changes before doing checks"
                 git stash push -q -u --keep-index
-    
+                
                 # Pop the stash once the scripts finishes, fails or gets cancelled
                 function pop_stash() {
                     echo "Checks completed, popping stash"
                     # Ignore the result of pop as this may fail when there are is nothing to stash
                     success='git stash pop -q' 
                 }
-    
+                
                 trap "exit" INT TERM ERR
                 trap pop_stash EXIT
-    
+                
                 # Do the actual check ups
                 ./gradlew ktlintCheck detekt
-            """.trimIndent()
+                """.trimIndent()
             prePushHookFile.writeText("$script\n$prePushHookVersionMarker")
             prePushHookFile.setExecutable(true)
         }
