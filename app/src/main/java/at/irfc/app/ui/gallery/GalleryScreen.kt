@@ -15,21 +15,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import at.irfc.app.data.local.entity.Gallery
 import at.irfc.app.data.repository.GalleryRepository
 import at.irfc.app.generated.navigation.destinations.GalleryDetailScreenDestination
 import at.irfc.app.util.Resource
 import coil.compose.AsyncImage
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.navigate
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.compose.koinInject
 
 @Composable
 @Destination
 fun GalleryScreen(
-    navController: NavController,
-    repository: GalleryRepository = koinInject()
+    navigator: DestinationsNavigator,
+    repository: GalleryRepository = koinInject(),
 ) {
     var gallery by remember { mutableStateOf<List<Gallery>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
@@ -40,11 +39,14 @@ fun GalleryScreen(
             when (result) {
                 is Resource.Success -> {
                     // TEMP: only keep URLs that look valid
-                    gallery = result.data.filter {
-                        it.path.startsWith("http") && it.path.endsWith(".jpg") || it.path.endsWith(
-                            ".png"
-                        )
-                    }
+                    gallery =
+                        result.data.filter {
+                            it.path.startsWith("http") &&
+                                it.path.endsWith(".jpg") ||
+                                it.path.endsWith(
+                                    ".png",
+                                )
+                        }
                     isLoading = false
                 }
                 is Resource.Error -> {
@@ -60,19 +62,20 @@ fun GalleryScreen(
     if (isLoading) {
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text("Loading...")
         }
     } else {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 120.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(8.dp),
             contentPadding = PaddingValues(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             val filteredPictures = gallery.filter { it.id !in failedImages }
 
@@ -80,13 +83,14 @@ fun GalleryScreen(
                 Card(
                     shape = RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(2.dp),
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .clickable {
-                            navController.navigate(
-                                GalleryDetailScreenDestination(galleryId = gallery.id)
-                            )
-                        }
+                    modifier =
+                        Modifier
+                            .aspectRatio(1f)
+                            .clickable {
+                                navigator.navigate(
+                                    GalleryDetailScreenDestination(galleryId = gallery.id),
+                                )
+                            },
                 ) {
                     AsyncImage(
                         model = gallery.path,
@@ -96,7 +100,7 @@ fun GalleryScreen(
                         onError = {
                             Log.e("GalleryImage", "Image failed: ${gallery.path}")
                             failedImages.add(gallery.id)
-                        }
+                        },
                     )
                 }
             }

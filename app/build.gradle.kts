@@ -22,12 +22,12 @@ val versionRegex = Regex("""\d+\.\d{1,2}\.\d{1,2}""")
 
 configure<com.android.build.api.dsl.ApplicationExtension> {
     namespace = "at.irfc.app"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "at.irfc.app"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 37
 
         versionName = project.getVersionName()
         versionCode = project.getVersionBuild()
@@ -151,17 +151,17 @@ play {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    implementation("androidx.test.services:storage:1.4.2")
-    implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("androidx.media3:media3-exoplayer:1.1.1")
-    implementation("androidx.media3:media3-ui:1.1.1")
-    implementation("com.google.android.material:material:1.9.0")
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.core:core-ktx:1.19.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0")
+    implementation("androidx.test.services:storage:1.6.0")
+    implementation("androidx.compose.material3:material3:1.4.0")
+    implementation("androidx.media3:media3-exoplayer:1.10.1")
+    implementation("androidx.media3:media3-ui:1.10.1")
+    implementation("com.google.android.material:material:1.14.0")
+    implementation("androidx.core:core-splashscreen:1.2.0")
 
     // Room DB
-    val roomVersion = "2.7.1"
+    val roomVersion = "2.8.4"
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
@@ -179,19 +179,19 @@ dependencies {
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
     // Koin DI
-    val koinVersion = "3.4.1"
+    val koinVersion = "3.5.6"
     compileOnly("io.insert-koin:koin-core:$koinVersion")
     implementation("io.insert-koin:koin-android:$koinVersion")
     // Version is not aligned to other koin modules
-    implementation("io.insert-koin:koin-androidx-compose:3.4.5")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.6")
 
     // Coil async image loader and caching
-    val coilVersion = "2.4.0"
+    val coilVersion = "2.7.0"
     implementation("io.coil-kt:coil:$coilVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
 
     // Compose Destinations Navigation
-    val composeDestinationsVersion = "1.9.42-beta"
+    val composeDestinationsVersion = "1.11.9"
     implementation("io.github.raamcosta.compose-destinations:core:$composeDestinationsVersion")
     ksp("io.github.raamcosta.compose-destinations:ksp:$composeDestinationsVersion")
 
@@ -201,7 +201,7 @@ dependencies {
     debugImplementation(composeBom)
     androidTestImplementation(composeBom)
 
-    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.activity:activity-compose:1.13.0")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -209,7 +209,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
 
     // Material 3 does not have swipe to refresh yet TODO remove once added to material 3
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.30.1")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.36.0")
 
     implementation("com.github.jeziellago:compose-markdown:0.3.4")
 
@@ -220,8 +220,8 @@ dependencies {
 
     // Test tooling
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
 }
 
 tasks.register("release") {

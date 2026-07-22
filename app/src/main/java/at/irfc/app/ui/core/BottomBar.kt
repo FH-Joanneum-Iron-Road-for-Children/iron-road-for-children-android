@@ -27,23 +27,21 @@ import at.irfc.app.generated.navigation.destinations.ProgramScreenDestination
 import at.irfc.app.generated.navigation.destinations.VotingScreenDestination
 import at.irfc.app.ui.theme.IrfcBlue
 import at.irfc.app.ui.theme.IrfcYellow
-import com.ramcosta.composedestinations.navigation.navigate
-import com.ramcosta.composedestinations.navigation.popUpTo
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.ramcosta.composedestinations.utils.isRouteOnBackStackAsState
+import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 
 @Composable
-fun BottomBar(
-    navController: NavController
-) {
+fun BottomBar(navController: NavController) {
+    val navigator = navController.rememberDestinationsNavigator()
     NavigationBar(
-        containerColor = IrfcBlue
+        containerColor = IrfcBlue,
     ) {
-        BottomBarDestination.values().forEach { destination ->
+        BottomBarDestination.entries.forEach { destination ->
             NavigationBarItem(
                 selected = navController.isRouteOnBackStackAsState(destination.direction).value,
                 onClick = {
-                    navController.navigate(destination.direction) {
+                    navigator.navigate(destination.direction) {
                         popUpTo(NavGraphs.root)
                         launchSingleTop = true
                     }
@@ -51,7 +49,7 @@ fun BottomBar(
                 icon = {
                     Icon(
                         imageVector = destination.icon,
-                        contentDescription = stringResource(destination.label)
+                        contentDescription = stringResource(destination.label),
                     )
                 },
                 label = {
@@ -59,16 +57,17 @@ fun BottomBar(
                         text = stringResource(destination.label),
                         maxLines = 1,
                         softWrap = false,
-                        overflow = TextOverflow.Visible
+                        overflow = TextOverflow.Visible,
                     )
                 },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = IrfcYellow,
-                    selectedTextColor = IrfcYellow,
-                    indicatorColor = IrfcBlue,
-                    unselectedIconColor = Color.White,
-                    unselectedTextColor = Color.White
-                )
+                colors =
+                    NavigationBarItemDefaults.colors(
+                        selectedIconColor = IrfcYellow,
+                        selectedTextColor = IrfcYellow,
+                        indicatorColor = IrfcBlue,
+                        unselectedIconColor = Color.White,
+                        unselectedTextColor = Color.White,
+                    ),
             )
         }
     }
@@ -77,11 +76,11 @@ fun BottomBar(
 enum class BottomBarDestination(
     val direction: DirectionDestinationSpec,
     val icon: ImageVector,
-    @StringRes val label: Int
+    @StringRes val label: Int,
 ) {
     Home(HomeScreenDestination, Icons.Default.Home, R.string.nav_bar_home),
     Program(ProgramScreenDestination, Icons.Outlined.PermContactCalendar, R.string.nav_bar_program),
     Voting(VotingScreenDestination, Icons.Outlined.ThumbUp, R.string.nav_bar_voting),
     Map(MapScreenDestination, Icons.Default.Map, R.string.nav_bar_map),
-    AboutUs(AboutUsScreenDestination, Icons.Default.MoreHoriz, R.string.nav_bar_aboutUs)
+    AboutUs(AboutUsScreenDestination, Icons.Default.MoreHoriz, R.string.nav_bar_aboutUs),
 }

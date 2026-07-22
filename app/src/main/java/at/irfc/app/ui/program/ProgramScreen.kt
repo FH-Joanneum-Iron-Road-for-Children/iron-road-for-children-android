@@ -1,6 +1,5 @@
 package at.irfc.app.ui.program
 
-import android.Manifest as AndroidManifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Build
@@ -24,7 +23,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
 import at.irfc.app.R
 import at.irfc.app.data.local.entity.EventCategory
 import at.irfc.app.data.local.entity.relations.EventWithDetails
@@ -38,29 +36,35 @@ import at.irfc.app.util.Resource
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.navigate
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
+import android.Manifest as AndroidManifest
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Destination
 fun ProgramScreen(
-    navController: NavController,
-    viewModel: ProgramViewModel = getViewModel()
+    navigator: DestinationsNavigator,
+    viewModel: ProgramViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
     val activity = context as? Activity
     val eventListResource = viewModel.eventListResource.collectAsState().value
     val selectedCategory = viewModel.selectedCategory.collectAsState().value
-    val categories = viewModel.categoryList.collectAsState().value.filter { it != selectedCategory }
+    val categories =
+        viewModel.categoryList
+            .collectAsState()
+            .value
+            .filter { it != selectedCategory }
 
     Column {
         val coroutineScope = rememberCoroutineScope()
-        val pager = rememberPagerState(
-            initialPage = 0,
-            pageCount = { eventListResource.data?.size ?: 0 }
-        )
+        val pager =
+            rememberPagerState(
+                initialPage = 0,
+                pageCount = { eventListResource.data?.size ?: 0 },
+            )
 
         EventListTabRow(pagerState = pager, eventOnDayList = eventListResource.data)
 
@@ -68,7 +72,7 @@ fun ProgramScreen(
         SwipeRefresh(
             modifier = Modifier.fillMaxSize(),
             state = rememberSwipeRefreshState(eventListResource is Resource.Loading),
-            onRefresh = { viewModel.loadEvents(force = true) }
+            onRefresh = { viewModel.loadEvents(force = true) },
         ) {
             Column {
                 ProgramListHeader(
@@ -76,22 +80,23 @@ fun ProgramScreen(
                     selectedCategory = selectedCategory,
                     categories = categories,
                     onToggleCategory = viewModel::toggleCategory,
-                    navController = navController
+                    navigator = navigator,
                 )
 
                 val eventOnDayList = eventListResource.data
                 if (eventOnDayList.isNullOrEmpty()) {
                     Column(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
+                        modifier =
+                            Modifier
+                                .padding(10.dp)
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState()),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.SpaceAround
+                        verticalArrangement = Arrangement.SpaceAround,
                     ) {
                         Text(
                             text = stringResource(id = R.string.programScreen_noEventsFound),
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                         Button(onClick = { viewModel.loadEvents(force = true) }) {
                             Text(stringResource(id = R.string.refresh))
@@ -102,14 +107,14 @@ fun ProgramScreen(
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             if (ContextCompat.checkSelfPermission(
                                     context,
-                                    AndroidManifest.permission.POST_NOTIFICATIONS
+                                    AndroidManifest.permission.POST_NOTIFICATIONS,
                                 ) != PackageManager.PERMISSION_GRANTED
                             ) {
                                 activity?.let {
                                     ActivityCompat.requestPermissions(
                                         it,
                                         arrayOf(AndroidManifest.permission.POST_NOTIFICATIONS),
-                                        1001
+                                        1001,
                                     )
                                 }
                             }
@@ -119,8 +124,8 @@ fun ProgramScreen(
                         pagerState = pager,
                         eventOnDayList = eventOnDayList,
                         onEventClick = { event ->
-                            navController.navigate(
-                                ProgramDetailScreenDestination(event.id)
+                            navigator.navigate(
+                                ProgramDetailScreenDestination(event.id),
                             )
                         },
                         onFavoriteToggle = {
@@ -133,7 +138,7 @@ fun ProgramScreen(
                                     scheduleNotification(context = context, event = it.event)
                                 }
                             }
-                        }
+                        },
                     )
                 }
             }
@@ -147,36 +152,37 @@ private fun EventListPager(
     pagerState: PagerState,
     eventOnDayList: List<EventsOnDate>,
     onEventClick: (EventWithDetails) -> Unit,
-    onFavoriteToggle: (EventWithDetails) -> Unit // 🔸 adăugat
+    onFavoriteToggle: (EventWithDetails) -> Unit, // 🔸 adăugat
 ) {
     HorizontalPager(
-        state = pagerState
+        state = pagerState,
     ) { page ->
         val eventDay = eventOnDayList[page]
         if (eventDay.events.isEmpty()) {
             Box(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .padding(10.dp)
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = stringResource(R.string.programScreen_noEventsFoundForFilter),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             }
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(15.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp)
+                verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 items(eventDay.events, EventWithDetails::id) { event ->
                     EventListItem(
                         event = event,
                         onEventClick = onEventClick,
-                        onFavoriteToggle = onFavoriteToggle
+                        onFavoriteToggle = onFavoriteToggle,
                     )
                 }
             }
@@ -186,10 +192,13 @@ private fun EventListPager(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun EventListTabRow(pagerState: PagerState, eventOnDayList: List<EventsOnDate>?) {
+private fun EventListTabRow(
+    pagerState: PagerState,
+    eventOnDayList: List<EventsOnDate>?,
+) {
     TabRow(
         selectedTabIndex = pagerState.currentPage,
-        contentColor = MaterialTheme.colorScheme.onSurface
+        contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         val coroutineScope = rememberCoroutineScope()
         eventOnDayList?.forEachIndexed { index, events ->
@@ -201,15 +210,15 @@ private fun EventListTabRow(pagerState: PagerState, eventOnDayList: List<EventsO
                         Text(
                             text = events.dayString,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Text(
                             text = events.dateString,
                             maxLines = 1,
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodySmall,
                         )
                     }
-                }
+                },
             )
         }
     }
@@ -222,31 +231,33 @@ private fun ProgramListHeader(
     selectedCategory: EventCategory?,
     categories: List<EventCategory>,
     onToggleCategory: (EventCategory) -> Unit,
-    navController: NavController
+    navigator: DestinationsNavigator,
 ) {
     if (eventListResource is Resource.Error) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.errorContainer)
-                .padding(8.dp),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.errorContainer)
+                    .padding(8.dp),
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = eventListResource.errorMessage.getMessage(),
                 color = MaterialTheme.colorScheme.error,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
     }
 
     if (selectedCategory != null || categories.isNotEmpty()) {
         LazyRow(
-            modifier = Modifier
-                .padding(vertical = 8.dp)
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .padding(vertical = 8.dp)
+                    .fillMaxWidth(),
             contentPadding = PaddingValues(horizontal = 10.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             if (selectedCategory != null) {
                 item(selectedCategory.id) {
@@ -254,7 +265,7 @@ private fun ProgramListHeader(
                         modifier = Modifier.animateItem(),
                         text = selectedCategory.name,
                         selected = true,
-                        onClick = { onToggleCategory(selectedCategory) }
+                        onClick = { onToggleCategory(selectedCategory) },
                     )
                 }
             }
@@ -263,7 +274,7 @@ private fun ProgramListHeader(
                     modifier = Modifier.animateItem(),
                     text = it.name,
                     selected = false,
-                    onClick = { onToggleCategory(it) }
+                    onClick = { onToggleCategory(it) },
                 )
             }
 
@@ -273,10 +284,10 @@ private fun ProgramListHeader(
                     text = "Favoriten",
                     selected = false,
                     onClick = {
-                        navController.navigate(
-                            FavoriteScreenDestination
+                        navigator.navigate(
+                            FavoriteScreenDestination,
                         )
-                    }
+                    },
                 )
             }
         }
